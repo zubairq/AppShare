@@ -7,6 +7,8 @@
 
 (defonce ^:dynamic *mandrill-api-key* "enter_api_key_for_mandrill_here")
 
+(defonce ^:dynamic *email-debug-mode* true)
+
 (defonce ^:dynamic *environment* "base")
 
 (defonce ^:dynamic *web-server* "127.0.0.1:3000")

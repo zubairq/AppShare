@@ -8,7 +8,6 @@
    [clojure.data     :as data]
    [clojure.string   :as string]
    [ankha.core       :as ankha]
-   [webapp.framework.client.components.fields.labelled-text-field :as labelled-field]
    )
 
   (:use

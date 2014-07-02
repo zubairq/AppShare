@@ -11,13 +11,10 @@
   [:use [webapp.framework.server.neo4j-helper]]
   [:use [webapp.server.person-helper]]
 
-  [:use [webapp.ignore.test-data]]
-
   (:use [webapp-config.settings])
   (:use [overtone.at-at])
   (:import [java.util.UUID])
   (:import [java.util TimerTask Timer])
-  (:require [webapp.ignore.test-data])
 )
 
 
@@ -423,7 +420,6 @@
 
                  ]
   (do
-    (start-conns)
     (check-timer)
     ))
 

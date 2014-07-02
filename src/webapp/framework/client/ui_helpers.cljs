@@ -1,4 +1,4 @@
-(ns webapp.client.ui-helpers
+(ns webapp.framework.client.ui-helpers
   (:require
    [goog.net.cookies :as cookie]
    [om.core          :as om :include-macros true]

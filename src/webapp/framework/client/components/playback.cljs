@@ -8,7 +8,6 @@
    [clojure.data     :as data]
    [clojure.string   :as string]
    [ankha.core       :as ankha]
-   [webapp.framework.client.components.fields.labelled-text-field :as labelled-field]
    )
 
   (:use
@@ -179,6 +178,46 @@
 
 
 
+(defn handle-change [app e]
+  (om/update! app [:value] (.. e -target -value))
+  )
+
+
+
+
+
+
+;-----------------------------------------------------------------------------------------------
+(defn labelled-field-component [{:keys [field]} owner]
+  (reify
+
+    ;---------
+    om/IRender
+    (render
+    ;------
+     [this]
+     ;-----
+
+     (dom/div #js {:className "input-group"}
+
+              (dom/span
+               #js {:className "input-group-addon"}
+               (get field :label ""))
+              (dom/input
+               #js {:type        "text"
+                    :className   "form-control"
+                    :placeholder (get field :placeholder "")
+                    :value       (get field :value)
+                    :onChange    #(handle-change field %)
+                    }))
+      ))
+
+)
+
+
+
+
+
 
 
 
@@ -338,7 +377,7 @@
 
               (dom/button #js {:onClick (fn [e] (put! clear-replay-sessions
                                                       true))} "Delete")
-              (om/build labelled-field/component
+              (om/build labelled-field-component
                         {:field (-> app :ui :delete-password)})
 
 
