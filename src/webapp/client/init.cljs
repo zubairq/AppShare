@@ -14,7 +14,7 @@
    )
   (:use
    [webapp.client.ui-helpers                :only  [validate-email validate-full-name  validate-endorsement]]
-   [webapp.client.helper                    :only  [when-path-equals when-value-changes]]
+   [webapp.framework.client.helper                    :only  [when-path-equals when-value-changes]]
    [webapp.framework.client.coreclient      :only  [log remote]]
    [webapp.framework.client.system-globals  :only  [app-state   playback-app-state
                                                     playback-controls-state

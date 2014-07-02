@@ -11,7 +11,7 @@
   (:use
    [webapp.client.ui-helpers                :only  [validate-email validate-full-name  validate-endorsement
                                                      ]]
-   [webapp.client.helper                    :only  [when-ui-path-equals when-ui-value-changes
+   [webapp.framework.client.helper                    :only  [when-ui-path-equals when-ui-value-changes
                                                     when-ui-property-equals-in-record
                                                     amend-record
                                                     ]]

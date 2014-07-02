@@ -8,7 +8,7 @@
    [webapp.framework.client.coreclient]
    )
   (:use
-   [webapp.client.helper  :only [amend-record]]
+   [webapp.framework.client.helper  :only [amend-record]]
    [webapp.framework.client.system-globals  :only  [touch]]
    )
   (:use-macros

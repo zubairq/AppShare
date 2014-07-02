@@ -8,7 +8,7 @@
   (:use-macros
    [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils]])
   (:use
-   [webapp.client.helper  :only [amend-record]]
+   [webapp.framework.client.helper  :only [amend-record]]
    [webapp.framework.client.system-globals  :only  [touch]]
    ))
 (ns-coils 'webapp.client.react.components.connection-graph)
