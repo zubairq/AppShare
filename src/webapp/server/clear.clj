@@ -21,3 +21,4 @@
 ;(neo4j "MATCH n OPTIONAL MATCH (n)-[r]-() DELETE n,r")
 
 
+;(neo4j "MATCH (n:WebSession) OPTIONAL MATCH (n)-[r]-(s) DELETE n,r,s")
