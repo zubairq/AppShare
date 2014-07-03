@@ -1,14 +1,14 @@
-http://127.0.0.1:3000/connecttous.html
+http://127.0.0.1:3000/main.html
 
-http://127.0.0.1:3000/connecttous.html?livedebug=true
+http://127.0.0.1:3000/main.html?livedebug=true
 
-http://127.0.0.1:3000/connecttous.html?playback=true
+http://127.0.0.1:3000/main.html?playback=true
 
-http://127.0.0.1:3000/connecttous.html?debug=true
+http://127.0.0.1:3000/main.html?debug=true
 
 http://127.0.0.1:3000/link/abc
 
 
 
 ;test
-http://127.0.0.1:8080/connecttous
+http://127.0.0.1:8080/main
