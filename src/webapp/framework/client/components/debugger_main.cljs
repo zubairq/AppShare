@@ -13,7 +13,8 @@
   (:use
    [webapp.framework.client.coreclient     :only  [log remote]]
    [webapp.framework.client.system-globals :only  [debugger-ui
-                                                   debug-event-timeline]]
+                                                   debug-event-timeline
+                                                   app-state]]
    )
   (:use-macros
    [webapp.framework.client.neo4j      :only  [neo4j]]
@@ -21,19 +22,38 @@
   (:require-macros
    [cljs.core.async.macros :refer [go]]))
 
-
 (defn main-debug-slider-comp [app owner]
   (reify
     om/IRender
     ;---------
     (render
      [_]
-     (dom/input
-      #js {:type "range"
-           :min  "1"
-           :max  (str (count @debug-event-timeline ))}
-              (-> app :pos)
-))))
+     (dom/div nil
+              (dom/input
+               #js {:value (str (-> app :pos))
+                    :type "range"
+                    :min  "1"
+                    :max  (str (-> @debugger-ui :total-events-count ))
+                    :onChange
+                    (fn[e]
+                      (let [value (js/parseInt (.. e -target -value))]
+                        (do
+                        (om/transact! app [:pos]
+                                                        #(str value))
+                        (reset! app-state
+                                (:value (get @debug-event-timeline value))
+                                )
+                        )))
+                    })
+
+              (dom/div nil
+               (str (-> app :pos) " of "
+                    (-> app :total-events-count ))
+
+               )))))
+
+
+
 
 (defn main-debug-comp [app owner]
   (reify
@@ -42,6 +62,7 @@
     (render
      [_]
      (dom/div nil
+
               (cond
                (= (:mode @debugger-ui) "browse")
                 (dom/h2 nil (str (get @debugger-ui :react-components)))

@@ -164,23 +164,52 @@
            :change
 
            (fn [_ _ old-val new-val]
-             (. js/console log (str "***** " new-val))
+             ;(. js/console log (str "***** " new-val))
+             nil
              )
            )
 
 
-(swap! debug-event-timeline assoc :2432 {:a 243})
+
 
 (def debugger-ui
   (atom {
          :mode                     "browse"
          :react-components         []
          :react-components-code    {}
-         :pos 34
+         :pos 1
+         :total-events-count 0
          }))
 
 
-(:mode @debugger-ui )
-(:current-component @debugger-ui )
+(def debug-count (atom 0))
+(defn add-debug-event [& {:keys [
+                                 new
+                                 error
+                                 ] :or {
+                                        error          "Error in field"
+                                        }}]
+  (swap! debug-event-timeline assoc
+         (swap! debug-count inc) {:value new})
+
+  (reset! debugger-ui
+          (assoc @debugger-ui
+         :total-events-count (count @debug-event-timeline)
+         ))
+  )
 
 
+
+( add-watch app-state
+           :change
+
+           (fn [_ _ old-val new-val]
+             (add-debug-event   :new new-val  )
+             )
+           )
+
+
+;(:total-events-count @debugger-ui )
+
+
+(get @debug-event-timeline 20)
