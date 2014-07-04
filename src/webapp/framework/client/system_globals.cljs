@@ -199,13 +199,14 @@
   )
 
 
-
+(def app-watch-on? (atom true))
 ( add-watch app-state
            :change
 
            (fn [_ _ old-val new-val]
+             (if @app-watch-on?
              (add-debug-event   :new new-val  )
-             )
+             ))
            )
 
 

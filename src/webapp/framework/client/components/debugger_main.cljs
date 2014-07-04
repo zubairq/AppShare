@@ -14,7 +14,8 @@
    [webapp.framework.client.coreclient     :only  [log remote]]
    [webapp.framework.client.system-globals :only  [debugger-ui
                                                    debug-event-timeline
-                                                   app-state]]
+                                                   app-state
+                                                   app-watch-on?]]
    )
   (:use-macros
    [webapp.framework.client.neo4j      :only  [neo4j]]
@@ -40,9 +41,13 @@
                         (do
                         (om/transact! app [:pos]
                                                         #(str value))
+
+                        (reset! app-watch-on? false)
                         (reset! app-state
                                 (:value (get @debug-event-timeline value))
                                 )
+                          (reset! app-watch-on? true)
+
                         )))
                     })
 
