@@ -119,7 +119,11 @@
         <div id=debug_button       style='color=black;'></div>
 
         <div>
-            <div id=main               style='width: 100%;vertical-align:text-top;color=black;display: inline-block;'></div>
+            <div   id='main_parent' style='display: inline-block; color=black; width: 100%;vertical-align:text-top;'>
+                <div id=main style='display: inline-block; color=black; width: 100%;vertical-align:text-top;'>
+                </div>
+                <div   id='main_playback_slider'  style='color=black;'></div>
+            </div>
             <div id=right_of_main      style='vertical-align:text-top;color=black;display: inline-block;'></div>
         </div>
 
@@ -166,7 +170,7 @@
                 debug    = getQueryVariable("debug");
                 livedebug    = getQueryVariable("livedebug");
                 if (livedebug) {
-                    document.getElementById('main').style.width='49%';
+                    document.getElementById('main_parent').style.width='49%';
                     document.getElementById('right_of_main').style.width='49%';
                     dbutton = document.getElementById("debug_button");
                     dbutton.innerHTML=

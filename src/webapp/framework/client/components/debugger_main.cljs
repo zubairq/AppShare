@@ -12,7 +12,8 @@
 
   (:use
    [webapp.framework.client.coreclient     :only  [log remote]]
-   [webapp.framework.client.system-globals :only  [debugger-ui]]
+   [webapp.framework.client.system-globals :only  [debugger-ui
+                                                   debug-event-timeline]]
    )
   (:use-macros
    [webapp.framework.client.neo4j      :only  [neo4j]]
@@ -21,6 +22,18 @@
    [cljs.core.async.macros :refer [go]]))
 
 
+(defn main-debug-slider-comp [app owner]
+  (reify
+    om/IRender
+    ;---------
+    (render
+     [_]
+     (dom/input
+      #js {:type "range"
+           :min  "1"
+           :max  (str (count @debug-event-timeline ))}
+              (-> app :pos)
+))))
 
 (defn main-debug-comp [app owner]
   (reify

@@ -158,23 +158,25 @@
 
 
 
-(def timeline (atom {}))
+(def debug-event-timeline (atom {}))
 
-(add-watch timeline  :change
+(add-watch debug-event-timeline
+           :change
+
            (fn [_ _ old-val new-val]
              (. js/console log (str "***** " new-val))
              )
            )
 
 
-(swap! timeline assoc :2432 {:a 243})
-
+(swap! debug-event-timeline assoc :2432 {:a 243})
 
 (def debugger-ui
   (atom {
          :mode                     "browse"
          :react-components         []
          :react-components-code    {}
+         :pos 34
          }))
 
 

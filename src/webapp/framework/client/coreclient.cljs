@@ -352,11 +352,17 @@
 
 
 (defn  ^:export loadDebugger []
- (om/root
-      webapp.framework.client.components.debugger-main/main-debug-comp
-      debugger-ui
-      {:target (js/document.getElementById "right_of_main")})
-     )
+  (do
+    (om/root
+     webapp.framework.client.components.debugger-main/main-debug-comp
+     debugger-ui
+     {:target (js/document.getElementById "right_of_main")})
+
+    (om/root
+     webapp.framework.client.components.debugger-main/main-debug-slider-comp
+     debugger-ui
+     {:target (js/document.getElementById "main_playback_slider")})
+    ))
 
 
 (defn  ^:export unloadDebugger []
@@ -384,6 +390,11 @@
      (fn [app owner] (om/component (dom/div nil "")))
      debugger-ui
      {:target (js/document.getElementById "right_of_main")})
+
+    (om/root
+     (fn [app owner] (om/component (dom/div nil "")))
+     debugger-ui
+     {:target (js/document.getElementById "main_playback_slider")})
     ))
 
 ;(unloadDebugger)
