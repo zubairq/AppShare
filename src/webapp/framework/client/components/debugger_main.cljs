@@ -39,8 +39,8 @@
                     (fn[e]
                       (let [value (js/parseInt (.. e -target -value))]
                         (do
-                        (om/transact! app [:pos]
-                                                        #(str value))
+                        (om/update! app [:pos]
+                                                        value)
 
                         (reset! app-watch-on? false)
                         (reset! app-state

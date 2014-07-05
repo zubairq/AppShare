@@ -21,6 +21,7 @@
                                                          data-state
                                                          ab-tests
                                                          init-state-fns
+                                                         data-and-ui-events-on?
                                                          ]]
    )
   (:use-macros
@@ -69,44 +70,45 @@
 
              (fn [_ _ old-val new-val]
 
-               (doall
+               (if @data-and-ui-events-on?
+                 (doall
 
-                ;(. js/console log (pr-str "Events changed" new-val))
-                (for [watch @watchers]
-                  (if (subtree-different? old-val new-val (:path watch))
-                    (do
-                      (log (str "Subtree changed: " (:path watch)))
-                      (cond
+                  ;(. js/console log (pr-str "Events changed" new-val))
+                  (for [watch @watchers]
+                    (if (subtree-different? old-val new-val (:path watch))
+                      (do
+                        (log (str "Subtree changed: " (:path watch)))
+                        (cond
 
-                       (= (:type watch) "path equals")
-                       ;------------------------------
-                       (if (= (get-in new-val (:path watch)) (:value watch) )
-                         (apply (:fn watch) args))
-
-
-
-                       (= (:type watch) "value change")
-                       ;-------------------------------
-                       (apply (:fn watch) args)
+                         (= (:type watch) "path equals")
+                         ;------------------------------
+                         (if (= (get-in new-val (:path watch)) (:value watch) )
+                           (apply (:fn watch) args))
 
 
 
-                       (= (:type watch) "record property equals")
-                       ;-----------------------------------------
-                       (let [records (filter
-                                      (fn [r] (=  (get r (:field watch)) (:value watch)))
-                                      (get-in new-val (:path watch))
-                                      )]
-                         (if (pos? (count records))
-                         (apply (:fn watch) (conj args records))))
+                         (= (:type watch) "value change")
+                         ;-------------------------------
+                         (apply (:fn watch) args)
 
 
 
-                       ))
+                         (= (:type watch) "record property equals")
+                         ;-----------------------------------------
+                         (let [records (filter
+                                        (fn [r] (=  (get r (:field watch)) (:value watch)))
+                                        (get-in new-val (:path watch))
+                                        )]
+                           (if (pos? (count records))
+                             (apply (:fn watch) (conj args records))))
 
 
-                    :else
-                    nil ))))))
+
+                         ))
+
+
+                      :else
+                      nil )))))))
 
 
 

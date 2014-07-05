@@ -189,18 +189,48 @@
                                  ] :or {
                                         error          "Error in field"
                                         }}]
+
+
   (swap! debug-event-timeline assoc
          (swap! debug-count inc) {:value new})
 
   (reset! debugger-ui
           (assoc @debugger-ui
-         :total-events-count (count @debug-event-timeline)
-         ))
+         :total-events-count (count @debug-event-timeline)))
+
+  (if (> (+ (:pos @debugger-ui) 5) (:total-events-count @debugger-ui))
+    (reset! debugger-ui
+            (assoc @debugger-ui
+              :pos (:total-events-count @debugger-ui))))
+
   )
 
 
+(def data-and-ui-events-on? (atom true))
+
+
+(add-watch debugger-ui
+           :change-debugger-ui
+
+           (fn [_ _ old-val new-val]
+
+             (if
+               (or
+                (= js/debug_live false)
+                (= (new-val :pos) (new-val :total-events-count))
+                )
+               (reset! data-and-ui-events-on? true)
+               (reset! data-and-ui-events-on? false)
+             )
+             ;(. js/console log (pr-str new-val))
+
+             )
+           )
+
+
+
 (def app-watch-on? (atom true))
-( add-watch app-state
+(add-watch app-state
            :change
 
            (fn [_ _ old-val new-val]
@@ -209,8 +239,8 @@
              ))
            )
 
-
-;(:total-events-count @debugger-ui )
+(+ (:pos @debugger-ui ) 5)
+(:total-events-count @debugger-ui )
 
 
 (get @debug-event-timeline 20)
