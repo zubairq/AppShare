@@ -12,3 +12,4 @@ http://127.0.0.1:3000/link/abc
 
 ;test
 http://127.0.0.1:8080/connecttous
+http://127.0.0.1:8080/connecttous?livedbug=true

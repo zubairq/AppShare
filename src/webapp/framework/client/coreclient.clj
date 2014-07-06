@@ -68,6 +68,15 @@
 (defmacro defn-ui-component [fn-name data-paramater-name opts & code ]
 
     `(do
+
+       (webapp.framework.client.coreclient/record-defn-ui-component
+             (~'ns-coils-debug)
+             ~(str `~fn-name) ~(str `~data-paramater-name)
+
+          (str ~(with-out-str   (write (first `~code))
+                                        :dispatch clojure.pprint/code-dispatch))
+        )
+
        (defn ~fn-name [~(first data-paramater-name)  ~'owner]
          (~'reify
 
@@ -82,7 +91,7 @@
 
              ~(if *show-code*
                `(webapp.framework.client.coreclient/debug-react
-                 ~fn-name
+                 ~(str `~fn-name)
                  ~'owner
                  ~(first data-paramater-name)
                  (~'fn [~(first data-paramater-name)]
@@ -90,13 +99,6 @@
                 (first code))
          )))
 
-       (webapp.framework.client.coreclient/record-defn-ui-component
-             (~'ns-coils-debug)
-             ~(str `~fn-name) ~(str `~data-paramater-name)
-
-          (str ~(with-out-str   (write (first `~code))
-                                        :dispatch clojure.pprint/code-dispatch))
-        )
 
        (~'webapp.framework.client.coreclient/process-ui-component  ~opts)
 

@@ -454,7 +454,7 @@
 (defn debug-react [str-nm owner data react-fn]
   (let
     [
-     react-fn-name    (get-fn-name (str str-nm))
+     react-fn-name    (str str-nm);(get-fn-name (str str-nm))
      ]
     (dom/div (if js/debug_live
                #js {
