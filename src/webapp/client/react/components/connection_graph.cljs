@@ -1,12 +1,12 @@
 (ns webapp.client.react.components.connection-graph
   (:require
    [om.core          :as om :include-macros true]
-   [om.dom           :as dom :include-macros true]
+   [om.dom           :as dom]
    [clojure.data     :as data]
    [clojure.string   :as string]
    )
   (:use-macros
-   [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils]])
+   [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils div a]])
   (:use
    [webapp.framework.client.helper  :only [amend-record]]
    [webapp.framework.client.system-globals  :only  [touch]]
@@ -22,25 +22,25 @@
 (defn-ui-component   text-graph    [companies]
   {:absolute-path [:ui :companies]}
   ;---------------------------------------------------------
-     (dom/div
-      #js {:style #js {:height "100%" :width "100%"}}
+     (div
+       {:style {:height "100%" :width "100%"}}
 
       (apply
        dom/div
        nil
        (map
         (fn[x]
-          (dom/div
+          (div
            nil
-           (dom/div
-            #js {
+           (div
+            {
                  :style
-                 #js {
+                 {
                       :width "200px"
                       :display "inline-block"}}
             (get x "company"))
-           (dom/a
-            #js {:href "#"
+           (a
+            {:href "#"
                  :onClick
 
                  #(om/update! companies [:values]
@@ -100,20 +100,20 @@
   {:absolute-path [:ui :latest-endorsements]}
 ;---------------------------------------------------------
 
-     (dom/div
-      #js {:style #js {:height "100%" :width "100%"}}
+     (div
+      {:style #js {:height "100%" :width "100%"}}
 
       (apply
        dom/div
        nil
        (map
         (fn[x]
-          (dom/div
+          (div
            nil
-           (dom/div
-            #js {
+           (div
+            {
                  :style
-                 #js {
+                 {
                       :width "50%"
                       :display "inline-block"}}
             (str
@@ -125,10 +125,10 @@
 
              (get x "from")
                  ))
-           (dom/div
-            #js {
+           (div
+            {
                  :style
-                 #js {
+                 {
                       :width "50%"
                       :display "inline-block"}}
             (str (get x "skill") " --> " (get x "to")

@@ -8,7 +8,7 @@ http://127.0.0.1:3000/connecttous.html?debug=true
 
 http://127.0.0.1:3000/link/abc
 
-
+http://127.0.0.1:3000/connecttous.html?livedebug=true&company_url=hotmail.co.uk
 
 ;test
 http://127.0.0.1:8080/connecttous

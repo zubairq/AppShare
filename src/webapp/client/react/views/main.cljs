@@ -1,10 +1,10 @@
 (ns webapp.client.react.views.main
   (:require
+   [webapp.framework.client.coreclient]
    [om.core          :as om :include-macros true]
-   [om.dom           :as dom :include-macros true]
+   [om.dom           :as dom]
    [clojure.data     :as data]
-   [clojure.string   :as string]
-   [webapp.framework.client.coreclient])
+   [clojure.string   :as string])
 
   (:use
    [webapp.client.ui-helpers                :only  [validate-email
@@ -20,7 +20,8 @@
    [webapp.client.react.components.company-details     :only  [company-details2]]
    )
   (:use-macros
-   [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils]]))
+   [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils div]]))
+
 (ns-coils 'webapp.client.react.views.main)
 
 
@@ -45,40 +46,40 @@
   {:absolute-path []}
   ;------------------------------------------------------------
 
-  (dom/div  #js {:style #js {:paddingBottom "10px"}}
+  (div  {:style {:paddingBottom "10px"}}
 
 
-           (dom/div
-            (if  (= (-> app :ui :tab-browser) "top companies")
-              #js {:style #js {
-                               	:display "inline-block"}
-                   }
+            (div
+             (cond
+              (= (-> app :ui :tab-browser) "top companies")
+              {:style {:display "inline-block"}}
 
-            #js {:className  ""
-                   :onClick        (fn[e] (om/update! app [:ui :tab-browser]  "top companies"))
-                   :onTouchStart   (fn[e] (select-browser e app))
-                   :style #js {:textDecoration "underline"
-                               	:display "inline-block"}
-                   })
-            "Top")
+              :else
+              {:className  ""
+               :onClick        (fn[e] (om/update! app [:ui :tab-browser]  "top companies"))
+               :onTouchStart   (fn[e] (select-browser e app))
+               :style {:textDecoration "underline"
+                       :display "inline-block"}
+               })
+             "Top")
 
 
-           (dom/div
-              #js {:style #js {
+           (div
+              {:style {
                                :display "inline-block"
                                :width "20px"}
                    } "")
 
 
-           (dom/div
+           (div
             (if  (= (-> app :ui :tab-browser) "latest endorsements")
-              #js {:style #js {
+              {:style  {
                                	:display "inline-block"}
                    }
-              #js {:className  ""
+              {:className  ""
                    :onClick        (fn[e] (om/update! app [:ui :tab-browser]  "latest endorsements"))
                    :onTouchStart   (fn[e] (select-browser e app))
-                   :style #js {:textDecoration "underline"
+                   :style {:textDecoration "underline"
                                :display "inline-block"}
                    })
             "latest")

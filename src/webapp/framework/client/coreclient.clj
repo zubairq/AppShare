@@ -49,12 +49,6 @@
 
 
 
-(defn- xml-str
- "Like clojure.core/str but escapes < > and &."
- [x]
-  (-> x str (.replace "&" "&amp;") (.replace "<" "&lt;") (.replace ">" "&gt;")))
-
-
 
 (defmacro ns-coils [namespace-name]
   `(defn ~'ns-coils-debug  [] (str ~namespace-name))
@@ -111,6 +105,17 @@
       nil
       (dom/div nil (str " You asdsddsads" data))
       )))
+
+
+
+
+(defmacro div [attributes & more]
+  `(dom/div  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro a [attributes & more]
+  `(dom/a  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro h2 [attributes & more]
+  `(dom/h2  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+
 
 
 

@@ -7,7 +7,7 @@
     [goog.Uri.QueryData]
     [goog.events]
     [om.core          :as om :include-macros true]
-    [om.dom           :as dom :include-macros true]
+    [om.dom           :as dom]
     [cljs.core.async :as async :refer [chan close!]]
   )
   (:require-macros
@@ -280,6 +280,7 @@
  "Like clojure.core/str but escapes < > and &."
  [x]
   (-> x str
+      ;(clojure.string/replace #" " "  " )
       (clojure.string/replace #"&amp;" "&" )
       (clojure.string/replace #"&lt;" "<")
       (clojure.string/replace #"&gt;" ">" )))
@@ -290,22 +291,32 @@
 
 
 
+(comment
+  (record-defn-ui-component
+   "a.b" "start" '[a b] '(def 1)))
+
 (defn record-defn-ui-component [namespace-name fname args & code]
   (let [
         code-str
         (str (apply str (map #(if (= "\n" %1) (str "\r\n")  %1) code)))
         ]
-    (.log js/console (str "NAMESPACE: " namespace-name))
-    (.log js/console (str "NAMESPACE fname: " fname))
-    (.log js/console (str "NAMESPACE orig code: " code))
-    (.log js/console (str "NAMESPACE code: " code-str))
+
+    (.log js/console (str "NAMESPACE: "            namespace-name))
+    (.log js/console (str "NAMESPACE fname: "      fname))
+    (.log js/console (str "NAMESPACE orig code: "  code))
+    (.log js/console (str "NAMESPACE code: "       code-str))
+
     (reset!
      webapp.framework.client.system-globals/debugger-ui
      (assoc-in
       (deref webapp.framework.client.system-globals/debugger-ui)
       [:react-components-code (str fname)]
-      (xml-str (str  "(defn-ui-component "
-                     namespace-name "/"
+      (xml-str (str
+                "(ns  " namespace-name ")"
+                (char 13) (char 13)
+
+
+                "(defn-ui-component  "
                      fname " "
                      args (char 13) (char 13)
                      code-str
@@ -315,8 +326,6 @@
     )
   )
 
-(comment  record-defn-ui-component
-  "a.b" "start" '[a b] '(def 1))
 
 
 
@@ -325,19 +334,6 @@
 
 
 
-
-(defn get-fn-name [x]
-  (do
-    (clojure.string/replace (second (clojure.string/split (apply str
-                                                                 (take-while #(not= %1 "(") x)) #"\s"))
-                            #"_" "-")
-    ))
-
-
-
-
-
-;(get-fn-name "fdfsdfd(dsffds)")
 
 (defn process-ui-component [
                             {absolute-path :absolute-path}
@@ -454,7 +450,7 @@
 (defn debug-react [str-nm owner data react-fn]
   (let
     [
-     react-fn-name    (str str-nm);(get-fn-name (str str-nm))
+     react-fn-name    (str str-nm)
      ]
     (dom/div (if js/debug_live
                #js {
@@ -484,9 +480,14 @@
 
 
 
-
-
-
+(defn attrs [attributes]
+  (if attributes
+    (if (:style attributes)
+      (clj->js (merge attributes {:style (clj->js (:style attributes))}))
+      (clj->js attributes)
+      )
+    nil)
+  )
 
 
 

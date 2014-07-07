@@ -84,9 +84,19 @@
 
                                          } "Back")
                        (dom/pre nil
-                                (get
+                                (->
+                                 (get
                                  (get @debugger-ui :react-components-code)
-                                 (:current-component @debugger-ui)))
+
+                                 (:current-component @debugger-ui)
+
+                                 )
+                                 (clojure.string/replace #"\(div\ " "(DIV " )
+                                 (clojure.string/replace #"\(div\r" "(DIV \r" )
+                                 (clojure.string/replace #"\(div\n" "(DIV \n" )
+                                 (clojure.string/replace #":onClick" ":ONCLICK" )
+                                 (clojure.string/replace #":onTouchStart" ":ONTOUCHSTART" )
+                                 ))
 
 
                         (dom/button #js {

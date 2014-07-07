@@ -1,22 +1,22 @@
 (ns webapp.framework.client.components.main
   (:require
    [om.core          :as om :include-macros true]
-   [om.dom           :as dom :include-macros true]
+   [om.dom           :as dom ]
    [clojure.data     :as data]
-   [clojure.string   :as string]
-   [webapp.framework.client.coreclient])
+   [clojure.string   :as string])
 
   (:use
-   [webapp.framework.client.ui-helpers                :only  [validate-email
-                                                    validate-full-name
-                                                    validate-endorsement
-                                                    blur-field
-                                                    update-field-value
-                                                    basic-input-box ]]
+   [webapp.framework.client.ui-helpers
+    :only  [validate-email
+            validate-full-name
+            validate-endorsement
+            blur-field
+            update-field-value
+            basic-input-box ]]
    [clojure.string :only [blank?]]
    )
   (:use-macros
-   [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils]]))
+   [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils div h2]]))
 (ns-coils 'webapp.framework.client.components.main)
 
 
@@ -42,8 +42,8 @@
   {:absolute-path []}
 ;------------------------------------------------------------
 
-  (dom/div nil
-           (dom/h2 nil "Coils")
+  (div nil
+           (h2 nil "Coils")
            "Build webapps with Neo4j"
 
 ))
