@@ -125,7 +125,7 @@
 
 (defn add-init-state-fn [nm init-state-fn]
   (do
-    (.log js/console (str "Init function added: " nm))
+    ;(.log js/console (str "Init function added: " nm))
     (swap!  init-state-fns conj init-state-fn)))
 
 

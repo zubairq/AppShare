@@ -90,7 +90,7 @@
 
 
 (defn log [s]
-  (.log js/console (str s))
+  ;(.log js/console (str s))
   nil
 )
 
@@ -262,8 +262,8 @@
       (attr  ($ html) "onmouseout"
              (str "webapp.framework.client.coreclient.clicked3('" id  "');")
              )
-          (.log js/console (str "ID: " id))
-    (.log js/console (str "fname: " fname))
+      ;(.log js/console (str "ID: " id))
+      ;(.log js/console (str "fname: " fname))
       (swap! el-fn-mapping assoc id fname)
 
       html)
@@ -301,10 +301,10 @@
         (str (apply str (map #(if (= "\n" %1) (str "\r\n")  %1) code)))
         ]
 
-    (.log js/console (str "NAMESPACE: "            namespace-name))
-    (.log js/console (str "NAMESPACE fname: "      fname))
-    (.log js/console (str "NAMESPACE orig code: "  code))
-    (.log js/console (str "NAMESPACE code: "       code-str))
+    ;(.log js/console (str "NAMESPACE: "            namespace-name))
+    ;(.log js/console (str "NAMESPACE fname: "      fname))
+    ;(.log js/console (str "NAMESPACE orig code: "  code))
+    ;(.log js/console (str "NAMESPACE code: "       code-str))
 
     (reset!
      webapp.framework.client.system-globals/debugger-ui

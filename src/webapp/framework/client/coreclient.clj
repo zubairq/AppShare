@@ -7,11 +7,17 @@
 
 
 (defmacro log [& x]
+  `(comment ~@ x))
+
+
+
+(defmacro log2 [& x]
   `(.log js/console (str
                      ~@ x
                      ))
 )
 
+(macroexpand '(log "a" "b"))
 
 
 (defmacro on-click [el & code]
