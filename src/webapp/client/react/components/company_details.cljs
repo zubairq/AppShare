@@ -12,7 +12,8 @@
    [webapp.framework.client.system-globals  :only  [touch]]
    )
   (:use-macros
-   [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils]]))
+   [webapp.framework.client.coreclient
+    :only  [defn-ui-component ns-coils div]]))
 
 (ns-coils 'webapp.client.react.components.company-details)
 
@@ -28,27 +29,27 @@
 (defn-ui-component   company-details2    [company-details]
   {:absolute-path [:ui :company-details]}
 ;---------------------------------------------------------
-  (dom/div
-   #js {:style #js {:height "100%" :width "100%"}}
+  (div
+   {:style {:height "100%" :width "100%"}}
 
-   (dom/div #js {:style #js {:padding-bottom "0px"}}
+   (div {:style {:padding-bottom "0px"}}
             (str (-> company-details :company-url)))
    (if (-> company-details :skills )
      (do
-       (dom/div #js {:style #js {:padding-bottom "20px"}} "Skills2")
+       (div {:style #js {:padding-bottom "20px"}} "Skills2")
        (apply dom/div nil
               (map
                (fn[skill]
-                 (dom/div #js {:style #js {:padding-left "20px"}}
+                 (div {:style {:padding-left "20px"}}
                           (get skill "skill") " - " (get skill "skill_count")
                           ))
                (-> company-details :skills )
                ))
        )
-     (dom/div #js {:style #js {:padding-bottom "20px"}} "Loading skills...")
+     (div {:style {:padding-bottom "20px"}} "Loading skills...")
 
      )
-   (dom/div #js {:style #js {:padding-bottom "20px"}} "")
+   (div {:style {:padding-bottom "20px"}} "")
 
    (dom/pre nil
             (str "<iframe id='widget_" (str (-> company-details :company-url))
