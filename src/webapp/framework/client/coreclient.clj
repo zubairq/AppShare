@@ -6,12 +6,12 @@
   (:require [rewrite-clj.printer :as prn]))
 
 
-(defmacro log [& x]
+(defmacro log2 [& x]
   `(comment ~@ x))
 
 
 
-(defmacro log2 [& x]
+(defmacro log [& x]
   `(.log js/console (str
                      ~@ x
                      ))

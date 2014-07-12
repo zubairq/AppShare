@@ -90,7 +90,7 @@
 
 
 (defn log [s]
-  ;(.log js/console (str s))
+  (.log js/console (str s))
   nil
 )
 
@@ -406,14 +406,15 @@
 
 
 (defn component-clicked [x]
-  (do
-    (reset! debugger-ui
-            (assoc-in @debugger-ui [:mode]
-                      "component"))
-    (reset! debugger-ui
-            (assoc-in @debugger-ui [:current-component]
-                      (last (get @debugger-ui :react-components))))
-    ))
+  (if js/debug_live
+    (do
+      (reset! debugger-ui
+              (assoc-in @debugger-ui [:mode]
+                        "component"))
+      (reset! debugger-ui
+              (assoc-in @debugger-ui [:current-component]
+                        (last (get @debugger-ui :react-components))))
+      )))
 
 
 (defn set-debug-component [component-name]
@@ -452,30 +453,31 @@
     [
      react-fn-name    (str str-nm)
      ]
-    (dom/div (if js/debug_live
-               #js {
-                  :onMouseEnter #(om/set-state! owner :debug-highlight true)
-                  :onMouseLeave #(om/set-state! owner :debug-highlight false)
-                  :onClick component-clicked
-                  :style #js {:backgroundColor
+    (dom/div
+     #js {
+          :onMouseEnter #(if js/debug_live (om/set-state! owner :debug-highlight true))
+          :onMouseLeave #(if js/debug_live (om/set-state! owner :debug-highlight false))
+          :onClick component-clicked
+          :style (if js/debug_live
+                   #js {:backgroundColor
 
-                                (if
-                                  (om/get-state owner :debug-highlight)
-                                  (do
-                                    (if (= (:mode @debugger-ui) "browse")
-                                      (set-debug-component  react-fn-name))
-                                    "lightGray")
-                                  (do
-                                    (if (= (:mode @debugger-ui) "browse")
-                                    (unset-debug-component  react-fn-name))
-                                    "")
-                                  ""
-                                  )
-                              }
-                  } )
+                        (if
+                          (om/get-state owner :debug-highlight)
+                          (do
+                            (if (= (:mode @debugger-ui) "browse")
+                              (set-debug-component  react-fn-name))
+                            "lightGray")
+                          (do
+                            (if (= (:mode @debugger-ui) "browse")
+                              (unset-debug-component  react-fn-name))
+                            "")
+                          ""
+                          )
+                        })
+          }
 
-             (react-fn data)
-             "")))
+     (react-fn data)
+     "")))
 
 
 
