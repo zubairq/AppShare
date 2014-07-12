@@ -114,7 +114,7 @@
             {
                  :style
                  {
-                      :width "50%"
+                      :width "30%"
                       :display "inline-block"}}
             (str
 
@@ -123,15 +123,16 @@
              (pad (. (js/Date. (get x "when")) getSeconds)) " "
 
 
-             (get x "from")
                  ))
            (div
             {
                  :style
                  {
-                      :width "50%"
+                      :width "70%"
                       :display "inline-block"}}
-            (str (get x "skill") " --> " (get x "to")
+
+            (get x "to")
+            (str " --> " (get x "from")
                  ))
 
            ))

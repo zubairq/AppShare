@@ -15,7 +15,7 @@
                                                     basic-input-box ]]
    [clojure.string :only [blank?]])
   (:use-macros
-   [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils]]))
+   [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils div]]))
 (ns-coils 'webapp.client.react.components.forms)
 
 
@@ -115,96 +115,29 @@
 
 
 
-
-
-
-;------------------------------------------------------------
-(defn-ui-component   endorsement-field   [ui-data]
-    {:absolute-path [:ui :request]}
-;------------------------------------------------------------
-  (dom/div
-   nil
-   (basic-input-box :field       ui-data
-                    :text        "Skill your company has"
-                    :placeholder "marketing"
-                    :error       "Endorsement not valid"
-                    )
-   ))
-
-
-
-
-
-;------------------------------------------------------------
-(defn-ui-component   request-form-old   [ui-data]
-    {:absolute-path [:ui :request]}
-;------------------------------------------------------------
-
-  (dom/div
-   nil
-   (dom/div
-    nil
-    (dom/div #js {:style #js {:padding-top "40px"}} "Your details (at your company)")
-
-    (om/build full-name-field    (get-in ui-data [:from-full-name]))
-    (om/build from-email-field   (-> ui-data :from-email ))
-
-    (dom/div #js {:style #js {:padding-top "40px"}} " Them ")
-
-    (om/build to-full-name-field  (-> ui-data :to-full-name ))
-    (om/build to-email-field      (-> ui-data :to-email ))
-
-
-
-    (dom/div
-     #js {:style #js {:padding-top "40px"}}
-     "The expertise your company has you want them to endorse")
-
-
-    (dom/div #js {:className "input-group"}
-             (om/build endorsement-field  (-> ui-data :endorsement )))
-
-    (dom/button #js {:onClick (fn [e]
-                                (om/update! ui-data [:submit :value]  true))
-                     :style
-                     #js {:margin-top "40px"}}
-                "Send request")
-
-    (if (not (blank?
-              (get-in ui-data [:submit :message])))
-      (dom/div nil "Submitted")
-))))
-
-
-
 ;------------------------------------------------------------
 (defn-ui-component   request-form   [ui-data]
     {:absolute-path [:ui :request]}
 ;------------------------------------------------------------
 
-  (dom/div
+  (div
    nil
-   (dom/div
+   (div
     nil
     (om/build from-email-field   (-> ui-data :from-email ))
-    (dom/div #js {:className "input-group"}
-             (om/build endorsement-field  (-> ui-data :endorsement )))
 
-    (dom/div
-     #js {:style #js {:padding-top "40px"}})
-
-    (om/build to-email-field      (-> ui-data :to-email ))
+    (om/build  to-email-field      (-> ui-data :to-email ))
 
 
     (dom/button #js {:onClick (fn [e]
                                 (om/update! ui-data [:submit :value]  true))
                      :style
                      #js {:margin-top "10px"}}
-                "Ask for endorsement")
+                "Connect")
 
     (if (not (blank?
               (get-in ui-data [:submit :message])))
-      (dom/div nil "Submitted")
+      (div nil "Submitted")
 ))))
 
 
