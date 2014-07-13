@@ -129,23 +129,27 @@
 
 
 
-
 (defmacro when-ui-value-changes
   [path ui-fn]
 
-  `(webapp.framework.client.coreclient/when-value-changes-fn
-   webapp.framework.client.system-globals/ui-watchers
+  `(~'when-ui-value-changes-fn
    ~path
    ~ui-fn))
 
 
 
 
-(comment macroexpand '(when-ui-value-changes  [:ui :request :to-full-name :value]
+( macroexpand '(when-ui-value-changes [:ui :company-details :company-url]
 
- (fn [ui] (if (= (get-in-tree ui [:ui :request :to-full-name :mode]) "validate")
-             (if (validate-full-name
-                  (get-in-tree ui [:ui :request :to-full-name :value]))
-               (update-ui ui [:ui :request :to-full-name :error] "")
-               (update-ui ui [:ui :request :to-full-name :error] "Invalid full name")
-               )))))
+ (fn [ui]
+   (go
+    (update-ui  ui  [:ui  :company-details   :skills  ] nil)
+     (let [ l (<! (remote "get-company-details"
+             {
+              :company-url    (get-in @app-state [:ui :company-details :company-url])
+              }))]
+
+       ;(log (pr-str l))
+       (update-data [:company-details]  l)
+       ))))
+)
