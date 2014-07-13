@@ -5,12 +5,14 @@
    [clojure.data     :as data]
    [clojure.string   :as string]
    )
+
   (:use-macros
    [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils div a]])
   (:use
-   [webapp.framework.client.helper  :only [amend-record]]
    [webapp.framework.client.system-globals  :only  [touch]]
-   ))
+   [webapp.framework.client.coreclient      :only  [log amend-record]]
+   )
+  )
 (ns-coils 'webapp.client.react.components.connection-graph)
 
 

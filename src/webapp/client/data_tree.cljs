@@ -11,9 +11,8 @@
    [webapp.client.timers]
    )
   (:use
-   [webapp.framework.client.helper                    :only  [when-data-path-equals
+   [webapp.framework.client.coreclient      :only  [log remote when-data-path-equals
                                                     when-data-value-changes]]
-   [webapp.framework.client.coreclient      :only  [log remote]]
    [webapp.framework.client.system-globals  :only  [app-state
                                                     playback-app-state
                                                     playback-controls-state

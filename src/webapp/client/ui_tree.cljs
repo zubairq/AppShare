@@ -11,11 +11,10 @@
   (:use
    [webapp.client.ui-helpers                :only  [validate-email validate-full-name  validate-endorsement
                                                      ]]
-   [webapp.framework.client.helper                    :only  [when-ui-path-equals when-ui-value-changes
+   [webapp.framework.client.coreclient      :only  [log remote when-ui-path-equals
+                                                              when-ui-value-changes-fn
                                                     when-ui-property-equals-in-record
-                                                    amend-record
-                                                    ]]
-   [webapp.framework.client.coreclient      :only  [log remote]]
+                                                    amend-record]]
    [webapp.framework.client.system-globals  :only  [app-state   playback-app-state
                                                     playback-controls-state
                                                     data-state
@@ -25,8 +24,14 @@
                                                     ]]
    [clojure.string :only [blank?]]
    )
+
    (:require-macros
-    [cljs.core.async.macros :refer [go]]))
+    [cljs.core.async.macros :refer [go]])
+
+  (:use-macros
+   [webapp.framework.client.coreclient :only  [when-ui-value-changes]])
+
+  )
 
 
 
@@ -63,7 +68,7 @@
 
 
 
-(when-ui-value-changes [:ui :request :from-email :value]
+(when-ui-value-changes-fn [:ui :request :from-email :value]
 
  (fn [ui] (if (= (get-in-tree ui [:ui :request :from-email :mode]) "validate")
              (if (validate-email
@@ -87,7 +92,7 @@
 
 
 
-(when-ui-value-changes   [:ui :request :from-full-name :value]
+(when-ui-value-changes-fn   [:ui :request :from-full-name :value]
 
  (fn [ui] (if (= (get-in-tree ui [:ui :request :from-full-name :mode]) "validate")
              (if (validate-full-name
@@ -109,7 +114,7 @@
                ))))
 
 
-(when-ui-value-changes  [:ui :request :to-full-name :value]
+(when-ui-value-changes-fn  [:ui :request :to-full-name :value]
 
  (fn [ui] (if (= (get-in-tree ui [:ui :request :to-full-name :mode]) "validate")
              (if (validate-full-name
@@ -135,7 +140,7 @@
 
 
 
-(when-ui-value-changes [:ui :request :to-email :value]
+(when-ui-value-changes-fn [:ui :request :to-email :value]
 
  (fn [ui] (if (= (get-in-tree ui [:ui :request :to-email :mode]) "validate")
              (if (validate-email
@@ -202,7 +207,7 @@
 
 
 
-(when-ui-value-changes  [:ui :request :endorsement :value]
+(when-ui-value-changes-fn  [:ui :request :endorsement :value]
 
  (fn [ui] (if (= (get-in-tree ui [:ui :request :endorsement :mode]) "validate")
              (if (validate-endorsement
@@ -243,7 +248,7 @@
 
 
 
-(when-ui-value-changes [:ui :company-details :company-url]
+(when-ui-value-changes-fn [:ui :company-details :company-url]
 
  (fn [ui]
    (go

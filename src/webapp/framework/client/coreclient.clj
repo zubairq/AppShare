@@ -125,3 +125,27 @@
   `(dom/h2  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 
 
+
+
+
+
+
+(defmacro when-ui-value-changes
+  [path ui-fn]
+
+  `(webapp.framework.client.coreclient/when-value-changes-fn
+   webapp.framework.client.system-globals/ui-watchers
+   ~path
+   ~ui-fn))
+
+
+
+
+(comment macroexpand '(when-ui-value-changes  [:ui :request :to-full-name :value]
+
+ (fn [ui] (if (= (get-in-tree ui [:ui :request :to-full-name :mode]) "validate")
+             (if (validate-full-name
+                  (get-in-tree ui [:ui :request :to-full-name :value]))
+               (update-ui ui [:ui :request :to-full-name :error] "")
+               (update-ui ui [:ui :request :to-full-name :error] "Invalid full name")
+               )))))
