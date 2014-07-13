@@ -28,12 +28,13 @@
 ; This changes the app state
 ;-----------------------------------------------------
 (defn update-app-pos [debugger-state value]
-  (do
+  (let
+    [current-event (get @debug-event-timeline value)]
     (om/update! debugger-state [:pos] value)
 
     (reset! app-watch-on? false)
-    (reset! app-state
-            (:value (get @debug-event-timeline value)))
+    (if (= (:event-type current-event) "UI")
+      (reset! app-state (:value current-event)))
     (reset! app-watch-on? true)
 
 
