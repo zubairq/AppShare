@@ -18,6 +18,13 @@ After around a year of development of Coils Zubair realised that to make develop
 
 Meteor's databinding principles use a database called MongoDB on the server and MiniMongo on the client, but Coils already had full client side data access to both relational databases and Neo4j. So the current goal of Coils is to make these databinding work more seamlessly with the frontend, just as Meteor does.
 
+One of the main philosophies of Coils is that programs are read 99%, and written 1% of the time. See this Dougas Crockford video on Software Quality:
+
+https://www.youtube.com/watch?v=t9YLtDJZtPY
+
+: So Coils allows all programs to be examined visually using a GUI time travelling debugger
+
+
 
 
 
