@@ -3,7 +3,9 @@
   (:use clojure.pprint)
   (:use webapp-config.settings)
   (:require [rewrite-clj.parser :as p])
-  (:require [rewrite-clj.printer :as prn]))
+  (:require [clojure.data :as di])
+  (:require [rewrite-clj.printer :as prn])
+  )
 
 
 (defmacro log2 [& x]
@@ -121,7 +123,5 @@
   `(dom/a  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 (defmacro h2 [attributes & more]
   `(dom/h2  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
-
-
 
 

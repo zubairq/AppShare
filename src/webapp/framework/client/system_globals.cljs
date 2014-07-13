@@ -259,8 +259,18 @@
            (fn [_ _ old-val new-val]
              (if @app-watch-on?
                (add-debug-event
-                :old old-val
-                :new new-val))))
+                :event-type  "UI"
+                :old         old-val
+                :new         new-val))))
+
+(add-watch data-state
+           :change
+           (fn [_ _ old-val new-val]
+             (if @app-watch-on?
+               (add-debug-event
+                :event-type  "DATA"
+                :old         old-val
+                :new         new-val))))
 
 
 ;(+ (:pos @debugger-ui ) 5)

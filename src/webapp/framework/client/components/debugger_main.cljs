@@ -101,6 +101,50 @@
 
 
 
+
+
+(defn show-event-component[ debug-ui-state  owner ]
+  (reify
+    om/IRender
+    ;---------
+    (render
+     [_]
+     (let
+       [
+        event-type  (get (get @debug-event-timeline (-> debug-ui-state :pos)) :event-type)
+        old-value   (get (get @debug-event-timeline (-> debug-ui-state :pos)) :old-value)
+        new-value   (get (get @debug-event-timeline (-> debug-ui-state :pos)) :value)
+        deleted     (first (data/diff old-value new-value))
+        added       (second (data/diff old-value new-value))
+        ]
+       (dom/div nil
+                (dom/h1 nil (str event-type))
+
+                (dom/div #js {:style #js {:color "red"}}
+                         (dom/div nil "Deleted")
+                         (dom/div nil
+
+                                  (str
+
+                                   (pr-str (if deleted  deleted  "Nothing deleted")))))
+
+                (dom/div #js {:style #js {:color "green"}}
+                         (dom/div nil "Added")
+                         (dom/div nil
+
+                                  (str
+
+                                   (pr-str (if added added "Nothing added")))))
+                )))))
+
+
+
+
+
+
+
+
+
 (defn main-debug-comp [app owner]
   (reify
     om/IRender
@@ -115,7 +159,7 @@
 
 
                (= (:mode @debugger-ui) "show-event")
-               (dom/h2 nil (str "show-event"))
+               (om/build  show-event-component   app)
 
 
                (= (:mode @debugger-ui) "component")
