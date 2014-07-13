@@ -425,6 +425,9 @@
                         (conj (get @debugger-ui :react-components)
                               component-name
                               )))
+      (reset! debugger-ui
+              (assoc-in @debugger-ui [:mode]
+                        "browse"))
       (display-debug-code)
       )))
 
@@ -464,11 +467,11 @@
                         (if
                           (om/get-state owner :debug-highlight)
                           (do
-                            (if (= (:mode @debugger-ui) "browse")
+                            (if (not= (:mode @debugger-ui) "component")
                               (set-debug-component  react-fn-name))
                             "lightGray")
                           (do
-                            (if (= (:mode @debugger-ui) "browse")
+                            (if (not= (:mode @debugger-ui) "component")
                               (unset-debug-component  react-fn-name))
                             "")
                           ""

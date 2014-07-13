@@ -24,18 +24,24 @@
    [cljs.core.async.macros :refer [go]]))
 
 
-(defn update-app-pos [app value]
+;-----------------------------------------------------
+; This changes the app state
+;-----------------------------------------------------
+(defn update-app-pos [debugger-state value]
   (do
-    (om/update! app [:pos] value)
+    (om/update! debugger-state [:pos] value)
 
     (reset! app-watch-on? false)
     (reset! app-state
-            (:value (get @debug-event-timeline value))
-            )
+            (:value (get @debug-event-timeline value)))
     (reset! app-watch-on? true)
 
-    )
-  )
+
+    (om/update! debugger-state
+            [:mode] "show-event")
+
+
+))
 
 
 (defn main-debug-slider-comp [app owner]
@@ -107,6 +113,9 @@
                (= (:mode @debugger-ui) "browse")
                 (dom/h2 nil (str (get @debugger-ui :react-components)))
 
+
+               (= (:mode @debugger-ui) "show-event")
+               (dom/h2 nil (str "show-event"))
 
 
                (= (:mode @debugger-ui) "component")

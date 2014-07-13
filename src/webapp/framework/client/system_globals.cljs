@@ -160,6 +160,10 @@
 
 (def debug-event-timeline (atom {}))
 
+
+
+;-----------------------------------------------------
+;-----------------------------------------------------
 (add-watch debug-event-timeline
            :change
 
@@ -184,15 +188,21 @@
 
 (def debug-count (atom 0))
 (defn add-debug-event [& {:keys [
+                                 event-type
+                                 old
                                  new
                                  error
                                  ] :or {
+                                        event-type     "UI"
                                         error          "Error in field"
                                         }}]
 
 
   (swap! debug-event-timeline assoc
-         (swap! debug-count inc) {:value new})
+         (swap! debug-count inc) {
+                                  :event-type  event-type
+                                  :old-value   old
+                                  :value       new})
 
   (reset! debugger-ui
           (assoc @debugger-ui
@@ -206,20 +216,31 @@
   )
 
 
+
+;-----------------------------------------------------
+; This is when the user moves the timeline slider
+; left and right. If the slider is currently being moves
+; (ie: not at the right of the slider - meaning the
+; latest position) then turn off the events capture
+; from the application
+;
+; We do this because otherwise the application keeps
+; receiving events otherwise
+;-----------------------------------------------------
 (def data-and-ui-events-on? (atom true))
-
-
 (add-watch debugger-ui
            :change-debugger-ui
 
            (fn [_ _ old-val new-val]
 
-             (if
+             (cond
                (or
                 (= js/debug_live false)
                 (= (new-val :pos) (new-val :total-events-count))
                 )
                (reset! data-and-ui-events-on? true)
+
+              :else
                (reset! data-and-ui-events-on? false)
              )
              ;(. js/console log (pr-str new-val))
@@ -228,19 +249,24 @@
            )
 
 
-
+;-----------------------------------------------------
+;  This is the application watch space. So whenever
+; the application changes then we record the event
+;-----------------------------------------------------
 (def app-watch-on? (atom true))
 (add-watch app-state
            :change
-
            (fn [_ _ old-val new-val]
              (if @app-watch-on?
-             (add-debug-event   :new new-val  )
-             ))
-           )
-
-(+ (:pos @debugger-ui ) 5)
-(:total-events-count @debugger-ui )
+               (add-debug-event
+                :old old-val
+                :new new-val))))
 
 
-(get @debug-event-timeline 20)
+;(+ (:pos @debugger-ui ) 5)
+;(:total-events-count @debugger-ui )
+;(get @debug-event-timeline 20)
+
+
+
+@debugger-ui
