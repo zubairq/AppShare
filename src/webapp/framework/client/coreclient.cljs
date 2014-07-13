@@ -317,7 +317,7 @@
 
 
                 "(defn-ui-component  "
-                     fname " "
+                     fname "  "
                      args (char 13) (char 13)
                      code-str
                      ""

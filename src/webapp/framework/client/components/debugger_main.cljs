@@ -23,6 +23,21 @@
   (:require-macros
    [cljs.core.async.macros :refer [go]]))
 
+
+(defn update-app-pos [app value]
+  (do
+    (om/update! app [:pos] value)
+
+    (reset! app-watch-on? false)
+    (reset! app-state
+            (:value (get @debug-event-timeline value))
+            )
+    (reset! app-watch-on? true)
+
+    )
+  )
+
+
 (defn main-debug-slider-comp [app owner]
   (reify
     om/IRender
@@ -30,26 +45,46 @@
     (render
      [_]
      (dom/div nil
-              (dom/input
-               #js {:value (str (-> app :pos))
-                    :type "range"
-                    :min  "1"
-                    :max  (str (-> @debugger-ui :total-events-count ))
-                    :onChange
-                    (fn[e]
-                      (let [value (js/parseInt (.. e -target -value))]
-                        (do
-                        (om/update! app [:pos]
-                                                        value)
+              (dom/div nil
+                       (dom/button #js {
+                                        :style #js {:display "inline-block"
+                                                     :marginRight "5px"}
+                                        :onClick
+                                        (fn[x]
+                                          (if (pos? (get-in @app [:pos]))
+                                            (update-app-pos  app  (dec (get-in @app [:pos])))
 
-                        (reset! app-watch-on? false)
-                        (reset! app-state
-                                (:value (get @debug-event-timeline value))
-                                )
-                          (reset! app-watch-on? true)
+                                          ))
 
-                        )))
-                    })
+                                        } "<")
+                       (dom/button #js {
+                                        :style #js {:display "inline-block"
+                                                     :marginRight "5px"}
+                                        :onClick
+                                        (fn[x]
+                                          (if (pos? (get-in @app [:pos]))
+                                            (update-app-pos  app  (inc (get-in @app [:pos])))
+
+                                          ))
+
+                                        } ">")
+                       (dom/input
+                        #js {
+                             :style #js {:display "inline-block" :width "80%"
+                                         }
+
+                             :value (str (-> app :pos))
+                             :type "range"
+                             :min  "1"
+                             :max  (str (-> @debugger-ui :total-events-count ))
+                             :onChange
+                             (fn[e]
+                               (let [value (js/parseInt (.. e -target -value))]
+                                 (update-app-pos   app value)
+                                 ))
+                             })
+
+                       )
 
               (dom/div nil
                (str (-> app :pos) " of "
