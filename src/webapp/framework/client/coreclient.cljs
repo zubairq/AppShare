@@ -16,9 +16,13 @@
     [clojure.browser.event :only [listen]]
     [webapp.framework.client.system-globals  :only  [touch
                                                      debugger-ui
+                                                     record-pointer-locally
                                                      ]]
   )
 )
+
+
+
 
 
 
@@ -204,7 +208,11 @@
      (reset! debug-mode true)
      )))
 
-
+(go
+ (let [record-pointer-locally-value (:value (<! (remote "!get-record-pointer-locally" {})))]
+     (reset! record-pointer-locally
+             record-pointer-locally-value)
+     ))
 
 
 

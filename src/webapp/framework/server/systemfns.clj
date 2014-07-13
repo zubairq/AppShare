@@ -136,6 +136,10 @@
 
 
 
+(defn !get-record-pointer-locally [params]
+  {:value *record-pointer-locally*}
+)
+
 
 (defn !get-environment [params]
   {:value *environment*}

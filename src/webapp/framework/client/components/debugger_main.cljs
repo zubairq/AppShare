@@ -102,41 +102,49 @@
 
 
 
-
-
 (defn show-event-component[ debug-ui-state  owner ]
   (reify
     om/IRender
     ;---------
     (render
      [_]
-     (let
-       [
-        event-type  (get (get @debug-event-timeline (-> debug-ui-state :pos)) :event-type)
-        old-value   (get (get @debug-event-timeline (-> debug-ui-state :pos)) :old-value)
-        new-value   (get (get @debug-event-timeline (-> debug-ui-state :pos)) :value)
-        deleted     (first (data/diff old-value new-value))
-        added       (second (data/diff old-value new-value))
-        ]
-       (dom/div nil
-                (dom/h1 nil (str event-type))
+     (apply dom/div nil
+            (for [event-item [
+                              (get @debug-event-timeline (-> debug-ui-state :pos))
+                              (get @debug-event-timeline (dec (-> debug-ui-state :pos)))
+                              (get @debug-event-timeline (dec (dec (-> debug-ui-state :pos))))
+                              (get @debug-event-timeline (dec (dec (dec (-> debug-ui-state :pos)))))
+                              (get @debug-event-timeline (dec (dec (dec (dec (-> debug-ui-state :pos))))))
+                              ]]
+              (if event-item
+                (let
+                  [
+                   debug-id    (get event-item :id)
+                   event-type  (get event-item :event-type)
+                   old-value   (get event-item :old-value)
+                   new-value   (get event-item :value)
+                   deleted     (first (data/diff old-value new-value))
+                   added       (second (data/diff old-value new-value))
+                   ]
+                   (dom/div nil
+                           (dom/h1 nil (str event-type " " debug-id))
 
-                (dom/div #js {:style #js {:color "red"}}
-                         (dom/div nil "Deleted")
-                         (dom/div nil
+                           (if deleted (dom/div #js {:style #js {:color "red"}}
+                                    (dom/div nil "Deleted")
+                                    (dom/div nil
 
-                                  (str
+                                             (str
 
-                                   (pr-str (if deleted  deleted  "Nothing deleted")))))
+                                              (pr-str (if deleted  deleted  "Nothing deleted"))))))
 
-                (dom/div #js {:style #js {:color "green"}}
-                         (dom/div nil "Added")
-                         (dom/div nil
+                           (if added (dom/div #js {:style #js {:color "green"}}
+                                    (dom/div nil "Added")
+                                    (dom/div nil
 
-                                  (str
+                                             (str
 
-                                   (pr-str (if added added "Nothing added")))))
-                )))))
+                                              (pr-str (if added added "Nothing added"))))))
+                           ))))))))
 
 
 

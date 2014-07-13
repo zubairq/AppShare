@@ -8,6 +8,8 @@
    )
 )
 
+(def record-pointer-locally (atom true))
+
 
 (def start-component (atom nil))
 
@@ -197,23 +199,32 @@
                                         error          "Error in field"
                                         }}]
 
+  (if
 
-  (swap! debug-event-timeline assoc
-         (swap! debug-count inc) {
-                                  :event-type  event-type
-                                  :old-value   old
-                                  :value       new})
+    (or
+      @record-pointer-locally
+      (not (and (= event-type     "UI") (get (first (data/diff old new)) :pointer))))
 
-  (reset! debugger-ui
-          (assoc @debugger-ui
-         :total-events-count (count @debug-event-timeline)))
+    (if (or (first (data/diff old new)) (second (data/diff old new)))
 
-  (if (> (+ (:pos @debugger-ui) 5) (:total-events-count @debugger-ui))
-    (reset! debugger-ui
-            (assoc @debugger-ui
-              :pos (:total-events-count @debugger-ui))))
+      (let [debug-id (swap! debug-count inc)]
+        (swap! debug-event-timeline assoc
+               debug-id  {
+                          :id          debug-id
+                          :event-type  event-type
+                          :old-value   old
+                          :value       new})
 
-  )
+        (reset! debugger-ui
+                (assoc @debugger-ui
+                  :total-events-count (count @debug-event-timeline)))
+
+        (if (> (+ (:pos @debugger-ui) 5) (:total-events-count @debugger-ui))
+          (reset! debugger-ui
+                  (assoc @debugger-ui
+                    :pos (:total-events-count @debugger-ui))))
+
+        ))))
 
 
 

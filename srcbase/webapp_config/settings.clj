@@ -7,6 +7,8 @@
 
 (defonce ^:dynamic *mandrill-api-key* "enter_api_key_for_mandrill_here")
 
+(defonce ^:dynamic *record-pointer-locally* false)
+
 (defonce ^:dynamic *email-debug-mode* true)
 
 (defonce ^:dynamic *environment* "base")
