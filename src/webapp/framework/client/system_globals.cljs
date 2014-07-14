@@ -200,6 +200,7 @@
          :mode                     "browse"
          :react-components         []
          :react-components-code    {}
+         :watchers-code            {}
          :pos 1
          :total-events-count 0
          }))
@@ -211,6 +212,9 @@
                                  old
                                  new
                                  error
+                                 name-space
+                                 tree-name
+                                 code
                                  ] :or {
                                         event-type     "UI"
                                         error          "Error in field"
@@ -222,7 +226,11 @@
       @record-pointer-locally
       (not (and (= event-type     "UI") (get (first (data/diff old new)) :pointer))))
 
-    (if (or (first (data/diff old new)) (second (data/diff old new)))
+    (cond
+
+
+
+     (or (first (data/diff old new)) (second (data/diff old new)))
 
       (let [debug-id (swap! debug-count inc)]
         (swap! debug-event-timeline assoc
@@ -241,7 +249,25 @@
                   (assoc @debugger-ui
                     :pos (:total-events-count @debugger-ui))))
 
-        ))))
+        )
+
+     (and (= event-type     "event"))
+     (let [debug-id (swap! debug-count inc)]
+
+       (do
+         (swap! debug-event-timeline assoc
+                debug-id  {
+                           :id          debug-id
+                           :event-type  event-type
+                           :name-space  name-space
+                           :tree-name   tree-name
+                           :code        code
+                           })
+         )
+       )
+
+
+)))
 
 
 
@@ -305,6 +331,11 @@
 ;(:total-events-count @debugger-ui )
 ;(get @debug-event-timeline 20)
 
+(add-debug-event
+                :event-type  "event"
+                :name-space  "dummy namespace"
+                :tree-name   "UI"
+                :code        "(def zoo)"
+                )
 
-
-@debugger-ui
+ (:watchers-code @debugger-ui)

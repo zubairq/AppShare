@@ -132,6 +132,14 @@
 
   `(do
 
+     (webapp.framework.client.coreclient/record-watcher
+      (~'ns-coils-debug)
+      ~(str `~path)
+      "UI"
+      (str ~(with-out-str   (write (first `~code))
+              :dispatch clojure.pprint/code-dispatch))
+      )
+
      (~'when-ui-value-changes-fn
       ~path
       (~'fn [~'ui] (do ~@code)))))

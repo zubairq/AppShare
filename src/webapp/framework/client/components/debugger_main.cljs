@@ -123,6 +123,9 @@
                    event-type  (get event-item :event-type)
                    old-value   (get event-item :old-value)
                    new-value   (get event-item :value)
+                   name-space  (get event-item :name-space)
+                   code        (get event-item :code)
+                   tree-name   (get event-item :tree-name)
                    deleted     (first (data/diff old-value new-value))
                    added       (second (data/diff old-value new-value))
                    ]
@@ -144,6 +147,27 @@
                                              (str
 
                                               (pr-str (if added added "Nothing added"))))))
+
+
+
+                           (if code (dom/div #js {:style #js {:color "green"}}
+
+                                             (dom/pre nil
+
+                                                      (->
+                                                       code
+                                                       (clojure.string/replace #"\(div\ " "(DIV " )
+                                                       (clojure.string/replace #"\(div\r" "(DIV \r" )
+                                                       (clojure.string/replace #"\(div\n" "(DIV \n" )
+                                                       (clojure.string/replace #":onClick" ":ONCLICK" )
+                                                       (clojure.string/replace #":onTouchStart" ":ONTOUCHSTART" )
+                                                       )
+
+                                                      )
+                                             ))
+
+
+
                            ))))))))
 
 

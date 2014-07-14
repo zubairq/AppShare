@@ -306,6 +306,31 @@
 
 
 
+(defn record-watcher [namespace-name path tree-name & code]
+  (let [
+        code-str
+        (str (apply str (map #(if (= "\n" %1) (str "\r\n")  %1) code)))
+        ]
+
+    (reset!
+     webapp.framework.client.system-globals/debugger-ui
+     (assoc-in
+      (deref webapp.framework.client.system-globals/debugger-ui)
+      [:watchers-code (str tree-name " " path)]
+      (xml-str (str
+                "(ns  " namespace-name ")"
+                (char 13) (char 13)
+
+
+                "(watch  "
+                     path "  "
+                     (char 13) (char 13)
+                     code-str
+                     ""
+                     )))
+     )
+    )
+  )
 
 
 
