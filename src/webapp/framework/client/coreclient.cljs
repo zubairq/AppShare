@@ -566,7 +566,7 @@
 
 
 
-(defn when-ui-path-equals
+(defn when-ui-path-equals-fn
   [path value ui-fn]
 
   (when-path-equals

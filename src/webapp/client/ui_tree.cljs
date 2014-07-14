@@ -14,7 +14,7 @@
                                                     validate-endorsement
                                                      ]]
    [webapp.framework.client.coreclient      :only  [log remote
-                                                    when-ui-path-equals
+                                                    when-ui-path-equals-fn
                                                     when-ui-value-changes-fn
                                                     when-ui-property-equals-in-record
                                                     amend-record]]
@@ -36,6 +36,7 @@
 
   (:use-macros
    [webapp.framework.client.coreclient :only  [when-ui-value-changes
+                                               when-ui-path-equals
                                                ns-coils
                                                ui-tree ui-tree!
                                                ]])
@@ -63,15 +64,14 @@
                            :from-email
                              :mode     ]    "validate"
 
-  (fn [ui]
     (cond
 
-      (validate-email (get-in-tree ui [:ui :request :from-email :value]))
-      (update-ui ui [:ui :request :from-email :error] "")
+      (validate-email (ui-tree [:ui :request :from-email :value]))
+        (ui-tree! [:ui :request :from-email :error] "")
 
       :else
-      (update-ui ui [:ui :request :from-email :error] "Invalid email")
-    )))
+        (ui-tree! [:ui :request :from-email :error] "Invalid email")
+    ))
 
 
 
@@ -86,12 +86,10 @@
 
 (when-ui-path-equals  [:ui :request :to-email :mode]     "validate"
 
- (fn [ui]
-   (if (validate-email
-        (get-in-tree ui [:ui :request :to-email :value]))
-     (update-ui ui [:ui :request :to-email :error] "")
-     (update-ui ui [:ui :request :to-email :error] "Invalid email")
-     )))
+   (if (validate-email (ui-tree [:ui :request :to-email :value]))
+     (ui-tree! [:ui :request :to-email :error] "")
+     (ui-tree! [:ui :request :to-email :error] "Invalid email")
+     ))
 
 
 
@@ -114,33 +112,21 @@
 
 (when-ui-path-equals [:ui :request :submit :value]     true
 
- (fn [ui]
    (go
-     (update-ui ui [:ui :request :submit :message] "Submitted")
+     (ui-tree! [:ui :request :submit :message] "Submitted")
 
-     (update-data [:submit :status] "Submitted")
-     (update-data [:submit :request :from-full-name]
-                  (get-in @app-state [:ui :request :from-full-name :value]))
-     (update-data [:submit :request :from-email]
-                  (get-in @app-state [:ui :request :from-email :value]))
-     (update-data [:submit :request :to-full-name]
-                  (get-in @app-state [:ui :request :to-full-name :value]))
-     (update-data [:submit :request :to-email]
-                  (get-in @app-state [:ui :request :to-email :value]))
-     (update-data [:submit :request :endorsement]
-                  (get-in @app-state [:ui :request :endorsement :value]))
+     (data-tree! [:submit :request :from-email]  (ui-tree [:ui :request :from-email :value]))
+     (data-tree! [:submit :request :to-email]    (ui-tree [:ui :request :to-email :value]))
+     (data-tree! [:submit :status]               "Submitted")
 
-     (let [ l (<! (remote "request-endorsement"
+     (let [ resp (<! (remote "request-endorsement"
              {
               :from-email     (get-in @data-state [:submit :request :from-email])
-              :from-full-name (get-in @data-state [:submit :request :from-full-name])
               :to-email       (get-in @data-state [:submit :request :to-email])
-              :to-full-name   (get-in @data-state [:submit :request :to-full-name])
-              :endorsement    (get-in @data-state [:submit :request :endorsement])
               }))]
 
-         (update-data [:submit :request :endorsement-id]  (-> l :value :endorsement_id))
-       ))))
+         (data-tree! [:submit :request :endorsement-id]  (-> resp :value :endorsement_id))
+       )))
 
 
 

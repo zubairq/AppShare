@@ -140,6 +140,26 @@
 
 
 
+
+
+
+(defmacro when-ui-path-equals
+  [path value & code]
+
+  `(do
+
+     (~'when-ui-path-equals-fn
+      ~path
+      ~value
+      (~'fn [~'ui] ~@code))))
+
+
+
+
+
+
+
+
 (defmacro ui-tree
   [path]
   `(~'get-in-tree ~'ui ~path))
