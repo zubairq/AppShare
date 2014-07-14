@@ -65,7 +65,7 @@
 
 
 
-(defn add-as-watch [the-ref   watchers   args]
+(defn add-as-watch [the-ref  tree-name  watchers   args]
 
   (add-watch the-ref :events-change
 
@@ -85,19 +85,20 @@
                          ;------------------------------
                          (if (= (get-in new-val (:path watch)) (:value watch) )
                            (do
-                             (add-debug-event
-                              :event-type  "event"
-                              :name-space  "(keys watch)"
-                              :tree-name   "ui"
-                              :path        [:ui :request :to-email :value];(str (:path watch))
-                              )
                              (apply (:fn watch) args)))
 
 
 
                          (= (:type watch) "value change")
                          ;-------------------------------
-                         (apply (:fn watch) args)
+                         (do
+                           (add-debug-event
+                            :event-type  "event"
+                            :name-space  "(keys watch)"
+                            :tree-name   tree-name
+                            :path        (str (:path watch))
+                            )
+                           (apply (:fn watch) args))
 
 
 
@@ -156,11 +157,13 @@
                   ; set up the UI and data watchers
                   (go
                    (add-as-watch   app-state
+                                   "ui"
                                    ui-watchers
                                    [app])
 
 
                    (add-as-watch   data-state
+                                   "data"
                                    data-watchers
                                    [app])
 

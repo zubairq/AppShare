@@ -164,6 +164,13 @@
   [path & code]
 
   `(do
+     (webapp.framework.client.coreclient/record-watcher
+      (~'ns-coils-debug)
+      ~(str `~path)
+      "data"
+      (str ~(with-out-str   (write (first `~code))
+              :dispatch clojure.pprint/code-dispatch))
+      )
 
      (~'when-data-value-changes-fn
       ~path

@@ -99,7 +99,7 @@
 
                )))))
 
-
+(range 1 10)
 
 
 (defn show-event-component[ debug-ui-state  owner ]
@@ -109,13 +109,12 @@
     (render
      [_]
      (apply dom/div nil
-            (for [event-item [
-                              (get @debug-event-timeline (-> debug-ui-state :pos))
-                              (get @debug-event-timeline (dec (-> debug-ui-state :pos)))
-                              (get @debug-event-timeline (dec (dec (-> debug-ui-state :pos))))
-                              (get @debug-event-timeline (dec (dec (dec (-> debug-ui-state :pos)))))
-                              (get @debug-event-timeline (dec (dec (dec (dec (-> debug-ui-state :pos))))))
-                              ]]
+            (for [event-item (into []
+                              (map (fn[xx] (get @debug-event-timeline xx))
+                                   (reverse
+                                    (into [] (range (- (-> debug-ui-state :pos) 20) (+ 1 (-> debug-ui-state :pos))))
+                                   )))
+                              ]
               (if event-item
                 (let
                   [

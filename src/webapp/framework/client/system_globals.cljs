@@ -332,11 +332,11 @@
 ;(:total-events-count @debugger-ui )
 ;(get @debug-event-timeline 20)
 
-( add-debug-event
+(comment add-debug-event
                 :event-type  "event"
                 :name-space  "dummy namespace"
                 :tree-name   "ui"
                 :path        "[:ui :request :to-email :value]"
                 )
 
-(first (keys (:watchers-code @debugger-ui)))
+(keys (:watchers-code @debugger-ui))
