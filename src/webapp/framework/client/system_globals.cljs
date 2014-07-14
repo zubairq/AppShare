@@ -122,6 +122,13 @@
 (defn  update-data [path value]
    (reset! data-state (assoc-in @data-state path value)))
 
+(defn  data-tree! [path value]
+   (reset! data-state (assoc-in @data-state path value)))
+
+
+(defn  data-tree [path]
+  (get-in @app-state path))
+
 (defn update-ui [app path value]
   (om/update! app path value))
 

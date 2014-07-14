@@ -25,6 +25,8 @@
                                                     update-ui
                                                     get-in-tree
                                                     ui-watchers
+                                                    data-tree!
+                                                    data-tree
                                                     ]]
    [clojure.string :only [blank?]]
    )
@@ -81,51 +83,6 @@
 
 
 
-(when-ui-path-equals  [:ui :request :from-full-name :mode] "validate"
-
- (fn [ui] (if (= (get-in-tree ui [:ui :request :from-full-name :mode]) "validate")
-             (if (validate-full-name
-                  (get-in-tree ui [:ui :request :from-full-name :value]))
-               (update-ui ui [:ui :request :from-full-name :error] "")
-               (update-ui ui [:ui :request :from-full-name :error] "Invalid full name")
-               ))))
-
-
-
-(when-ui-value-changes-fn   [:ui :request :from-full-name :value]
-
- (fn [ui] (if (= (get-in-tree ui [:ui :request :from-full-name :mode]) "validate")
-             (if (validate-full-name
-                  (get-in-tree ui [:ui :request :from-full-name :value]))
-               (update-ui ui [:ui :request :from-full-name :error] "")
-               (update-ui ui [:ui :request :from-full-name :error] "Invalid full name")
-               ))))
-
-
-
-(when-ui-path-equals   [:ui :request :to-full-name :mode]
-
- "validate"
- (fn [ui] (if (= (get-in-tree ui [:ui :request :to-full-name :mode]) "validate")
-             (if (validate-full-name
-                  (get-in-tree ui [:ui :request :to-full-name :value]))
-               (update-ui ui [:ui :request :to-full-name :error] "")
-               (update-ui ui [:ui :request :to-full-name :error] "Invalid full name")
-               ))))
-
-
-(when-ui-value-changes-fn  [:ui :request :to-full-name :value]
-
- (fn [ui] (if (= (get-in-tree ui [:ui :request :to-full-name :mode]) "validate")
-             (if (validate-full-name
-                  (get-in-tree ui [:ui :request :to-full-name :value]))
-               (update-ui ui [:ui :request :to-full-name :error] "")
-               (update-ui ui [:ui :request :to-full-name :error] "Invalid full name")
-               ))))
-
-
-
-
 
 (when-ui-path-equals  [:ui :request :to-email :mode]     "validate"
 
@@ -140,28 +97,13 @@
 
 
 
-(when-ui-value-changes-fn [:ui :request :to-email :value]
+(when-ui-value-changes [:ui :request :to-email :value]
 
- (fn [ui] (if (= (get-in-tree ui [:ui :request :to-email :mode]) "validate")
-             (if (validate-email
-                  (get-in-tree ui [:ui :request :to-email :value]))
-               (update-ui ui [:ui :request :to-email :error] "")
-               (update-ui ui [:ui :request :to-email :error] "Invalid email")
-               ))))
-
-
-
-
-
-
-(when-ui-path-equals [:ui :request :endorsement :mode]     "validate"
-
- (fn [ui]
-   (if (validate-endorsement
-        (get-in-tree ui [:ui :request :endorsement :value]))
-     (update-ui ui [:ui :request :endorsement :error] "")
-     (update-ui ui [:ui :request :endorsement :error] "Invalid endorsement")
-     )))
+                       (if (= (ui-tree [:ui :request :to-email :mode]) "validate")
+                         (if (validate-email (ui-tree [:ui :request :to-email :value]))
+                           (ui-tree! [:ui :request :to-email :error] "")
+                           (ui-tree! [:ui :request :to-email :error] "Invalid email")
+                           )))
 
 
 
@@ -207,18 +149,6 @@
 
 
 
-(when-ui-value-changes-fn  [:ui :request :endorsement :value]
-
- (fn [ui] (if (= (get-in-tree ui [:ui :request :endorsement :mode]) "validate")
-             (if (validate-endorsement
-                  (get-in-tree ui [:ui :request :endorsement :value]))
-               (update-ui ui [:ui :request :endorsement :error] "")
-               (update-ui ui [:ui :request :endorsement :error] "Invalid endorsement")
-               ))))
-
-
-
-
 
 
 
@@ -248,21 +178,18 @@
 
 
 
-(when-ui-value-changes-fn [:ui :company-details :company-url]
 
- (fn [ui]
+(when-ui-value-changes [:ui :company-details :company-url]
+
    (go
-    (update-ui  ui  [:ui  :company-details   :skills  ] nil)
-     (let [ l (<! (remote "get-company-details"
+    (ui-tree!  [:ui  :company-details   :skills  ] nil)
+     (let [ company-name (<! (remote "get-company-details"
              {
-              :company-url    (get-in @app-state [:ui :company-details :company-url])
+              :company-url    (data-tree [:ui :company-details :company-url])
               }))]
 
-       ;(log (pr-str l))
-       (update-data [:company-details]  l)
-       ))))
-
-
+       (data-tree! [:company-details]  company-name)
+       )))
 
 
 
