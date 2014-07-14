@@ -94,10 +94,9 @@
                          (do
                            (add-debug-event
                             :event-type  "event"
-                            :name-space  "(keys watch)"
-                            :tree-name   tree-name
-                            :path        (str (:path watch))
+                            :event-name  (str "watch-" tree-name " " (:path watch))
                             )
+                           ;(js/alert (str "watch-" tree-name " " (:path watch)))
                            (apply (:fn watch) args))
 
 

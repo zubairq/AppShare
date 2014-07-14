@@ -212,10 +212,7 @@
                                  old
                                  new
                                  error
-                                 name-space
-                                 tree-name
-                                 code
-                                 path
+                                 event-name
                                  ] :or {
                                         event-type     "UI"
                                         error          "Error in field"
@@ -260,9 +257,7 @@
                 debug-id  {
                            :id          debug-id
                            :event-type  event-type
-                           :name-space  name-space
-                           :tree-name   tree-name
-                           :path        path
+                           :event-name  event-name
                            })
          )
        )
@@ -332,11 +327,9 @@
 ;(:total-events-count @debugger-ui )
 ;(get @debug-event-timeline 20)
 
-(comment add-debug-event
+( add-debug-event
                 :event-type  "event"
-                :name-space  "dummy namespace"
-                :tree-name   "ui"
-                :path        "[:ui :request :to-email :value]"
+                :event-name  "watch-ui [:ui :request :to-email :value]"
                 )
 
 (keys (:watchers-code @debugger-ui))

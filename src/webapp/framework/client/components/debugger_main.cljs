@@ -122,9 +122,7 @@
                    event-type  (get event-item :event-type)
                    old-value   (get event-item :old-value)
                    new-value   (get event-item :value)
-                   name-space  (get event-item :name-space)
-                   tree-name   (get event-item :tree-name)
-                   path        (get event-item :path)
+                   event-name  (get event-item :event-name)
                    deleted     (first (data/diff old-value new-value))
                    added       (second (data/diff old-value new-value))
                    ]
@@ -147,19 +145,19 @@
 
                                               (pr-str (if added added "Nothing added"))))))
 
-
-
+(log event-name)
                            (if (= event-type "event") (dom/div #js {:style #js {:color "green"}}
 
                                              (dom/pre nil
 
                                                       (->
+                                                       (str
                                                        (get
                                                         (get @debugger-ui :watchers-code)
 
-                                                        (str tree-name " " path)
+                                                        event-name
 
-                                                        )
+                                                        ))
                                                        (clojure.string/replace #"\(div\ " "(DIV " )
                                                        )
 

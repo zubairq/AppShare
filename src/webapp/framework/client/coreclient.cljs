@@ -316,7 +316,7 @@
      webapp.framework.client.system-globals/debugger-ui
      (assoc-in
       (deref webapp.framework.client.system-globals/debugger-ui)
-      [:watchers-code (str tree-name " " path)]
+      [:watchers-code (str "watch-" tree-name " " path) ]
       (xml-str (str
                 "(ns  " namespace-name ")"
                 (char 13) (char 13)
