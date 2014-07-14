@@ -12,7 +12,8 @@
    )
   (:use
    [webapp.framework.client.coreclient      :only  [log remote when-data-path-equals
-                                                    when-data-value-changes]]
+                                                    when-data-value-changes
+                                                    ]]
    [webapp.framework.client.system-globals  :only  [app-state
                                                     playback-app-state
                                                     playback-controls-state
@@ -25,9 +26,13 @@
    [clojure.string :only [blank?]]
    )
    (:require-macros
-    [cljs.core.async.macros :refer [go]]))
+    [cljs.core.async.macros :refer [go]])
 
+  (:use-macros
+   [webapp.framework.client.coreclient :only  [when-ui-value-changes ns-coils]])
+  )
 
+(ns-coils 'webapp.client.data-tree)
 
 
 

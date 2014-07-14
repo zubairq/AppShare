@@ -9,7 +9,9 @@
    [webapp.client.timers]
    )
   (:use
-   [webapp.client.ui-helpers                :only  [validate-email validate-full-name  validate-endorsement
+   [webapp.client.ui-helpers                :only  [validate-email
+                                                    validate-full-name
+                                                    validate-endorsement
                                                      ]]
    [webapp.framework.client.coreclient      :only  [log remote
                                                     when-ui-path-equals
@@ -31,9 +33,13 @@
     [cljs.core.async.macros :refer [go]])
 
   (:use-macros
-   [webapp.framework.client.coreclient :only  [when-ui-value-changes]])
+   [webapp.framework.client.coreclient :only  [when-ui-value-changes
+                                               ns-coils
+                                               ui-tree ui-tree!
+                                               ]])
 
   )
+(ns-coils 'webapp.client.ui-tree)
 
 
 
@@ -70,14 +76,6 @@
 
 
 
-(when-ui-value-changes [:ui :request :from-email :value]
-
- (fn [ui] (if (= (get-in-tree ui [:ui :request :from-email :mode]) "validate")
-             (if (validate-email
-                  (get-in-tree ui [:ui :request :from-email :value]))
-               (update-ui ui [:ui :request :from-email :error] "")
-               (update-ui ui [:ui :request :from-email :error] "Invalid email")
-               ))))
 
 
 
@@ -94,7 +92,7 @@
 
 
 
-(when-ui-value-changes   [:ui :request :from-full-name :value]
+(when-ui-value-changes-fn   [:ui :request :from-full-name :value]
 
  (fn [ui] (if (= (get-in-tree ui [:ui :request :from-full-name :mode]) "validate")
              (if (validate-full-name
@@ -116,7 +114,7 @@
                ))))
 
 
-(when-ui-value-changes  [:ui :request :to-full-name :value]
+(when-ui-value-changes-fn  [:ui :request :to-full-name :value]
 
  (fn [ui] (if (= (get-in-tree ui [:ui :request :to-full-name :mode]) "validate")
              (if (validate-full-name
@@ -142,7 +140,7 @@
 
 
 
-(when-ui-value-changes [:ui :request :to-email :value]
+(when-ui-value-changes-fn [:ui :request :to-email :value]
 
  (fn [ui] (if (= (get-in-tree ui [:ui :request :to-email :mode]) "validate")
              (if (validate-email
@@ -209,7 +207,7 @@
 
 
 
-(when-ui-value-changes  [:ui :request :endorsement :value]
+(when-ui-value-changes-fn  [:ui :request :endorsement :value]
 
  (fn [ui] (if (= (get-in-tree ui [:ui :request :endorsement :mode]) "validate")
              (if (validate-endorsement
@@ -250,7 +248,7 @@
 
 
 
-(when-ui-value-changes [:ui :company-details :company-url]
+(when-ui-value-changes-fn [:ui :company-details :company-url]
 
  (fn [ui]
    (go
@@ -274,3 +272,21 @@
       (update-ui  ui  [:ui  :company-details   :clicked  ] false)
       (update-ui  ui  [:ui  :tab-browser    ] "top companies")
 ))
+
+
+
+
+
+
+
+
+(when-ui-value-changes [:ui :request :from-email :value]
+
+                       (if (= (ui-tree [:ui :request :from-email :mode]) "validate")
+
+                         (if (validate-email  (ui-tree [:ui :request :from-email :value]))
+
+                           (ui-tree! [:ui :request :from-email :error] "")
+                           (ui-tree! [:ui :request :from-email :error] "Invalid email")
+                           )))
+

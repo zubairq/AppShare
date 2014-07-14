@@ -130,18 +130,35 @@
 
 
 (defmacro when-ui-value-changes
-  [path ui-fn]
+  [path & code]
 
-  `(~'when-ui-value-changes-fn
-   ~path
-   ~ui-fn))
+  `(do
+
+     (~'when-ui-value-changes-fn
+      ~path
+      (~'fn [~'ui] ~@code))))
+
+
+
+(defmacro ui-tree
+  [path]
+  `(~'get-in-tree ~'ui ~path))
+
+;(macroexpand '(ui-tree [:ui :request :from-email :mode]))
+
+
+(defmacro ui-tree!
+  [path value]
+  `(~'update-ui ~'ui ~path ~value))
+
+;(macroexpand '(ui-tree! [:ui :request :from-email :error] ""))
 
 
 
 
-( macroexpand '(when-ui-value-changes [:ui :company-details :company-url]
+(comment macroexpand '(when-ui-value-changes [:ui :company-details :company-url]
 
- (fn [ui]
+
    (go
     (update-ui  ui  [:ui  :company-details   :skills  ] nil)
      (let [ l (<! (remote "get-company-details"
@@ -151,5 +168,5 @@
 
        ;(log (pr-str l))
        (update-data [:company-details]  l)
-       ))))
+       )))
 )
