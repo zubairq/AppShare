@@ -85,6 +85,10 @@
                          ;------------------------------
                          (if (= (get-in new-val (:path watch)) (:value watch) )
                            (do
+                             (add-debug-event
+                              :event-type  "event"
+                              :event-name  (str "==" tree-name " " (:path watch) " " (:value watch))
+                              )
                              (apply (:fn watch) args)))
 
 

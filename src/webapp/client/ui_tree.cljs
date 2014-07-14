@@ -125,7 +125,7 @@
 
          (cond
           (resp :error)
-            (js/alert (pr-str resp))
+            (-->data [:submit :response]  (pr-str resp))
 
           :else
            (-->data [:submit :request :endorsement-id]  (-> resp :value :endorsement_id))

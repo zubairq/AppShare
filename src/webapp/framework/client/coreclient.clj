@@ -152,6 +152,14 @@
   [path value & code]
 
   `(do
+     (webapp.framework.client.coreclient/record-path=
+      (~'ns-coils-debug)
+      ~(str `~path)
+      ~(str `~value)
+      "ui"
+      (str ~(with-out-str   (write (first `~code))
+              :dispatch clojure.pprint/code-dispatch))
+      )
 
      (~'when-ui-path-equals-fn
       ~path
@@ -183,6 +191,14 @@
   [path value & code]
 
   `(do
+     (webapp.framework.client.coreclient/record-path=
+      (~'ns-coils-debug)
+      ~(str `~path)
+      ~(str `~value)
+      "data"
+      (str ~(with-out-str   (write (first `~code))
+              :dispatch clojure.pprint/code-dispatch))
+      )
 
      (~'when-data-path-equals-fn
       ~path
