@@ -51,7 +51,9 @@
     ;---------
     (render
      [_]
-     (dom/div nil
+     (dom/div #js {
+                             :onMouseEnter #(om/update! app [:mode] "show-event")
+                             }
               (dom/div nil
                        (dom/button #js {
                                         :style #js {:display "inline-block"
@@ -182,11 +184,17 @@
     ;---------
     (render
      [_]
-     (dom/div nil
+     (dom/div #js {
+                             :style #js {:height "300px"}
+                             :onMouseEnter #(reset! debugger-ui (assoc-in @debugger-ui [:mode] "show-event"))
+                             }
 
               (cond
                (= (:mode @debugger-ui) "browse")
-                (dom/h2 nil (str (get @debugger-ui :react-components)))
+                (dom/h2 #js {
+                             :style #js {:height "100%"}
+                             :onMouseEnter #(reset! debugger-ui (assoc-in @debugger-ui [:mode] "show-event"))
+                             } (str (get @debugger-ui :react-components)))
 
 
                (= (:mode @debugger-ui) "show-event")

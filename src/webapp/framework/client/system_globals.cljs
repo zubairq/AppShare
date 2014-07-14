@@ -327,9 +327,9 @@
 ;(:total-events-count @debugger-ui )
 ;(get @debug-event-timeline 20)
 
-( add-debug-event
+(comment add-debug-event
                 :event-type  "event"
                 :event-name  "watch-ui [:ui :request :to-email :value]"
                 )
 
-(keys (:watchers-code @debugger-ui))
+ @debugger-ui

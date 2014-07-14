@@ -180,12 +180,13 @@
 
 
 (defmacro ==data
-  [path & code]
+  [path value & code]
 
   `(do
 
-     (~'when-data-value-changes-fn
+     (~'when-data-path-equals-fn
       ~path
+      ~value
       (~'fn [~'ui] (do ~@code)))))
 
 
