@@ -145,9 +145,9 @@
 
                                               (pr-str (if added added "Nothing added"))))))
 
-(log event-name)
                            (if (= event-type "event") (dom/div #js {:style #js {:color "green"}}
 
+                                             (dom/div #js {:style #js {:color "blue"}} (str event-name))
                                              (dom/pre nil
 
                                                       (->
