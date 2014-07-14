@@ -127,7 +127,7 @@
 
 
 (defn  data-tree [path]
-  (get-in @app-state path))
+  (get-in @data-state path))
 
 (defn update-ui [app path value]
   (om/update! app path value))

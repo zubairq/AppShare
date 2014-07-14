@@ -155,6 +155,36 @@
 
 
 
+(defmacro when-data-value-changes
+  [path & code]
+
+  `(do
+
+     (~'when-data-value-changes-fn
+      ~path
+      (~'fn [~'ui] ~@code))))
+
+
+
+
+
+
+(defmacro when-data-path-equals
+  [path value & code]
+
+  `(do
+
+     (~'when-data-path-equals-fn
+      ~path
+      ~value
+      (~'fn [~'ui] ~@code))))
+
+
+(macroexpand '(when-data-value-changes  [:top-companies]
+
+   (ui-tree! [:ui :companies :values]  (data-tree [:top-companies]))
+   ))
+
 
 
 

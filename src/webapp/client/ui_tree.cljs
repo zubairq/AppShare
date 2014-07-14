@@ -18,8 +18,7 @@
                                                     when-ui-value-changes-fn
                                                     when-ui-property-equals-in-record
                                                     amend-record]]
-   [webapp.framework.client.system-globals  :only  [app-state   playback-app-state
-                                                    playback-controls-state
+   [webapp.framework.client.system-globals  :only  [app-state
                                                     data-state
                                                     update-data
                                                     update-ui

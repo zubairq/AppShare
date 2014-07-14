@@ -602,7 +602,7 @@
 
 
 
-(defn when-data-path-equals
+(defn when-data-path-equals-fn
   [path value data-fn]
 
   (when-path-equals
@@ -613,7 +613,7 @@
 
 
 
-(defn when-data-value-changes
+(defn when-data-value-changes-fn
   [path data-fn]
 
   (when-value-changes
