@@ -129,6 +129,16 @@
 (defn  data-tree [path]
   (get-in @data-state path))
 
+
+(defn  -->data [path value]
+   (reset! data-state (assoc-in @data-state path value)))
+
+
+(defn  <--data [path]
+  (get-in @data-state path))
+
+
+
 (defn update-ui [app path value]
   (om/update! app path value))
 

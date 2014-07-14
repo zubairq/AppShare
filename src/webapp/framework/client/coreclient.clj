@@ -127,23 +127,20 @@
 
 
 
-
-
-(defmacro when-ui-value-changes
+(defmacro watch-ui
   [path & code]
 
   `(do
 
      (~'when-ui-value-changes-fn
       ~path
-      (~'fn [~'ui] ~@code))))
+      (~'fn [~'ui] (do ~@code)))))
 
 
 
 
 
-
-(defmacro when-ui-path-equals
+(defmacro ==ui
   [path value & code]
 
   `(do
@@ -151,42 +148,30 @@
      (~'when-ui-path-equals-fn
       ~path
       ~value
-      (~'fn [~'ui] ~@code))))
+      (~'fn [~'ui] (do ~@code)))))
 
 
 
-(defmacro when-data-value-changes
+(defmacro watch-data
   [path & code]
 
   `(do
 
      (~'when-data-value-changes-fn
       ~path
-      (~'fn [~'ui] ~@code))))
+      (~'fn [~'ui] (do ~@code)))))
 
 
 
 
-
-
-(defmacro when-data-path-equals
-  [path value & code]
+(defmacro ==data
+  [path & code]
 
   `(do
 
-     (~'when-data-path-equals-fn
+     (~'when-data-value-changes-fn
       ~path
-      ~value
-      (~'fn [~'ui] ~@code))))
-
-
-(macroexpand '(when-data-value-changes  [:top-companies]
-
-   (ui-tree! [:ui :companies :values]  (data-tree [:top-companies]))
-   ))
-
-
-
+      (~'fn [~'ui] (do ~@code)))))
 
 
 
@@ -194,10 +179,23 @@
   [path]
   `(~'get-in-tree ~'ui ~path))
 
-;(macroexpand '(ui-tree [:ui :request :from-email :mode]))
+(defmacro <--ui
+  [path]
+  `(~'get-in-tree ~'ui ~path))
+
+(macroexpand
+ '(==ui  [:ui   :company-details   :clicked]    true
+
+      (-->ui  [:ui  :company-details   :clicked  ] false)
+      (-->ui  [:ui  :tab-browser    ] "top companies")))
+
 
 
 (defmacro ui-tree!
+  [path value]
+  `(~'update-ui ~'ui ~path ~value))
+
+(defmacro -->ui
   [path value]
   `(~'update-ui ~'ui ~path ~value))
 

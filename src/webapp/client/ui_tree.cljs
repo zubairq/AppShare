@@ -24,8 +24,8 @@
                                                     update-ui
                                                     get-in-tree
                                                     ui-watchers
-                                                    data-tree!
-                                                    data-tree
+                                                    -->data
+                                                    <--data
                                                     ]]
    [clojure.string :only [blank?]]
    )
@@ -34,10 +34,12 @@
     [cljs.core.async.macros :refer [go]])
 
   (:use-macros
-   [webapp.framework.client.coreclient :only  [when-ui-value-changes
-                                               when-ui-path-equals
+   [webapp.framework.client.coreclient :only  [
+                                               ==ui
+                                               watch-ui
+                                               <--ui
+                                               -->ui
                                                ns-coils
-                                               ui-tree ui-tree!
                                                ]])
 
   )
@@ -58,18 +60,15 @@
 
 
 
-(when-ui-path-equals  [:ui
-                         :request
-                           :from-email
-                             :mode     ]    "validate"
+(==ui  [:ui  :request  :from-email  :mode]   "validate"
 
     (cond
 
-      (validate-email (ui-tree [:ui :request :from-email :value]))
-        (ui-tree! [:ui :request :from-email :error] "")
+      (validate-email (<--ui [:ui :request :from-email :value]))
+        (-->ui [:ui :request :from-email :error] "")
 
       :else
-        (ui-tree! [:ui :request :from-email :error] "Invalid email")
+        (-->ui [:ui :request :from-email :error] "Invalid email")
     ))
 
 
@@ -81,25 +80,25 @@
 
 
 
+(==ui  [:ui :request :to-email :mode] "validate"
 
-
-(when-ui-path-equals  [:ui :request :to-email :mode]     "validate"
-
-   (if (validate-email (ui-tree [:ui :request :to-email :value]))
-     (ui-tree! [:ui :request :to-email :error] "")
-     (ui-tree! [:ui :request :to-email :error] "Invalid email")
+   (if (validate-email (<--ui [:ui :request :to-email :value]))
+     (-->ui [:ui :request :to-email :error] "")
+     (-->ui [:ui :request :to-email :error] "Invalid email")
      ))
 
 
 
 
 
-(when-ui-value-changes [:ui :request :to-email :value]
 
-                       (if (= (ui-tree [:ui :request :to-email :mode]) "validate")
-                         (if (validate-email (ui-tree [:ui :request :to-email :value]))
-                           (ui-tree! [:ui :request :to-email :error] "")
-                           (ui-tree! [:ui :request :to-email :error] "Invalid email")
+
+(watch-ui [:ui :request :to-email :value]
+
+                       (if (= (<--ui [:ui :request :to-email :mode]) "validate")
+                         (if (validate-email (<--ui [:ui :request :to-email :value]))
+                           (-->ui [:ui :request :to-email :error] "")
+                           (-->ui [:ui :request :to-email :error] "Invalid email")
                            )))
 
 
@@ -109,23 +108,28 @@
 
 
 
-(when-ui-path-equals [:ui :request :submit :value]     true
+(==ui [:ui :request :submit :value]     true
 
    (go
-     (ui-tree! [:ui :request :submit :message] "Submitted")
+     (-->ui [:ui :request :submit :message] "Submitted")
 
-     (data-tree! [:submit :request :from-email]  (ui-tree [:ui :request :from-email :value]))
-     (data-tree! [:submit :request :to-email]    (ui-tree [:ui :request :to-email :value]))
-     (data-tree! [:submit :status]               "Submitted")
+     (-->data [:submit :request :from-email]  (<--ui [:ui :request :from-email :value]))
+     (-->data [:submit :request :to-email]    (<--ui [:ui :request :to-email :value]))
+     (-->data [:submit :status]               "Submitted")
 
      (let [ resp (<! (remote "request-endorsement"
              {
-              :from-email     (get-in @data-state [:submit :request :from-email])
-              :to-email       (get-in @data-state [:submit :request :to-email])
+              :from-email     (<--data [:submit :request :from-email])
+              :to-email       (<--data [:submit :request :to-email])
               }))]
 
-         (data-tree! [:submit :request :endorsement-id]  (-> resp :value :endorsement_id))
-       )))
+         (cond
+          (resp :error)
+            (js/alert (pr-str resp))
+
+          :else
+           (-->data [:submit :request :endorsement-id]  (-> resp :value :endorsement_id))
+       ))))
 
 
 
@@ -164,27 +168,25 @@
 
 
 
-(when-ui-value-changes [:ui :company-details :company-url]
+(watch-ui [:ui :company-details :company-url]
 
    (go
-    (ui-tree!  [:ui  :company-details   :skills  ] nil)
+    (-->ui  [:ui  :company-details   :skills  ] nil)
      (let [ company-name (<! (remote "get-company-details"
              {
-              :company-url    (data-tree [:ui :company-details :company-url])
+              :company-url    (<--data [:ui :company-details :company-url])
               }))]
 
-       (data-tree! [:company-details]  company-name)
+       (-->data [:company-details]  company-name)
        )))
 
 
 
-(when-ui-path-equals  [:ui   :company-details   :clicked]    true
+(==ui  [:ui   :company-details   :clicked]    true
 
-  (fn [ui]
-      (update-ui  ui  [:ui  :company-details   :clicked  ] false)
-      (update-ui  ui  [:ui  :tab-browser    ] "top companies")
-))
-
+      (-->ui  [:ui  :company-details   :clicked  ] false)
+      (-->ui  [:ui  :tab-browser    ] "top companies")
+)
 
 
 
@@ -192,13 +194,14 @@
 
 
 
-(when-ui-value-changes [:ui :request :from-email :value]
 
-                       (if (= (ui-tree [:ui :request :from-email :mode]) "validate")
+(watch-ui [:ui :request :from-email :value]
 
-                         (if (validate-email  (ui-tree [:ui :request :from-email :value]))
+                       (if (= (<--ui [:ui :request :from-email :mode]) "validate")
 
-                           (ui-tree! [:ui :request :from-email :error] "")
-                           (ui-tree! [:ui :request :from-email :error] "Invalid email")
+                         (if (validate-email  (<--ui [:ui :request :from-email :value]))
+
+                           (-->ui [:ui :request :from-email :error] "")
+                           (-->ui [:ui :request :from-email :error] "Invalid email")
                            )))
 

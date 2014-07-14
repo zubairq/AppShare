@@ -24,8 +24,8 @@
                                                     data-watchers
                                                     data-state
                                                     update-data
-                                                    data-tree!
-                                                    data-tree
+                                                    <--data
+                                                    -->data
                                                     update-ui
                                                     get-in-tree
                                                     ]]
@@ -35,10 +35,10 @@
     [cljs.core.async.macros :refer [go]])
 
   (:use-macros
-   [webapp.framework.client.coreclient :only  [when-data-path-equals
-                                               when-data-value-changes
-                                               ui-tree!
-                                               ui-tree
+   [webapp.framework.client.coreclient :only  [==data
+                                               watch-data
+                                               <--ui
+                                               -->ui
                                                ns-coils
                                                ]])
   )
@@ -54,20 +54,18 @@
 
 
 
-(when-data-path-equals    [:submit :status]     "ConfirmedSender"
-
-    (ui-tree! [:ui :request :from-email :confirmed]  true))
-
+(==data    [:submit :status]     "ConfirmedSender"
+    (-->ui [:ui :request :from-email :confirmed]  true))
 
 
 
 
 
 
-(when-data-path-equals   [:submit :status]     "ConfirmedReceiver"
 
+(==data   [:submit :status]   "ConfirmedReceiver"
    (go
-    (ui-tree! [:ui :request :to-email :confirmed]  true)
+    (-->ui [:ui :request :to-email :confirmed]  true)
     ))
 
 
@@ -79,8 +77,7 @@
 
 
 
-(when-data-path-equals    [:submit]     "Submitted"
-
+(==data    [:submit]     "Submitted"
      (log "sent")
      )
 
@@ -89,17 +86,17 @@
 
 
 
-(when-data-value-changes  [:top-companies]
+(watch-data  [:top-companies]
 
-   (ui-tree! [:ui :companies :values]  (data-tree [:top-companies]))
+   (-->ui [:ui :companies :values]  (<--data [:top-companies]))
    )
 
 
 
 
-(when-data-value-changes  [:latest-endorsements]
+(watch-data  [:latest-endorsements]
 
-   (ui-tree! [:ui :latest-endorsements :values]  (data-tree [:latest-endorsements]))
+   (-->ui[:ui :latest-endorsements :values]  (<--data [:latest-endorsements]))
    )
 
 
@@ -107,5 +104,5 @@
 
 
 
-(when-data-value-changes  [:company-details]
-   (ui-tree! [:ui :company-details :skills] (data-tree [:company-details])))
+(watch-data  [:company-details]
+   (-->ui [:ui :company-details :skills] (<--data [:company-details])))
