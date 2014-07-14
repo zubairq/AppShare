@@ -124,8 +124,8 @@
                    old-value   (get event-item :old-value)
                    new-value   (get event-item :value)
                    name-space  (get event-item :name-space)
-                   code        (get event-item :code)
                    tree-name   (get event-item :tree-name)
+                   path        (get event-item :path)
                    deleted     (first (data/diff old-value new-value))
                    added       (second (data/diff old-value new-value))
                    ]
@@ -150,17 +150,18 @@
 
 
 
-                           (if code (dom/div #js {:style #js {:color "green"}}
+                           (if (= event-type "event") (dom/div #js {:style #js {:color "green"}}
 
                                              (dom/pre nil
 
                                                       (->
-                                                       code
+                                                       (get
+                                                        (get @debugger-ui :watchers-code)
+
+                                                        (str tree-name " " path)
+
+                                                        )
                                                        (clojure.string/replace #"\(div\ " "(DIV " )
-                                                       (clojure.string/replace #"\(div\r" "(DIV \r" )
-                                                       (clojure.string/replace #"\(div\n" "(DIV \n" )
-                                                       (clojure.string/replace #":onClick" ":ONCLICK" )
-                                                       (clojure.string/replace #":onTouchStart" ":ONTOUCHSTART" )
                                                        )
 
                                                       )
@@ -213,10 +214,6 @@
 
                                  )
                                  (clojure.string/replace #"\(div\ " "(DIV " )
-                                 (clojure.string/replace #"\(div\r" "(DIV \r" )
-                                 (clojure.string/replace #"\(div\n" "(DIV \n" )
-                                 (clojure.string/replace #":onClick" ":ONCLICK" )
-                                 (clojure.string/replace #":onTouchStart" ":ONTOUCHSTART" )
                                  ))
 
 

@@ -215,6 +215,7 @@
                                  name-space
                                  tree-name
                                  code
+                                 path
                                  ] :or {
                                         event-type     "UI"
                                         error          "Error in field"
@@ -224,7 +225,7 @@
 
     (or
       @record-pointer-locally
-      (not (and (= event-type     "UI") (get (first (data/diff old new)) :pointer))))
+      (not (and (= event-type "UI") (get (first (data/diff old new)) :pointer))))
 
     (cond
 
@@ -261,7 +262,7 @@
                            :event-type  event-type
                            :name-space  name-space
                            :tree-name   tree-name
-                           :code        code
+                           :path        path
                            })
          )
        )
@@ -331,11 +332,11 @@
 ;(:total-events-count @debugger-ui )
 ;(get @debug-event-timeline 20)
 
-(add-debug-event
+( add-debug-event
                 :event-type  "event"
                 :name-space  "dummy namespace"
-                :tree-name   "UI"
-                :code        "(def zoo)"
+                :tree-name   "ui"
+                :path        "[:ui :request :to-email :value]"
                 )
 
- (:watchers-code @debugger-ui)
+(first (keys (:watchers-code @debugger-ui)))

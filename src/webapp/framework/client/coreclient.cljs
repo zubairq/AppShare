@@ -322,7 +322,7 @@
                 (char 13) (char 13)
 
 
-                "(watch  "
+                "(watch-" tree-name
                      path "  "
                      (char 13) (char 13)
                      code-str
