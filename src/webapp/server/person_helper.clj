@@ -117,7 +117,6 @@
            to.email={to}
            create unique
              (from)-[:ENDORSE {
-                              skill: {skill},
                               accepted_timestamp: {accepted_timestamp}
                               }
                                 ]->(to)
@@ -126,7 +125,6 @@
            {
             :from  from
             :to    to
-            :skill skill
             :accepted_timestamp (. (java.util.Date.) getTime)
             }
            ["from","to"])))

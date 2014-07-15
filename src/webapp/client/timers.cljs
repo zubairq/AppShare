@@ -10,7 +10,7 @@
    [ankha.core       :as ankha]
    )
   (:use
-   [webapp.client.ui-helpers                :only  [validate-email validate-full-name  validate-endorsement]]
+   [webapp.client.ui-helpers                :only  [validate-email ]]
    [webapp.framework.client.coreclient      :only  [log remote]]
    [webapp.framework.client.system-globals  :only  [app-state   playback-app-state
                                                     playback-controls-state

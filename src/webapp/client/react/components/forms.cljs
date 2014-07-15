@@ -8,8 +8,6 @@
 
   (:use
    [webapp.client.ui-helpers                :only  [validate-email
-                                                    validate-full-name
-                                                    validate-endorsement
                                                     ]]
    [webapp.framework.client.ui-helpers      :only  [blur-field
                                                     update-field-value
@@ -21,43 +19,6 @@
 
 
 
-
-
-;------------------------------------------------------------
-(defn-ui-component     full-name-field   [field]
-  {:absolute-path [:ui :request]}
-;------------------------------------------------------------
-
-  (dom/div
-   nil
-   (basic-input-box :field       field
-                    :text        "Your full name"
-                    :placeholder "John Smith"
-                    :error       "Full name must be at least 6
-                                  characters and contain a space"
-                    )
-   ))
-
-
-
-
-
-
-;------------------------------------------------------------
-(defn-ui-component   to-full-name-field  [ui-data]
-  {:absolute-path [:ui :request]}
-;------------------------------------------------------------
-
-  (dom/div
-   nil
-   (dom/div
-    nil
-    (basic-input-box :field       ui-data
-                     :text        "Their full name"
-                     :placeholder "Pete Austin"
-                     :error       "Full name must be at least 6
-                                   characters and contain a space"
-                     ))))
 
 
 

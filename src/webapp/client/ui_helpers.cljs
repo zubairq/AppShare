@@ -29,16 +29,6 @@
 
 
 
-(defn validate-full-name [full-name]
-  (if (and (> (count full-name) 6) (pos? (.indexOf full-name " ") ))
-    true
-    ))
-
-(defn validate-endorsement [full-name]
-  (if (> (count full-name) 2)
-    true
-    ))
-
 
 (defn validate-email [email]
   (if (pos? (.indexOf (str email) "@"))

@@ -63,7 +63,7 @@
        :from-email   "contact@connecttous.co"
        :from-name    "ConnectToUs.co"
        :to-email     (:from_email send-endorsement-neo4j-node)
-       :to-name      (:from_full_name  send-endorsement-neo4j-node)
+       :to-name      (:from_email  send-endorsement-neo4j-node)
        )
 
       (neo4j "match n where id(n)={id}
@@ -115,7 +115,7 @@
        :from-email   (:from_email  send-endorsement-neo4j-node)
        :from-name    (:from_email  send-endorsement-neo4j-node)
        :to-email     (:to_email send-endorsement-neo4j-node)
-       :to-name      (:to_full_name  send-endorsement-neo4j-node)
+       :to-name      (:to_email  send-endorsement-neo4j-node)
        )
 
       (neo4j "match n where id(n)={id}
@@ -216,11 +216,9 @@
 
 
 (comment println (request-endorsement
-                  {:from-full-name    "1"
+                  {
                    :from-email        "1"
-                   :to-full-name      "1"
                    :to-email          "1"
-                   :endorsement       "1"
                    }))
 
 
@@ -348,7 +346,6 @@
            (c)-[:WORKS_FOR]-(x)-[r:ENDORSE]->(y)-[:WORKS_FOR]-(c2)
          return
            c.web_address as from,
-           r.skill as skill,
            r.accepted_timestamp as when ,
            c2.web_address as to
          order by
@@ -356,7 +353,7 @@
          limit
            10"
          {}
-         ["from" "skill" "to" "when"]))
+         ["from" "to" "when"]))
 ;(get-latest-endorsements {})
 
 
@@ -372,9 +369,9 @@
          where
            n.web_address = {company_url}
          return
-           n.web_address  as company,
-           count(e.skill) as skill_count,
-           e.skill        as skill
+           n.web_address        as company,
+           count(n.web_address) as skill_count,
+           n.web_address        as skill
          order by
            skill"
 

@@ -10,8 +10,6 @@
    )
   (:use
    [webapp.client.ui-helpers                :only  [validate-email
-                                                    validate-full-name
-                                                    validate-endorsement
                                                      ]]
    [webapp.framework.client.coreclient      :only  [log remote
                                                     when-ui-path-equals-fn
