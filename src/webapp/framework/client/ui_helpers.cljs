@@ -11,7 +11,8 @@
    )
   (:use
    [webapp.framework.client.coreclient      :only  [log remote]]
-   [webapp.framework.client.system-globals  :only  [app-state   playback-app-state
+   [webapp.framework.client.system-globals  :only  [app-state
+                                                    playback-app-state
                                                     playback-controls-state
                                                     reset-app-state ui-watchers
                                                     playbackmode
@@ -44,22 +45,53 @@
 
 
 
+(def a (atom
+  {:a
+   {
+    :value "private text"
+    :private true
+    :something-else
+    {
+     :value "public text"
+     }
+    }
+   :ab
+   {
+    :value "private text"
+    :private true
+    :something-else
+    {
+     :value "public text"
+     :private true
+     }
+    }
+   }
+))
 
-(defn validate-full-name [full-name]
-  (if (and (> (count full-name) 6) (pos? (.indexOf full-name " ") ))
-    true
-    ))
 
-(defn validate-endorsement [full-name]
-  (if (> (count full-name) 2)
-    true
-    ))
+(defn find-in-map [a-map a-key]
+  (cond
+   (get a-map a-key)
+   true
 
+   :else
+   false
+   ))
 
-(defn validate-email [email]
-  (if (pos? (.indexOf (str email) "@"))
-    true
-    ))
+(find-in-map (:a @a) :private)
+
+(defn  replace-in-map [a-map find-key replace-key replace-fn]
+  (cond
+   (find-in-map a-map find-key)
+   (assoc a-map replace-key (replace-fn (get a-map replace-key)))
+
+   :else
+   a-map
+   )
+  )
+
+(replace-in-map  (-> @a :ab :something-else)  :private :value
+                 (fn[x] (apply str (repeat (count x) "*"))))
 
 
 
@@ -93,7 +125,12 @@
              #js {:type        "text"
                   :className   "form-control"
                   :placeholder placeholder
-                  :value       (get-in field [:value])
+                  :value       (if (and @playbackmode (get-in field [:private]))
+                                 (get (replace-in-map  field  :private :value
+                                                  (fn[x] (apply str (repeat (count x) "*")))) :value)
+
+
+                                    (get-in field [:value]))
                   :onChange    #(update-field-value  field %1)
                   :onBlur      #(blur-field  field)
                   :style       #js {:width "100%"}

@@ -67,7 +67,10 @@
      :tab-browser "latest endorsements"
      :login {
 
-             :login-email {}
+             :login-email {
+                           :value ""
+                           :private true
+                           }
              }
 
 

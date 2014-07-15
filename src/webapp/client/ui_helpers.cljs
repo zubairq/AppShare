@@ -28,22 +28,6 @@
 
 
 
-(defn update-field-value [field e]
-  (om/update! field [:value] (.. e -target -value))
-  )
-
-
-
-(defn blur-field [request]
-   (let [mode  (get-in @request [:mode])]
-     (cond
-      (and (= mode "empty") (not (blank? (get-in @request [:value]))))
-      (om/update! request [:mode]  "validate")
-      )))
-
-
-
-
 
 (defn validate-full-name [full-name]
   (if (and (> (count full-name) 6) (pos? (.indexOf full-name " ") ))
@@ -62,44 +46,4 @@
     ))
 
 
-
-
-
-
-
-(defn basic-input-box
-  [& {:keys
-      [
-       field
-       text
-       placeholder
-       error
-       ]
-      :or
-      {
-       text           "No field name"
-       placeholder    "Placeholder"
-       error          "Error in field"
-       }
-      }]
-  (dom/div #js {:className "input-group"
-                :style #js {:marginTop "5px"}}
-
-           (dom/span
-            #js {:className "input-group-addon" :style #js {:width "200px"}}
-             (str text))
-
-            (dom/input
-             #js {:type        "text"
-                  :className   "form-control"
-                  :placeholder placeholder
-                  :value       (get-in field [:value])
-                  :onChange    #(update-field-value  field %1)
-                  :onBlur      #(blur-field  field)
-                  :style       #js {:width "100%"}
-                  })
-
-            (if (not (blank? (get-in field [:error])))
-              (dom/div nil error)
-)))
 

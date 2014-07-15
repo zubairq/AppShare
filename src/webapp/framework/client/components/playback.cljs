@@ -73,6 +73,8 @@
             ;(log timestamp )
             (<! (timeout (-  timestamp @playbacktime)))
             (reset! playbacktime timestamp)
+
+
             (reset! playback-app-state
                     (update-in @playback-app-state
                                path
@@ -84,8 +86,6 @@
         (js/alert "session finished")
         ))
   )
-
-
 
 
 

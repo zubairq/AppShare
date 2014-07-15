@@ -10,7 +10,8 @@
    [webapp.client.ui-helpers                :only  [validate-email
                                                     validate-full-name
                                                     validate-endorsement
-                                                    blur-field
+                                                    ]]
+   [webapp.framework.client.ui-helpers      :only  [blur-field
                                                     update-field-value
                                                     basic-input-box ]]
    [clojure.string :only [blank?]])
