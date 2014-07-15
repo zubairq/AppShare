@@ -673,45 +673,6 @@
 
 
 
-(defrecord Goat [stuff things])
-
-(def sample-goat (->Goat "I love Goats", "Goats are awesome"))
-
-(defn convert-sample-goat-to-edn
-    "Converting a Goat to EDN"
-    []
-    (prn-str sample-goat))
-
-(println "Let's convert our defrecord Goat into EDN: " (convert-sample-goat-to-edn))
-
-
-
-
-
-(def edn-readers {'webapp.framework.server.neo4j_helper.Goat map->Goat})
-
-(defn convert-edn-to-goat
-    "Convert EDN back into a Goat. We will use the :readers option to pass through a map
-    of tags -> readers, so EDN knows how to handle our custom EDN tag."
-    []
-    (edn/read-string {:readers edn-readers} (convert-sample-goat-to-edn)))
-
-(println "Let's try converting EDN back to a Goat: " (convert-edn-to-goat))
-
-(keys (convert-edn-to-goat))
-
-
-    (edn/read-string {:readers edn-readers} (convert-sample-goat-to-edn))
-
-
-(defn alternative-edn-for-goat
-    "Creates a different edn format for the goat. Flattens the goat map into a sequence of keys and values"
-    [^Goat goat]
-    (str "#edn-example/Alt.Goat" (prn-str (mapcat identity goat))))
-
-(println "Lets convert our Goat to our custom EDN format: " (alternative-edn-for-goat sample-goat))
-
-
 (defn neo4j-val [xxx return-field]
   (let [nnn (get xxx return-field)
         ]
@@ -721,41 +682,50 @@
                                (:data (get xxx return-field))))
           )))
 
+
+
+
+
 (defn neo4j
   ([cypher]
-     (neo4j cypher {}))
+   (neo4j cypher {}))
+
+
+
   ([cypher params]
-  (do
-    (let [lower           (.toLowerCase cypher)
-          result          (cy/tquery cypher params)
-          result-count    (count result)
-          first-record    (first result)
-          ]
-          (cond
-             (and (= result-count 1) (= (count first-record) 1))
-                 (first (vals  first-record))
+   (do
+     (let [lower           (.toLowerCase cypher)
+           result          (cy/tquery cypher params)
+           result-count    (count result)
+           first-record    (first result)
+           ]
+       (cond
+        (and (= result-count 1) (= (count first-record) 1))
+        (first (vals  first-record))
 
-              :else
-                result)
-    )))
+        :else
+        result)
+       )))
 
-([cypher   params  return-field]
+
+
+  ([cypher   params  return-field]
    (into [] (map
-    (fn [xxx]
-        (cond
-            (= (type return-field) java.lang.String)
+             (fn [xxx]
+               (cond
+                (= (type return-field) java.lang.String)
                 (neo4j-val xxx return-field)
 
-            (= (type return-field) clojure.lang.PersistentVector)
+                (= (type return-field) clojure.lang.PersistentVector)
                 (into {}  (map
-                    (fn[x]  {x (neo4j-val xxx x)})
-                    return-field))
-            :else
-               (type return-field)
-        )
-    )
-    (cy/tquery  cypher params )
-    ))
+                           (fn[x]  {x (neo4j-val xxx x)})
+                           return-field))
+                :else
+                (type return-field)
+                )
+               )
+             (cy/tquery  cypher params )
+             ))
    ))
 
 

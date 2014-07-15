@@ -47,11 +47,6 @@
 
 
 
-(defrecord Goat2 [stuff things])
-
-(def edn-readers2 {'webapp.server.fns.Goat2 map->Goat2})
-
-
 
 (defn !neo4j [{coded-cypher :cypher params :params}]
   (do

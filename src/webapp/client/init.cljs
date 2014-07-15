@@ -46,13 +46,20 @@
    (assoc-in
     @app-state [:ui]
     {:request {
-               :from-full-name       {:label "Your full name"      :placeholder "John smith"         :value ""  :mode "empty"}
-               :from-email           {:label "Your company email"  :placeholder "john@microsoft.com" :value ""  :mode "empty"}
+               :from-email           {:label          "Your company email"
+                                      :placeholder    "john@microsoft.com"
+                                      :value          ""
+                                      :mode           "empty"
+                                      :private        true
+                                      }
 
-               :to-full-name         {:label "Their full name"     :placeholder "Pete Austin"        :value ""  :mode "empty"}
-               :to-email             {:label "Their email"         :placeholder "pete@ibm.com"       :value ""  :mode "empty"}
+               :to-email             {:label          "Their email"
+                                      :placeholder    "pete@ibm.com"
+                                      :value          ""
+                                      :mode           "empty"
+                                      :private        true
+                                      }
 
-               :endorsement          {:label "Endorsement"         :placeholder "marketing"          :value ""  :mode "empty"}
                :submit               {:value false}
                }
 
