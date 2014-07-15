@@ -231,7 +231,7 @@
                                              :style #js {:position "absolute" }
                                                       :onMouseLeave #(om/update! debug-ui-state [:code-data-show_index]
                                                                                 nil)}
-                                       (JSON/stringify component-data)
+                                       (pr-str component-data)
 
                                         ))
 
@@ -244,9 +244,6 @@
 
 
                            ))))))))
-
-
-(JSON/stringify
 
 
 
