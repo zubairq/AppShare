@@ -56,15 +56,6 @@
 
 
 
-(comment
-   go
-   (.log js/console (str (neo-outgoing (<! (neo4j "START x = node(17109) RETURN x" {} )) "x")))
-)
-
-(comment go
-   (.log js/console (str (neo-incoming (<! (neo4j "START x = node(0) RETURN x" {} )) "x")))
-)
-
 (comment go
      (<! (add-to-simple-point-layer {:name "bella centre" :x 0.12 :y 0.1} "ore2")))
 
@@ -73,23 +64,7 @@
      (log (<! (find-names-within-distance   "ore2"  0   0  1000))) )
 
 
-(comment go
-    (log (<! (get-all-neo4j-records-with-field :type)))
-)
-
-(comment go
-    (log (<! (count-all-neo4j-records-with-field :type)))
-)
-
 ;(delete-all-neo-4j-nodes :are-you-sure? "yes")
-
-(comment go
-    (log (<! (count-all-neo4j-records)))
-)
-
-
-
-(comment log "hey" 2)
 
 
 
