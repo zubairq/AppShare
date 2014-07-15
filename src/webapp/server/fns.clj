@@ -180,11 +180,8 @@
 
 
 (defn request-endorsement
-  [{:keys [from-full-name
-           from-email
-           to-full-name
+  [{:keys [from-email
            to-email
-           endorsement
            ]}]
   ;----------------------------------------------------------------
 
@@ -195,18 +192,12 @@
                                         endorsement_id:       {endorsement_id},
                                         from_email:           {from_email},
                                         to_email:             {to_email},
-                                        from_full_name:       {from_full_name},
-                                        to_full_name:         {to_full_name},
-                                        endorsement:          {endorsement},
                                         timestamp:            {timestamp}
                                         }) return n"
                                         {
                                          :endorsement_id  endorsement-id
                                          :from_email      from-email
                                          :to_email        to-email
-                                         :from_full_name  from-full-name
-                                         :to_full_name    to-full-name
-                                         :endorsement     endorsement
                                          :timestamp       "timestamp"
                                          }
                                         "n"))

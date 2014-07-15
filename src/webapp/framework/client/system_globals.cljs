@@ -215,6 +215,9 @@
                                  event-name
                                  component-name
                                  component-data
+                                 action-name
+                                 input
+                                 result
                                  ] :or {
                                         event-type     "UI"
                                         error          "Error in field"
@@ -222,9 +225,14 @@
 
   (if
 
-    (or
-     @record-pointer-locally
-     (not (and (= event-type "UI") (get (first (data/diff old new)) :pointer))))
+    (and
+     (or
+      @record-pointer-locally
+      (not (and (= event-type "UI") (get (first (data/diff old new)) :pointer)))
+      )
+     (not (= (get action-name 0) "!"))
+     )
+
 
     (do
 
@@ -264,6 +272,19 @@
                              :event-type      event-type
                              :component-name  component-name
                              :component-data  component-data
+                             }))
+
+
+
+         (and (= event-type     "remote"))
+         (do
+           (swap! debug-event-timeline assoc
+                  debug-id  {
+                             :id              debug-id
+                             :event-type      event-type
+                             :action-name     action-name
+                             :input           input
+                             :result          result
                              }))
 
 
