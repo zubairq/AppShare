@@ -214,6 +214,7 @@
                                  error
                                  event-name
                                  component-name
+                                 component-data
                                  ] :or {
                                         event-type     "UI"
                                         error          "Error in field"
@@ -222,22 +223,52 @@
   (if
 
     (or
-      @record-pointer-locally
-      (not (and (= event-type "UI") (get (first (data/diff old new)) :pointer))))
+     @record-pointer-locally
+     (not (and (= event-type "UI") (get (first (data/diff old new)) :pointer))))
 
-    (cond
-
-
-
-     (or (first (data/diff old new)) (second (data/diff old new)))
+    (do
 
       (let [debug-id (swap! debug-count inc)]
-        (swap! debug-event-timeline assoc
-               debug-id  {
-                          :id          debug-id
-                          :event-type  event-type
-                          :old-value   old
-                          :value       new})
+        (cond
+
+
+
+         (or (first (data/diff old new)) (second (data/diff old new)))
+
+         (swap! debug-event-timeline assoc
+                debug-id  {
+                           :id          debug-id
+                           :event-type  event-type
+                           :old-value   old
+                           :value       new})
+
+
+
+
+         (and (= event-type     "event"))
+
+         (do
+           (swap! debug-event-timeline assoc
+                  debug-id  {
+                             :id          debug-id
+                             :event-type  event-type
+                             :event-name  event-name
+                             }))
+
+         (and (= event-type     "render"))
+
+         (do
+           (swap! debug-event-timeline assoc
+                  debug-id  {
+                             :id              debug-id
+                             :event-type      event-type
+                             :component-name  component-name
+                             :component-data  component-data
+                             }))
+
+
+         )
+
 
         (reset! debugger-ui
                 (assoc @debugger-ui
@@ -246,34 +277,9 @@
         (if (> (+ (:pos @debugger-ui) 5) (:total-events-count @debugger-ui))
           (reset! debugger-ui
                   (assoc @debugger-ui
-                    :pos (:total-events-count @debugger-ui))))
+                    :pos (:total-events-count @debugger-ui)))))
 
-        )
-
-     (and (= event-type     "event"))
-     (let [debug-id (swap! debug-count inc)]
-
-       (do
-         (swap! debug-event-timeline assoc
-                debug-id  {
-                           :id          debug-id
-                           :event-type  event-type
-                           :event-name  event-name
-                           })))
-
-     (and (= event-type     "render"))
-     (let [debug-id (swap! debug-count inc)]
-
-       (do
-         (swap! debug-event-timeline assoc
-                debug-id  {
-                           :id              debug-id
-                           :event-type      event-type
-                           :component-name  component-name
-                           })))
-
-
-)))
+      )))
 
 
 

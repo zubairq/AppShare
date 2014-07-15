@@ -524,8 +524,11 @@
      react-fn-name    (str str-nm)
      ]
     (do
+      ;(log (str "render: " react-fn-name))
+      ;(log (str "           : " (pr-str data)))
       (add-debug-event :event-type      "render"
                        :component-name  react-fn-name
+                       :component-data  data
                        )
       (dom/div
        #js {

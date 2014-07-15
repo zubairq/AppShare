@@ -126,6 +126,7 @@
                    new-value   (get event-item :value)
                    event-name  (get event-item :event-name)
                    component-name   (get event-item :component-name)
+                   component-data   (get event-item :component-data)
                    deleted     (first (data/diff old-value new-value))
                    added       (second (data/diff old-value new-value))
                    ]
@@ -171,11 +172,41 @@
                               (dom/div #js {:style #js {:color "green"}}
 
                                        (dom/div #js {
-                                                      :onMouseEnter #(om/update! debug-ui-state [:code-show_index]
-                                                                                debug-id)
-                                                     :style #js {:color "blue"
-                                                                 :text-decoration "underline"
-                                                                 }} (str component-name))
+                                                     :onClick #(do (om/update!
+                                                                debug-ui-state
+                                                                [:code-show_index]
+                                                                (if (= (get @debug-ui-state :code-show_index) debug-id)
+                                                                  nil
+                                                                  debug-id))
+                                                                 (om/update!
+                                                                            debug-ui-state
+                                                                            [:code-data-show_index] nil))
+                                                                :style #js {:color "blue"
+                                                                            :text-decoration "underline"
+                                                                            :display "inline-block"
+                                                                            }} (str
+                                                                                (if (= (get debug-ui-state :code-show_index) debug-id)
+                                                                                  "-" "+")
+                                                                                component-name))
+
+                                                                              (dom/div #js {
+                                                     :onClick #(do (om/update!
+                                                                debug-ui-state
+                                                                [:code-data-show_index]
+                                                                (if (= (get @debug-ui-state :code-data-show_index) debug-id)
+                                                                  nil
+                                                                  debug-id))
+                                                                                                                                  (om/update!
+                                                                            debug-ui-state
+                                                                            [:code-show_index] nil))
+                                                                :style #js {:color "blue"
+                                                                            :text-decoration "underline"
+                                                                            :display "inline-block"
+                                                                            :paddingLeft "10px"
+                                                                            }} (str
+                                                                                (if (= (get debug-ui-state :code-data-show_index) debug-id)
+                                                                                  "-" "+")
+                                                                                "Input data"))
 
                               (if (= (get debug-ui-state :code-show_index) debug-id)
                                (dom/pre #js {
@@ -192,7 +223,21 @@
                                           ))
                                         (clojure.string/replace #"\(div\ " "(DIV " )
                                         (clojure.string/replace #"\(dom/h2\ " "(H2 " )
-                                        )))))
+                                        )))
+
+
+                              (if (= (get debug-ui-state :code-data-show_index) debug-id)
+                               (dom/pre #js {
+                                             :style #js {:position "absolute" }
+                                                      :onMouseLeave #(om/update! debug-ui-state [:code-data-show_index]
+                                                                                nil)}
+                                       (JSON/stringify component-data)
+
+                                        ))
+
+
+
+                                       ))
 
 
 
@@ -201,9 +246,7 @@
                            ))))))))
 
 
-
-
-
+(JSON/stringify
 
 
 
