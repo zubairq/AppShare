@@ -213,6 +213,7 @@
                                  new
                                  error
                                  event-name
+                                 component-name
                                  ] :or {
                                         event-type     "UI"
                                         error          "Error in field"
@@ -258,9 +259,18 @@
                            :id          debug-id
                            :event-type  event-type
                            :event-name  event-name
-                           })
-         )
-       )
+                           })))
+
+     (and (= event-type     "render"))
+     (let [debug-id (swap! debug-count inc)]
+
+       (do
+         (swap! debug-event-timeline assoc
+                debug-id  {
+                           :id              debug-id
+                           :event-type      event-type
+                           :component-name  component-name
+                           })))
 
 
 )))
@@ -332,4 +342,6 @@
                 :event-name  "watch-ui [:ui :request :to-email :value]"
                 )
 
- @debugger-ui
+;(map :event-type (vals @debug-event-timeline))
+
+(keys @debugger-ui)

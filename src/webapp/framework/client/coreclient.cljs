@@ -26,6 +26,7 @@
                                                     data-watchers
                                                     data-state
                                                     update-data
+                                                    add-debug-event
                                                     ]]
 
   )
@@ -522,32 +523,35 @@
     [
      react-fn-name    (str str-nm)
      ]
-    (dom/div
-     #js {
-          :onMouseEnter #(if js/debug_live (om/set-state! owner :debug-highlight true))
-          :onMouseLeave #(if js/debug_live (om/set-state! owner :debug-highlight false))
-          :onClick component-clicked
-          :style (if js/debug_live
-                   #js {:backgroundColor
+    (do
+      (add-debug-event :event-type      "render"
+                       :component-name  react-fn-name
+                       )
+      (dom/div
+       #js {
+            :onMouseEnter #(if js/debug_live (om/set-state! owner :debug-highlight true))
+            :onMouseLeave #(if js/debug_live (om/set-state! owner :debug-highlight false))
+            :onClick component-clicked
+            :style (if js/debug_live
+                     #js {:backgroundColor
 
-                        (if
-                          (om/get-state owner :debug-highlight)
-                          (do
-                            (if (not= (:mode @debugger-ui) "component")
-                              (set-debug-component  react-fn-name))
-                            "lightGray")
-                          (do
-                            (if (not= (:mode @debugger-ui) "component")
-                              (unset-debug-component  react-fn-name))
-                            "")
-                          ""
-                          )
-                        })
-          }
+                          (if
+                            (om/get-state owner :debug-highlight)
+                            (do
+                              (if (not= (:mode @debugger-ui) "component")
+                                (set-debug-component  react-fn-name))
+                              "lightGray")
+                            (do
+                              (if (not= (:mode @debugger-ui) "component")
+                                (unset-debug-component  react-fn-name))
+                              "")
+                            ""
+                            )
+                          })
+            }
 
-     (react-fn data)
-     "")))
-
+       (react-fn data)
+     ""))))
 
 
 

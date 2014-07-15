@@ -125,6 +125,7 @@
                    old-value   (get event-item :old-value)
                    new-value   (get event-item :value)
                    event-name  (get event-item :event-name)
+                   component-name   (get event-item :component-name)
                    deleted     (first (data/diff old-value new-value))
                    added       (second (data/diff old-value new-value))
                    ]
@@ -165,6 +166,35 @@
 
                                                       )
                                              ))
+
+                            (if (= event-type "render")
+                              (dom/div #js {:style #js {:color "green"}}
+
+                                       (dom/div #js {
+                                                      :onMouseEnter #(om/update! debug-ui-state [:code-show_index]
+                                                                                debug-id)
+                                                     :style #js {:color "blue"
+                                                                 :text-decoration "underline"
+                                                                 }} (str component-name))
+
+                              (if (= (get debug-ui-state :code-show_index) debug-id)
+                               (dom/pre #js {
+                                             :style #js {:position "absolute" }
+                                                      :onMouseLeave #(om/update! debug-ui-state [:code-show_index]
+                                                                                nil)}
+                                       (->
+                                        (str
+                                         (get
+                                          (get @debugger-ui :react-components-code)
+
+                                          component-name
+
+                                          ))
+                                        (clojure.string/replace #"\(div\ " "(DIV " )
+                                        (clojure.string/replace #"\(dom/h2\ " "(H2 " )
+                                        )))))
+
+
 
 
 

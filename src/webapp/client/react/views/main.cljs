@@ -7,12 +7,6 @@
    [clojure.string   :as string])
 
   (:use
-   [webapp.client.ui-helpers                :only  [validate-email
-                                                    validate-full-name
-                                                    validate-endorsement
-                                                    blur-field
-                                                    update-field-value
-                                                    basic-input-box ]]
    [clojure.string :only [blank?]]
    [webapp.client.react.components.forms               :only  [request-form]]
    [webapp.client.react.components.login               :only  [login]]
