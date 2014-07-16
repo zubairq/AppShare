@@ -67,8 +67,8 @@
        )
 
       (neo4j "match n where id(n)={id}
-             remove n:AskForEndorsement
-             set n:AskForEndorsementConfirmSender,
+             remove n:AskToConnect
+             set n:AskToConnectConfirmSender,
              n.confirm_sender_code = {confirm_sender_code}
              return n"
              {
@@ -119,8 +119,8 @@
        )
 
       (neo4j "match n where id(n)={id}
-             remove n:AskForEndorsementContactReceiver
-             set n:AskForEndorsementWaitingOnReceiver,
+             remove n:AskToConnectContactReceiver
+             set n:AskToConnectWaitingOnReceiver,
              n.confirm_receiver_code = {confirm_receiver_code}
              return n"
              {
@@ -141,12 +141,12 @@
   []
   ;----------------------------------------------------------------
 
-  (let [messages-waiting (neo4j "match (n:AskForEndorsement) return n" {} "n")]
-    (println (str "AskForEndorsement: " messages-waiting))
+  (let [messages-waiting (neo4j "match (n:AskToConnect) return n" {} "n")]
+    (println (str "AskToConnect: " messages-waiting))
     (dorun (map process-ask-for-endorsement  messages-waiting)))
 
-  (let [messages-waiting (neo4j "match (n:AskForEndorsementContactReceiver) return n" {} "n")]
-    (println (str "AskForEndorsementContactReceiver: " messages-waiting))
+  (let [messages-waiting (neo4j "match (n:AskToConnectContactReceiver) return n" {} "n")]
+    (println (str "AskToConnectContactReceiver: " messages-waiting))
     (dorun (map process-ask-for-endorsement-ask-receiver  messages-waiting)))
 
 
@@ -187,7 +187,7 @@
 
   (let [
         endorsement-id    (uuid-str)
-        web-record        (first (neo4j "create  (n:AskForEndorsement
+        web-record        (first (neo4j "create  (n:AskToConnect
                                         {
                                         endorsement_id:       {endorsement_id},
                                         from_email:           {from_email},
@@ -231,7 +231,7 @@
   [{:keys [sender-code]}]
   ;----------------------------------------------------------------
 
-  (let [n   (neo4j "match (n:AskForEndorsementConfirmSender)
+  (let [n   (neo4j "match (n:AskToConnectConfirmSender)
                    where n.confirm_sender_code = {confirm_sender_code}
                    return n"
                    {
@@ -244,8 +244,8 @@
         (neo4j "match n where
                n.confirm_sender_code = {sender_code}
 
-               remove n:AskForEndorsementConfirmSender
-               set n:AskForEndorsementContactReceiver
+               remove n:AskToConnectConfirmSender
+               set n:AskToConnectContactReceiver
                return n"
                {
                 :sender_code  sender-code
@@ -268,9 +268,9 @@
                      n.endorsement_id = {endorsement_id}
                    and
                      (
-                       n:AskForEndorsementContactReceiver
+                       n:AskToConnectContactReceiver
                          OR
-                       n:AskForEndorsementWaitingOnReceiver)
+                       n:AskToConnectWaitingOnReceiver)
                    return
                      n"
                    {
@@ -298,7 +298,7 @@
   [{:keys [endorsement-id]}]
   ;----------------------------------------------------------------
 
-  (let [n   (neo4j "match (n:AskForEndorsementCompleted)
+  (let [n   (neo4j "match (n:ConnectionCompleted)
                    where n.endorsement_id = {endorsement_id}
                    return n"
                    {
@@ -429,7 +429,7 @@
   [{:keys [receiver-code]}]
   ;----------------------------------------------------------------
 
-  (let [n   (neo4j "match (n:AskForEndorsementWaitingOnReceiver)
+  (let [n   (neo4j "match (n:AskToConnectWaitingOnReceiver)
                    where n.confirm_receiver_code = {confirm_receiver_code}
                    return n"
                    {
@@ -442,8 +442,8 @@
         (let [request (first (neo4j "match n where
                n.confirm_receiver_code = {receiver_code}
 
-               remove n:AskForEndorsementWaitingOnReceiver
-               set n:AskForEndorsementCompleted
+               remove n:AskToConnectWaitingOnReceiver
+               set n:ConnectionCompleted
                return n"
                                     {
                                      :receiver_code  receiver-code

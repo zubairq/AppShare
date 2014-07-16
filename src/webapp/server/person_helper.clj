@@ -153,7 +153,3 @@
         ))))
 
 
-
-(comment endorse2 :from-email   "zubairq@micro.com"
-           :to-email     "zubairq@s.com"
-           :skill        "java")
