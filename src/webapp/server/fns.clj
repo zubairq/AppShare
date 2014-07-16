@@ -36,29 +36,16 @@
 
       (send-email
        :message      (str "ConnectToUs.co - "
-                          "Please confirm that you have asked "
+                          "Please confirm that you have asked to connect to"
                           (:to_email send-endorsement-neo4j-node)
-                          " who works for "
-                          (get-company-url-from-email
-                           (:to_email send-endorsement-neo4j-node))
-                          " to endorse "
-                          (get-company-url-from-email
-                           (:from_email send-endorsement-neo4j-node))
-                          " for "
-                          (:endorsement send-endorsement-neo4j-node)
+                          " by clicking the link below."
                           "\r\n\r\n"
                           "http://" *web-server* "/*" confirm-sender-code)
 
        :subject      (str "ConnectToUs.co - "
-                          "Please confirm you have asked someone at "
-                          (get-company-url-from-email
+                          "Please confirm you wish to connect to "
                            (:to_email send-endorsement-neo4j-node))
-                          " to endorse "
-                          (get-company-url-from-email
-                           (:from_email send-endorsement-neo4j-node))
-                          " for "
-                           (:endorsement send-endorsement-neo4j-node)
-                          )
+
 
        :from-email   "contact@connecttous.co"
        :from-name    "ConnectToUs.co"
@@ -96,20 +83,13 @@
 
       (send-email
        :message      (str (:from_email  send-endorsement-neo4j-node)
-                          " has asked you to endorse "
-                          (get-company-url-from-email
-                           (:from_email  send-endorsement-neo4j-node))
-                          " for " (:endorsement send-endorsement-neo4j-node)
-                          " using the ConnectToUs.co service by"
-                          " clicking on the link below::\r\n\r\n"
+                          " has asked to connect with you"
+                          " on ConnectToUs.co. To agree"
+                          " click the link below::\r\n\r\n"
                           "http://" *web-server* "/*" confirm-receiver-code)
 
        :subject      (str (:from_email  send-endorsement-neo4j-node)
-                          " asked you to endorse "
-                          (get-company-url-from-email
-                           (:from_email  send-endorsement-neo4j-node))
-                          " for "
-                          (:endorsement send-endorsement-neo4j-node)
+                          " has asked to connect with you "
                           )
 
        :from-email   (:from_email  send-endorsement-neo4j-node)
