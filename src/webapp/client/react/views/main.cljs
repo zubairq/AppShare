@@ -84,12 +84,34 @@
 
 
 ;------------------------------------------------------------
+(defn-ui-component    splash-screen  [splash-screen-data]
+  {}
+  ;------------------------------------------------------------
+  (if (get-in splash-screen-data [:show])
+    (div {:style {:position "absolute" :left "20px" :top "20px" :width "80%" :height "70%"
+                  :border "solid 1px black;" :zIndex "2000" :background-color "white" :opacity "1.0"}
+          :onClick #(om/update! splash-screen-data [:show] false)
+          }
+
+         (div nil "Connect to other people using just their email address.")
+
+         (div nil "Click to close.")
+
+         )))
+
+
+
+
+
+;------------------------------------------------------------
 (defn-ui-component     main-view   [app]
   {:absolute-path []}
 ;------------------------------------------------------------
 
-  (dom/div nil
-           (dom/h2 nil "ConnectToUs.co")
+  (div nil
+       (dom/h2 nil "ConnectToUs.co")
+
+       (om/build splash-screen (-> app :ui :splash-screen))
 
 
 

@@ -45,7 +45,12 @@
 
    (assoc-in
     @app-state [:ui]
-    {:request {
+    {
+     :splash-screen {
+                     :show true
+                     }
+
+     :request {
                :from-email           {:label          "Your company email"
                                       :placeholder    "john@microsoft.com"
                                       :value          ""

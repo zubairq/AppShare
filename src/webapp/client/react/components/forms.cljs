@@ -95,11 +95,14 @@
                                 (om/update! ui-data [:submit :value]  true))
                      :style
                      #js {:margin-top "10px"}}
+
                 "Connect")
 
     (if (not (blank?
               (get-in ui-data [:submit :message])))
-      (div nil "Submitted")
+
+      (div nil (str "Please check your Inbox for "
+                    (-> ui-data :from-email :value) " to confirm your email address"))
 ))))
 
 
