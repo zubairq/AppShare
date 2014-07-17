@@ -66,6 +66,7 @@
 (==data   [:submit :status]   "ConfirmedReceiver"
    (go
     (-->ui [:ui :request :to-email :confirmed]  true)
+    (-->ui [:ui :request :show-connection-confirmation]  true)
     ))
 
 

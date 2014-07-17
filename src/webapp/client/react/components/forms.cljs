@@ -77,6 +77,32 @@
 
 
 
+
+;------------------------------------------------------------
+(defn-ui-component    show-connection-confirmation-dialog-box  [dialog-data]
+  {}
+  ;------------------------------------------------------------
+  (if (get-in dialog-data [:show-connection-confirmation])
+    (div {:style {:position "absolute" :left "20px" :top "20px" :width "80%" :height "70%"
+                  :border "solid 1px black;" :zIndex "2000" :background-color "white" :opacity "1.0"
+                  :text-align "center" :padding-top "20px"
+                  }
+          :onTouchStart #(om/update! dialog-data [:show-connection-confirmation] false)
+          :onClick      #(om/update! dialog-data [:show-connection-confirmation] false)
+          }
+
+         (div {:style { :vertical-align "center" }}
+              (div {:style {:padding "5px" :padding-bottom "30px"}} "Your connection has been made!")
+
+              (div {:style {:padding "5px"}} (str "From "
+                                                  (get-in dialog-data [:from-email :value] ) " to "
+                                                  (get-in dialog-data [:to-email   :value])))
+              ))))
+
+
+
+
+
 ;------------------------------------------------------------
 (defn-ui-component   request-form   [ui-data]
     {:absolute-path [:ui :request]}
@@ -84,6 +110,12 @@
 
   (div
    nil
+
+   (if [get-in ui-data [:show-connection-confirmation]]
+     (om/build  show-connection-confirmation-dialog-box  ui-data))
+
+
+
    (div
     nil
     (om/build from-email-field   (-> ui-data :from-email ))

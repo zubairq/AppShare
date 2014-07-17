@@ -30,22 +30,22 @@
 
 (defn  ^:export confirmLink [uuid-code]
   (go
-   (let [ l (<! (remote "confirm-sender-code"
-                        {
-                         :sender-code   uuid-code
-                         }))]
+   (let [ confirm-sender-code-result (<! (remote "confirm-sender-code"
+                                                 {
+                                                  :sender-code   uuid-code
+                                                  }))]
      (cond
-      (:error l)
-      (let [ l (<! (remote "confirm-receiver-code"
+      (:error confirm-sender-code-result)
+      (let [ confirm-receiver-code-result (<! (remote "confirm-receiver-code"
                            {
                             :receiver-code   uuid-code
                             }))]
         (cond
-         (:error l)
-         (.write js/document (:error l))
+         (:error confirm-receiver-code-result)
+         (.write js/document (:error confirm-receiver-code-result))
 
          :else
-         (.write js/document (str "Your email address has been confirmed"))
+         (.write js/document (str "Your email address has been confirmed with connectToUs. See your connections at <a href='http://connecttous.co'>connectToUs.co</a>"))
          )
         )
 

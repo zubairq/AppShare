@@ -65,6 +65,8 @@
                                       :private        true
                                       }
 
+               :show-connection-confirmation false
+
                :submit               {:value false}
                }
 

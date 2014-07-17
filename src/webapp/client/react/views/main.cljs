@@ -89,16 +89,18 @@
   ;------------------------------------------------------------
   (if (get-in splash-screen-data [:show])
     (div {:style {:position "absolute" :left "20px" :top "20px" :width "80%" :height "70%"
-                  :border "solid 1px black;" :zIndex "2000" :background-color "white" :opacity "1.0"}
+                  :border "solid 1px black;" :zIndex "2000" :background-color "white" :opacity "1.0"
+                  :text-align "center" :padding-top "20px"
+                  }
           :onTouchStart #(om/update! splash-screen-data [:show] false)
           :onClick      #(om/update! splash-screen-data [:show] false)
           }
 
-         (div nil "Connect to other people using just their email address.")
+         (div {:style { :vertical-align "center" }}
+              (div {:style {:padding "5px" :padding-bottom "30px"}} "Connect to other people using just their email address.")
 
-         (div nil "Click to close.")
-
-         )))
+              (div {:style {:padding "5px"}} "Click anywhere to close.")
+              ))))
 
 
 
