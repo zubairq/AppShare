@@ -67,5 +67,7 @@
 ;(delete-all-neo-4j-nodes :are-you-sure? "yes")
 
 
+;match n where length(n.from_email) > 0 return n.from_email;
+
 
 
