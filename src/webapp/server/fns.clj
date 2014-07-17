@@ -300,7 +300,7 @@
   [{}]
   ;----------------------------------------------------------------
   (neo4j "match
-         (n:Company)<-[:WORKS_FOR]-(w:Person)<-[:ENDORSE]-someone
+         (n:Company)<-[:WORKS_FOR]-(w:Person)<-[:CONNECT]-someone
          return
          n.web_address as company,
          count(someone) as inbound
@@ -323,7 +323,7 @@
   [{}]
   ;----------------------------------------------------------------
   (neo4j "match
-           (c)-[:WORKS_FOR]-(x)-[r:ENDORSE]->(y)-[:WORKS_FOR]-(c2)
+           (c)-[:WORKS_FOR]-(x)-[r:CONNECT]->(y)-[:WORKS_FOR]-(c2)
          return
            c.web_address as from,
            r.accepted_timestamp as when ,
@@ -345,7 +345,7 @@
   ;----------------------------------------------------------------
   (neo4j
         "match
-           (n:Company)<-[:WORKS_FOR]-(w:Person)<-[e:ENDORSE]-someone
+           (n:Company)<-[:WORKS_FOR]-(w:Person)<-[e:CONNECT]-someone
          where
            n.web_address = {company_url}
          return
@@ -431,8 +431,7 @@
           (do
             (webapp.server.person-helper/endorse2
              :from-email   (get request :to_email)
-             :to-email     (get request :from_email)
-             :skill        (get request :endorsement))
+             :to-email     (get request :from_email))
 
             (println request)
 

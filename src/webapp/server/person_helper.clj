@@ -108,7 +108,7 @@
 
 
 
-(defn endorse [& {:keys [from to skill]}]
+(defn endorse [& {:keys [from to]}]
   (do
     (neo4j "match
            (from:Person),(to:Person)
@@ -116,7 +116,7 @@
            from.email={from} and
            to.email={to}
            create unique
-             (from)-[:ENDORSE {
+             (from)-[:CONNECT {
                               accepted_timestamp: {accepted_timestamp}
                               }
                                 ]->(to)
@@ -131,7 +131,7 @@
 
 
 
-(defn endorse2 [& {:keys [from-email to-email skill]}]
+(defn endorse2 [& {:keys [from-email to-email]}]
   (let
     [
      from-company      (get-company-url-from-email from-email)
@@ -148,7 +148,7 @@
 
         (endorse :from   from-email
                  :to     to-email
-                 :skill  skill)
+                 )
 
         ))))
 
