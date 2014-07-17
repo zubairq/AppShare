@@ -36,9 +36,9 @@
 
       (send-email
        :message      (str "ConnectToUs.co - "
-                          "Please confirm that you have asked to connect to"
+                          "Please confirm that you have asked to connect to "
                           (:to_email send-endorsement-neo4j-node)
-                          " by clicking the link below."
+                          " by clicking on the following link: "
                           "\r\n\r\n"
                           "http://" *web-server* "/*" confirm-sender-code)
 
@@ -84,8 +84,8 @@
       (send-email
        :message      (str (:from_email  send-endorsement-neo4j-node)
                           " has asked to connect with you"
-                          " on ConnectToUs.co. To agree"
-                          " click the link below::\r\n\r\n"
+                          " on ConnectToUs. To agree"
+                          " please click the following link: \r\n\r\n"
                           "http://" *web-server* "/*" confirm-receiver-code)
 
        :subject      (str (:from_email  send-endorsement-neo4j-node)
