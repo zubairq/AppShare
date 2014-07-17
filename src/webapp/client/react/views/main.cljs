@@ -90,7 +90,8 @@
   (if (get-in splash-screen-data [:show])
     (div {:style {:position "absolute" :left "20px" :top "20px" :width "80%" :height "70%"
                   :border "solid 1px black;" :zIndex "2000" :background-color "white" :opacity "1.0"}
-          :onClick #(om/update! splash-screen-data [:show] false)
+          :onTouchStart #(om/update! splash-screen-data [:show] false)
+          :onClick      #(om/update! splash-screen-data [:show] false)
           }
 
          (div nil "Connect to other people using just their email address.")
