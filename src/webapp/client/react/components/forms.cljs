@@ -83,9 +83,12 @@
   {}
   ;------------------------------------------------------------
   (if (get-in dialog-data [:show-connection-confirmation])
-    (div {:style {:position "absolute" :left "20px" :top "20px" :width "80%" :height "70%"
-                  :border "solid 1px black;" :zIndex "2000" :background-color "white" :opacity "1.0"
-                  :text-align "center" :padding-top "20px"
+    (div {:style {:position          "absolute"           :left    "5%"  :top "5%"
+                  :width   "90%"
+                  :height  "90%"
+                  :border            "solid 1px black;"   :zIndex  "2000"
+                  :background-color  "white"              :opacity "1.0"
+                  :text-align        "center"
                   }
           :onTouchStart #(om/update! dialog-data [:show-connection-confirmation] false)
           :onClick      #(om/update! dialog-data [:show-connection-confirmation] false)

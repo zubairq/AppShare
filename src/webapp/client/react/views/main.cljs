@@ -88,18 +88,24 @@
   {}
   ;------------------------------------------------------------
   (if (get-in splash-screen-data [:show])
-    (div {:style {:position "absolute" :left "20px" :top "20px" :width "80%" :height "70%"
-                  :border "solid 1px black;" :zIndex "2000" :background-color "white" :opacity "1.0"
-                  :text-align "center" :padding-top "20px"
+    (div {:style {:position          "absolute"           :left    "5%"  :top "5%"
+                  :width   "90%"
+                  :height  "90%"
+                  :border            "solid 1px black;"   :zIndex  "2000"
+                  :background-color  "white"              :opacity "1.0"
+                  :text-align        "center"
                   }
           :onTouchStart #(om/update! splash-screen-data [:show] false)
           :onClick      #(om/update! splash-screen-data [:show] false)
           }
 
          (div {:style { :vertical-align "center" }}
-              (div {:style {:padding "5px" :padding-bottom "30px"}} "Connect to other people using just their email address.")
 
-              (div {:style {:padding "5px"}} "Click anywhere to close.")
+              (div {:style {:padding "5px" :padding-bottom "20px"}} "Welcome to the Coils Demo App. " )
+
+              (div {:style {:padding "5px" :padding-bottom "20px"}} "Connect to other people using just their email address.")
+
+              (div {:style {:padding "5px" :padding-bottom "20px"}} "Click to close.")
               ))))
 
 
@@ -111,7 +117,8 @@
   {:absolute-path []}
 ;------------------------------------------------------------
 
-  (div nil
+  (div {:style {:height "100%"}}
+
        (dom/h2 nil "ConnectToUs.co")
 
        (om/build splash-screen (-> app :ui :splash-screen))
