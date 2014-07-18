@@ -37,12 +37,11 @@
       (reset! app-state (:value current-event)))
     (reset! app-watch-on? true)
 
-
     (om/update! debugger-state
             [:mode] "show-event")
-
-
 ))
+
+
 
 
 (defn main-debug-slider-comp [app owner]

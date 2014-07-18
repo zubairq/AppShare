@@ -491,6 +491,12 @@
               (assoc-in @debugger-ui [:current-component]
                         (last (get @debugger-ui :react-components))))
       ;(js/alert (pr-str (get @debugger-ui :current-component)))
+
+      (.log js/console "clicked")
+
+;      (map #(if %1 (if (get %1 :component-name) (.log js/console (pr-str (get %1 :component-name) ))))  @debug-event-timeline)
+
+
       )))
 
 

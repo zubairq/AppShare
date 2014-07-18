@@ -168,16 +168,20 @@
 (def touch-id  (atom 0))
 
 (defn touch [path]
-  (reset! app-state (assoc-in @app-state path
-                     (assoc
-                       (get-in @app-state path)
-                       :touch-id
-                       (swap! touch-id inc)
-                       ))))
+    (reset! app-state (assoc-in @app-state path
+                                (assoc
+                                  (get-in @app-state path)
+                                  :touch-id
+                                  (swap! touch-id inc)
+                                  ))))
 
 
 
 (def debug-event-timeline (atom {}))
+;(map #(str %1) @debug-event-timeline)
+;(get @debug-event-timeline 1)
+
+
 
 
 
@@ -335,6 +339,22 @@
              )
            )
 
+(defn contains-touch-id? [x]
+  (cond
+   (vector? x)
+   (some #(if (contains-touch-id? %1) true) x)
+
+  (map? x)
+  (if (get x :touch-id)
+    true
+    (some #(contains-touch-id? %1) (vals x))
+    )
+
+
+  ))
+
+
+;(contains-touch-id? [{:a {:touch-id 1}}])
 
 ;-----------------------------------------------------
 ;  This is the application watch space. So whenever
@@ -344,11 +364,13 @@
 (add-watch app-state
            :change
            (fn [_ _ old-val new-val]
-             (if @app-watch-on?
-               (add-debug-event
-                :event-type  "UI"
-                :old         old-val
-                :new         new-val))))
+             (do
+               (.log js/console (pr-str  new-val))
+               (if (and @app-watch-on? (not (contains-touch-id?  new-val)))
+                 (add-debug-event
+                  :event-type  "UI"
+                  :old         old-val
+                  :new         new-val)))))
 
 (add-watch data-state
            :change
@@ -363,6 +385,10 @@
 ;(+ (:pos @debugger-ui ) 5)
 ;(:total-events-count @debugger-ui )
 ;(get @debug-event-timeline 20)
+
+
+
+
 
 (comment add-debug-event
                 :event-type  "event"
