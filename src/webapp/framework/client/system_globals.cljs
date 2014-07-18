@@ -197,7 +197,9 @@
            )
 
 
-
+(def component-usage (atom
+                      {}
+                      ))
 
 (def debugger-ui
   (atom {
@@ -276,7 +278,14 @@
                              :event-type      event-type
                              :component-name  component-name
                              :component-data  component-data
-                             }))
+                             })
+
+           (if (get @component-usage  component-name)
+             (reset! component-usage (assoc @component-usage component-name
+                                       (conj (get @component-usage component-name) debug-id)))
+             (reset! component-usage (assoc @component-usage component-name [debug-id]))
+             )
+           )
 
 
 
@@ -305,6 +314,9 @@
                     :pos (:total-events-count @debugger-ui)))))
 
       )))
+
+
+
 
 
 
