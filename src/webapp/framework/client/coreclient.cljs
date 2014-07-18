@@ -27,6 +27,7 @@
                                                     data-state
                                                     update-data
                                                     add-debug-event
+                                                    debug-event-timeline
                                                     ]]
 
   )
@@ -485,11 +486,15 @@
     (do
       (reset! debugger-ui
               (assoc-in @debugger-ui [:mode]
-                        "component"))
+                        "show-event"))
       (reset! debugger-ui
               (assoc-in @debugger-ui [:current-component]
                         (last (get @debugger-ui :react-components))))
+      ;(js/alert (pr-str (get @debugger-ui :current-component)))
       )))
+
+
+
 
 
 (defn set-debug-component [component-name]

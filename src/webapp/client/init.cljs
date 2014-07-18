@@ -70,7 +70,7 @@
                :submit               {:value false}
                }
 
-     :tab         "browser"
+     :tab         "request"
      :tab-browser "latest endorsements"
      :login {
 

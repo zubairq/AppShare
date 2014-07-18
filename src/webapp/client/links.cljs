@@ -45,12 +45,14 @@
          (.write js/document (:error confirm-receiver-code-result))
 
          :else
-         (.write js/document (str "Your email address has been confirmed with connectToUs. See your connections at <a href='http://connecttous.co'>connectToUs.co</a>"))
+         (.write js/document (str "Your email address has been confirmed with connectToUs. "
+                                  "See your connections at <a href='http://connecttous.co'>connectToUs.co</a>"))
          )
         )
 
       :else
-      (.write js/document (str "Your email address has been confirmed"))
+      (.write js/document (str "Your email address has been confirmed. Make your company more visible using "
+                               "<a href='http://connecttous.co'>connectToUs.co</a>"))
       )
      )
    )

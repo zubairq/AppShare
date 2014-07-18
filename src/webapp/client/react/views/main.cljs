@@ -101,11 +101,12 @@
 
          (div {:style { :vertical-align "center" }}
 
-              (div {:style {:padding "5px" :padding-bottom "20px"}} "Welcome to the Coils Demo App. " )
+              (div {:style {:padding "5px" :padding-bottom "0px" :font-size "40"}} (str "ConnectToUs"))
 
-              (div {:style {:padding "5px" :padding-bottom "20px"}} "Connect to other people using just their email address.")
+              (div {:style {:padding "5px" :padding-bottom "20px"  :font-size "25"}}
+                   (str "Sell more by showing your customer connections"))
 
-              (div {:style {:padding "5px" :padding-bottom "20px"}} "Click to close.")
+                   (div {:style {:padding "5px" :padding-bottom "20px"}} "Click to start...")
               ))))
 
 
@@ -141,7 +142,7 @@
                                 :onTouchStart   (fn[e] (select-request e app))
 
 
-                                } "Add"))
+                                } "Connect"))
 
             (dom/li #js {:className  (if (= (-> app :ui :tab) "login") "active" "")   }
                     (dom/a #js {:className  ""
