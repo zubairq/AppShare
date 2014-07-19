@@ -300,7 +300,7 @@
   [{}]
   ;----------------------------------------------------------------
   (neo4j "match
-         (n:Company)<-[:WORKS_FOR]-(w:Person)<-[:CONNECT]-someone
+         (n:Company)-[:WORKS_FOR]-(w:Person)-[:CONNECT]-someone
          return
          n.web_address as company,
          count(someone) as inbound
@@ -311,8 +311,6 @@
 
 
 ;(get-top-companies {})
-
-
 
 
 
@@ -343,25 +341,21 @@
 
   [{:keys [company-url]}]
   ;----------------------------------------------------------------
-  (neo4j
-        "match
-           (n:Company)<-[:WORKS_FOR]-(w:Person)<-[e:CONNECT]-someone
+
+(neo4j "match
+         (n:Company)-[:WORKS_FOR]-(w:Person)-[:CONNECT]-someone
          where
-           n.web_address = {company_url}
+         n.web_address={company_name}
          return
-           n.web_address        as company,
-           count(n.web_address) as skill_count,
-           n.web_address        as skill
-         order by
-           skill"
-
-         {:company_url company-url}
-
-         ["company"
-          "skill"
-          "skill_count"]))
+         n.web_address        as company,
+         count(someone) as inbound
+         order by inbound desc
+         limit 10"
+         {:company_name company-url}
+         ["inbound" "company" ]))
 
 
+;(get-company-details {:company-url "apple.com"})
 
 
 

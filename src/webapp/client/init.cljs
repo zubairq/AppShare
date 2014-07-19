@@ -71,7 +71,7 @@
                }
 
      :tab         "browser"
-     :tab-browser "latest endorsements"
+     :tab-browser "top companies"
      :login {
 
              :login-email {

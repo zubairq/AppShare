@@ -119,58 +119,82 @@
                )))))
 
 
-(defn show-tree [a-tree]
+(defn show-tree [a-tree is-map?]
   (dom/div nil
-
+           ;------
+           ;START
+           ;------
            (cond
+
+            is-map?
+            (dom/div #js {:style #js {:paddingLeft "20px" :display "inline-block"
+                                       :verticalAlign "top"}} (str (:key a-tree) ""))
 
             (map? a-tree)
             (dom/div #js {:style #js {:paddingLeft "20px"}} "{")
 
-            (vector? a-tree)
+            (or
+             (vector? a-tree)
+             (seq? a-tree)
+             (list? a-tree)
+             )
             (dom/div #js {:style #js {:paddingLeft "20px"}} "[")
+            )
 
 
-            (seq? a-tree)
-            (dom/div #js {:style #js {:paddingLeft "20px"}} "["))
-
-
+           ;------
+           ;VALUE
+           ;------
            (cond
+
+            is-map?
+             (dom/div #js {:style #js {:paddingLeft "20px"  :display "inline-block"
+                                        :verticalAlign "top"}}
+              (show-tree (:value a-tree) false)
+                      )
 
             (map? a-tree)
             (do
-              (apply dom/div #js {:style #js {:paddingLeft "20px"}} (map #(show-tree %1)  a-tree))
+              (apply dom/div #js {:style #js {:paddingLeft "20px"}}
+                     (map
+                      #(show-tree  {:key %1 :value (get a-tree %1)} true)
+                      (keys a-tree) ))
               )
 
-            (vector? a-tree)
-            (apply dom/div #js {:style #js {:paddingLeft "20px"}}  (map #(show-tree %1) a-tree))
+            (or
+             (vector? a-tree)
+             (seq? a-tree)
+             (list? a-tree)
+             )
+            (apply dom/div #js {:style #js {:paddingLeft "20px"}}  (map #(show-tree %1 false) a-tree))
 
-
-            (seq? a-tree)
-            (apply dom/div #js {:style #js {:paddingLeft "20px"}}  (map #(show-tree %1) a-tree))
 
             :else
             (dom/div  #js {:style #js {:paddingLeft "20px"}}
-                      (str
+                      (str a-tree ""))
 
-                       (pr-str a-tree))))
+            )
 
 
+           ;------
+           ;END
+           ;------
            (cond
 
+            is-map?
+            (dom/div nil "")
+
             (map? a-tree)
-            (dom/div #js {:style #js {:paddingLeft "20px"}} "}")
+            (dom/div #js {:style #js {:paddingLeft "20px" :paddingBottom "20px"}} "}")
 
-            (vector? a-tree)
-            (dom/div #js {:style #js {:paddingLeft "20px"}} "]")
+            (or
+             (vector? a-tree)
+             (seq? a-tree)
+             (list? a-tree)
+             )
+            (dom/div #js {:style #js {:paddingLeft "20px" :paddingBottom "20px" }} "]")
 
-
-            (seq? a-tree)
-            (dom/div #js {:style #js {:paddingLeft "20px"}} "]"))
-
-
-
-           ))
+            )))
 
 (defn show-event-component[ debug-ui-state  owner ]
   (reify
@@ -216,12 +240,12 @@
 
                             (if deleted (dom/div #js {:style #js {:color "red"}}
                                                  (dom/div nil "Deleted")
-                                                 (show-tree  deleted)
+                                                 (show-tree  deleted false)
                                                  ))
 
                             (if added (dom/div #js {:style #js {:color "green"}}
                                                (dom/div nil "Added")
-                                               (show-tree  added)
+                                               (show-tree  added false)
                                                ))
 
 
