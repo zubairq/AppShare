@@ -29,17 +29,35 @@
 ;-----------------------------------------------------
 (defn update-app-pos [debugger-state value]
   (let
-    [current-event (get @debug-event-timeline value)]
+    [
+     current-event       (get @debug-event-timeline value)
+     debug-ids           (reverse (range 1 (+ 1 (:pos @debugger-state))))
+     ]
     (om/update! debugger-state [:pos] value)
 
     (reset! app-watch-on? false)
     (if (= (:event-type current-event) "UI")
-      (reset! app-state (:value current-event)))
+      (reset! app-state (:value current-event))
+      (do
+        ;(.log js/console (str "debug count: " debug-ids))
+        (let [
+              new-pos   (first (drop-while (fn[event-id] (not= (get (get @debug-event-timeline event-id) :event-type) "UI"))  debug-ids))
+              ;new-pos   (get (get @debug-event-timeline (first debug-ids)) :event-type)
+              ]
+          ;(.log js/console (pr-str "UI pos" new-pos))
+          (if (pos? new-pos)
+             (reset! app-state (:value (get @debug-event-timeline new-pos)))
+            )
+          )
+        )
+      )
     (reset! app-watch-on? true)
 
     (om/update! debugger-state
             [:mode] "show-event")
 ))
+
+
 
 
 
