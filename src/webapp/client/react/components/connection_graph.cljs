@@ -8,6 +8,7 @@
 
   (:use-macros
    [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils div a]])
+
   (:use
    [webapp.framework.client.system-globals  :only  [touch]]
    [webapp.framework.client.coreclient      :only  [log amend-record]]
@@ -24,42 +25,34 @@
 (defn-ui-component   text-graph    [companies]
   {:absolute-path [:ui :companies]}
   ;---------------------------------------------------------
-     (div
-       {:style {:height "100%" :width "100%"}}
+  (div  {:style {:height "100%" :width "100%"}}
 
-      (apply
-       dom/div
-       nil
-       (map
-        (fn[x]
-          (div
-           nil
-           (div
-            {
-                 :style
-                 {
-                      :width "200px"
-                      :display "inline-block"}}
-            (get x "company"))
-           (a
-            {:href "#"
-                 :onClick
+        (let [all-company-records    (-> companies :values )]
 
-                 #(om/update! companies [:values]
-                              (amend-record (into [] (get @companies :values))
-                                            "company"
-                                            (get @x "company")
-                                            (fn[z] (merge z {:clicked true}))
-                                            ))
+          (apply
+           dom/div nil
+
+           (map
+            (fn[company-ui-record]
+              (div  nil
+
+                    (div  {:style { :width "200px"  :display "inline-block"}}
+                          (get company-ui-record "company"))
+
+                    (a {:href "#" :onClick
+                        #(om/update! companies [:values]
+                                     (amend-record (into [] (get @companies :values))
+                                                   "company"
+                                                   (get @company-ui-record "company")
+                                                   (fn[z] (merge z {:clicked true}))
+                                                   ))
 
 
-                 }
-            (get x "inbound"))
-           ))
-        (-> companies :values ))
-       )
+                        }
+                       (get  company-ui-record "inbound"))))
 
-      ))
+            all-company-records)
+           ))))
 
 
 

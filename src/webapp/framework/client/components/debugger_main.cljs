@@ -118,8 +118,59 @@
 
                )))))
 
-(range 1 10)
 
+(defn show-tree [a-tree]
+  (dom/div nil
+
+           (cond
+
+            (map? a-tree)
+            (dom/div #js {:style #js {:paddingLeft "20px"}} "{")
+
+            (vector? a-tree)
+            (dom/div #js {:style #js {:paddingLeft "20px"}} "[")
+
+
+            (seq? a-tree)
+            (dom/div #js {:style #js {:paddingLeft "20px"}} "["))
+
+
+           (cond
+
+            (map? a-tree)
+            (do
+              (apply dom/div #js {:style #js {:paddingLeft "20px"}} (map #(show-tree %1)  a-tree))
+              )
+
+            (vector? a-tree)
+            (apply dom/div #js {:style #js {:paddingLeft "20px"}}  (map #(show-tree %1) a-tree))
+
+
+            (seq? a-tree)
+            (apply dom/div #js {:style #js {:paddingLeft "20px"}}  (map #(show-tree %1) a-tree))
+
+            :else
+            (dom/div  #js {:style #js {:paddingLeft "20px"}}
+                      (str
+
+                       (pr-str a-tree))))
+
+
+           (cond
+
+            (map? a-tree)
+            (dom/div #js {:style #js {:paddingLeft "20px"}} "}")
+
+            (vector? a-tree)
+            (dom/div #js {:style #js {:paddingLeft "20px"}} "]")
+
+
+            (seq? a-tree)
+            (dom/div #js {:style #js {:paddingLeft "20px"}} "]"))
+
+
+
+           ))
 
 (defn show-event-component[ debug-ui-state  owner ]
   (reify
@@ -163,21 +214,15 @@
                                              }}
                             (str  debug-id ") " event-type))
 
-                           (if deleted (dom/div #js {:style #js {:color "red"}}
-                                    (dom/div nil "Deleted")
-                                    (dom/div nil
+                            (if deleted (dom/div #js {:style #js {:color "red"}}
+                                                 (dom/div nil "Deleted")
+                                                 (show-tree  deleted)
+                                                 ))
 
-                                             (str
-
-                                              (pr-str (if deleted  deleted  "Nothing deleted"))))))
-
-                           (if added (dom/div #js {:style #js {:color "green"}}
-                                    (dom/div nil "Added")
-                                    (dom/div nil
-
-                                             (str
-
-                                              (pr-str (if added added "Nothing added"))))))
+                            (if added (dom/div #js {:style #js {:color "green"}}
+                                               (dom/div nil "Added")
+                                               (show-tree  added)
+                                               ))
 
 
 

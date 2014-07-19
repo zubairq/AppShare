@@ -378,8 +378,8 @@
            (fn [_ _ old-val new-val]
              (do
                ;(.log js/console (pr-str  new-val))
-               ;(if (and @app-watch-on? (not (contains-touch-id?  new-val)))
-               (if @app-watch-on?
+               (if (and @app-watch-on? (not (contains-touch-id?  new-val)))
+               ;(if @app-watch-on?
                  (add-debug-event
                   :event-type  "UI"
                   :old         old-val
