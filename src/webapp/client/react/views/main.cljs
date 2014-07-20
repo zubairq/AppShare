@@ -123,7 +123,7 @@
 
        (dom/h2 nil "ConnectToUs.co")
 
-       (component-fn  splash-screen  app  [:ui :splash-screen])
+       (component  splash-screen  app  [:ui :splash-screen])
 
 
 

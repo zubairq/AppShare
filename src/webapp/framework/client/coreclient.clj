@@ -256,6 +256,9 @@
   `(do
      (webapp.framework.client.coreclient/record-component-call
       (~'ns-coils-debug)
+      ~(str `~component-render-fn)
+      ~state
+      ~path
       )
     (~'component-fn ~component-render-fn ~state ~path)))
 

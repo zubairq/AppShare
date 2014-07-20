@@ -337,10 +337,13 @@
                      ))))))
 
 
-(defn record-component-call [namespace-name]
+(defn record-component-call [caller-namespace-name  called-fn-name  state  path]
   (do
     (log (str "record-component-call" ))
-    (log (str "    namespace:" namespace-name))
+    (log (str "    caller-namespace: " caller-namespace-name))
+    (log (str "    fn-name:          " called-fn-name))
+    (log (str "    state:            " (keys (get-in state path))))
+    (log (str "    UI path:          " path))
     ))
 
 
