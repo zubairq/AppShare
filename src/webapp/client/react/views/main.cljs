@@ -129,7 +129,7 @@
 
        (dom/h2 nil "ConnectToUs.co")
 
-       (component   letter-a    splash-screen-data  path  [] )
+       (component   letter-a    app  path  [] )
 
        (component  splash-screen  app  path  [:ui :splash-screen])
 
