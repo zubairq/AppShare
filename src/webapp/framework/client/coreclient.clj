@@ -248,5 +248,15 @@
 
        ;(log (pr-str l))
        (update-data [:company-details]  l)
-       )))
-)
+       ))))
+
+
+(defmacro component
+  [component-render-fn state path]
+  `(do
+     (webapp.framework.client.coreclient/record-component-call
+      (~'ns-coils-debug)
+      )
+    (~'component-fn ~component-render-fn ~state ~path)))
+
+(macroexpand '(component  main-view  app  []) )

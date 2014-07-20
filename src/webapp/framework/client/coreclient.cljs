@@ -334,10 +334,16 @@
                      (char 13) (char 13)
                      code-str
                      ""
-                     )))
-     )
-    )
-  )
+                     ))))))
+
+
+(defn record-component-call [namespace-name]
+  (do
+    (log (str "record-component-call" ))
+    (log (str "    namespace:" namespace-name))
+    ))
+
+
 
 
 (defn record-watcher [namespace-name path tree-name & code]
@@ -708,4 +714,11 @@
    value
    data-fn))
 
+
+(defn component-fn [coils-fn state path]
+  (do
+    (log (str "component: " path))
+    (om/build
+     coils-fn
+     (get-in state path))))
 

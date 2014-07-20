@@ -1,6 +1,6 @@
 (ns webapp.client.react.views.main
   (:require
-   [webapp.framework.client.coreclient]
+   [webapp.framework.client.coreclient :as coils]
    [om.core          :as om :include-macros true]
    [om.dom           :as dom]
    [clojure.data     :as data]
@@ -12,9 +12,10 @@
    [webapp.client.react.components.login               :only  [login]]
    [webapp.client.react.components.connection-graph    :only  [graph text-graph latest-endorsements]]
    [webapp.client.react.components.company-details     :only  [company-details2]]
+   [webapp.framework.client.coreclient     :only  [log remote component-fn]]
    )
   (:use-macros
-   [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils div]]))
+   [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils div component]]))
 
 (ns-coils 'webapp.client.react.views.main)
 
@@ -122,7 +123,7 @@
 
        (dom/h2 nil "ConnectToUs.co")
 
-       (om/build splash-screen (-> app :ui :splash-screen))
+       (component-fn  splash-screen  app  [:ui :splash-screen])
 
 
 

@@ -13,7 +13,7 @@
    [webapp.client.ui-tree]
    )
   (:use
-   [webapp.framework.client.coreclient      :only  [log remote]]
+   [webapp.framework.client.coreclient      :only  [log remote component-fn]]
    [webapp.framework.client.system-globals  :only  [app-state   playback-app-state
                                                     playback-controls-state
                                                     reset-app-state ui-watchers
@@ -28,7 +28,13 @@
    [clojure.string :only [blank?]]
    )
    (:require-macros
-    [cljs.core.async.macros :refer [go]]))
+    [cljs.core.async.macros :refer [go]])
+
+   (:use-macros
+     [webapp.framework.client.coreclient    :only  [component  ns-coils]])
+
+  )
+(ns-coils 'webapp.client.init)
 
 
 
@@ -156,6 +162,6 @@
 
 
 (defn ^:export main [app owner]
-  (om/build  main-view  app))
+  (component  main-view  app  []))
 
 
