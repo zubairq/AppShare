@@ -23,6 +23,7 @@
                                                          init-state-fns
                                                          data-and-ui-events-on?
                                                          add-debug-event
+                                                         current-gui-path
                                                          ]]
    )
   (:use-macros
@@ -205,7 +206,9 @@
               ;(if @playbackmode (on-mouse e app)) (-> app :pointer :mouse-y)) ")"
 
 
-              (@start-component    app    owner)
+              (do
+                (reset! current-gui-path [])
+                (@start-component    app    owner))
 
               (if @playbackmode
                 (dom/div #js {

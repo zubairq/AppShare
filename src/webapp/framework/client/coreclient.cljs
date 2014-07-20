@@ -28,6 +28,8 @@
                                                     update-data
                                                     add-debug-event
                                                     component-usage
+                                                    gui-calls
+                                                    current-gui-path
                                                     ]]
 
   )
@@ -337,14 +339,6 @@
                      ))))))
 
 
-(defn record-component-call [caller-namespace-name  called-fn-name  state  path]
-  (do
-    (log (str "record-component-call" ))
-    (log (str "    caller-namespace: " caller-namespace-name))
-    (log (str "    fn-name:          " called-fn-name))
-    (log (str "    state:            " (keys (get-in state path))))
-    (log (str "    UI path:          " path))
-    ))
 
 
 
@@ -718,6 +712,8 @@
    data-fn))
 
 
+
+
 (defn component-fn [coils-fn state path]
   (do
     (log (str "component: " path))
@@ -725,3 +721,23 @@
      coils-fn
      (get-in state path))))
 
+
+
+
+(defn record-component-call [caller-namespace-name  called-fn-name  state   parent-path  rel-path  ]
+  (do
+    (log (str "record-component-call" ))
+    (log (str "    caller-namespace: " caller-namespace-name))
+    (log (str "    called-fn-name:   " called-fn-name))
+    (log (str "    state:            " (keys (get-in state rel-path))))
+    (log (str "    UI parent path:   " parent-path))
+    (log (str "    UI rel path:      " rel-path))
+    (let [ entry-name  (str called-fn-name ": " parent-path ":" rel-path)]
+      (reset! gui-calls (assoc @gui-calls entry-name [1 2]))
+      )
+    ))
+
+
+
+(keys
+ @gui-calls)

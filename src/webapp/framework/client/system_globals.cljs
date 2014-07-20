@@ -411,3 +411,6 @@
 ;(map :event-type (vals @debug-event-timeline))
 
 (keys @debugger-ui)
+
+(def gui-calls (atom {}))
+(def current-gui-path (atom []))

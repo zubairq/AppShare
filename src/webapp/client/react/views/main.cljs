@@ -81,6 +81,11 @@
 
 ))
 
+;------------------------------------------------------------
+(defn-ui-component    letter-a  [data]
+  {}
+  ;------------------------------------------------------------
+    (div nil "a"))
 
 
 
@@ -100,6 +105,7 @@
           :onClick      #(om/update! splash-screen-data [:show] false)
           }
 
+         (component   letter-a   splash-screen-data [] )
          (div {:style { :vertical-align "center" }}
 
               (div {:style {:padding "5px" :padding-bottom "0px" :font-size "40"}} (str "ConnectToUs"))

@@ -259,6 +259,7 @@
       ~(str `~component-render-fn)
       ~state
       ~path
+      ~path
       )
     (~'component-fn ~component-render-fn ~state ~path)))
 
