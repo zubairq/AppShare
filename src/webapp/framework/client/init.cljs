@@ -76,6 +76,6 @@
 
 
 (defn ^:export main [app owner]
-  (component-fn  main-view  app  []))
+  (component-fn  main-view  app  [] []))
 
 

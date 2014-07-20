@@ -105,7 +105,7 @@
           :onClick      #(om/update! splash-screen-data [:show] false)
           }
 
-         (component   letter-a   splash-screen-data [] )
+         (component   letter-a    splash-screen-data  path  [] )
          (div {:style { :vertical-align "center" }}
 
               (div {:style {:padding "5px" :padding-bottom "0px" :font-size "40"}} (str "ConnectToUs"))
@@ -129,7 +129,9 @@
 
        (dom/h2 nil "ConnectToUs.co")
 
-       (component  splash-screen  app  [:ui :splash-screen])
+       (component   letter-a    splash-screen-data  path  [] )
+
+       (component  splash-screen  app  path  [:ui :splash-screen])
 
 
 

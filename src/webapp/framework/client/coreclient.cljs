@@ -714,12 +714,14 @@
 
 
 
-(defn component-fn [coils-fn state path]
+(defn component-fn [coils-fn state parent-path rel-path]
   (do
-    (log (str "component: " path))
+    (log (str "component: " rel-path))
     (om/build
      coils-fn
-     (get-in state path))))
+     (get-in state rel-path)
+     {:init-state {:parent-path(into [] (flatten (conj parent-path rel-path))) }}
+     )))
 
 
 
@@ -733,11 +735,10 @@
     (log (str "    UI parent path:   " parent-path))
     (log (str "    UI rel path:      " rel-path))
     (let [ entry-name  (str called-fn-name ": " parent-path ":" rel-path)]
-      (reset! gui-calls (assoc @gui-calls entry-name [1 2]))
-      )
-    ))
+      (reset! gui-calls (assoc @gui-calls entry-name "loaded"))
+      )))
 
 
 
-(keys
- @gui-calls)
+(keys @gui-calls
+)
