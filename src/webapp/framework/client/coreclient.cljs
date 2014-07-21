@@ -747,7 +747,7 @@
                               (add-debug-event :event-type      "render"
                                                :component-name  called-fn-name
                                                :component-path  (into [] (flatten (conj parent-path rel-path)))
-                                               :component-data  (pr-str dfff)
+                                               :component-data  dfff
                                                )
 
                               (conj
@@ -761,8 +761,8 @@
 
 
 
-(keys @gui-calls)
+;(keys @gui-calls)
 
-(get @gui-calls "splash-screen: []:[:ui :splash-screen]")
+;(get @gui-calls "splash-screen: []:[:ui :splash-screen]")
 
-@gui-calls
+;@gui-calls

@@ -307,34 +307,37 @@
                                                                                 component-path
                                                                                 ))
 
-                                                                              (dom/div #js {
-                                                     :onClick #(do (om/update!
-                                                                debug-ui-state
-                                                                [:code-data-show_index]
-                                                                (if (= (get @debug-ui-state :code-data-show_index) debug-id)
-                                                                  nil
-                                                                  debug-id))
-                                                                                                                                  (om/update!
-                                                                            debug-ui-state
-                                                                            [:code-show_index] nil))
-                                                                :style #js {:color "blue"
-                                                                            :text-decoration "underline"
-                                                                            :display "inline-block"
-                                                                            :paddingLeft "10px"
-                                                                            }} (str
-                                                                                (if (= (get debug-ui-state :code-data-show_index) debug-id)
-                                                                                  "-" "+")
-                                                                                "Input data"))
+                                       (dom/div #js {
+                                                     :onClick #(do
+                                                                 (om/update!
+                                                                  debug-ui-state
+                                                                  [:code-data-show_index]
+                                                                  (if (= (get @debug-ui-state :code-data-show_index) debug-id)
+                                                                    nil
+                                                                    debug-id))
+                                                                 (om/update!
+                                                                  debug-ui-state
+                                                                  [:code-show_index] nil))
+                                                     :style #js {:color           "blue"
+                                                                 :text-decoration "underline"
+                                                                 :display         "inline-block"
+                                                                 :paddingLeft     "10px"
+                                                                 }
+                                                     }
+                                                (str
+                                                 (if (= (get debug-ui-state :code-data-show_index) debug-id)
+                                                   "-" "+")
+                                                 "Input data"))
 
-                              (if (= (get debug-ui-state :code-show_index) debug-id)
-                               (dom/pre #js {
-                                             :style #js {:position "absolute" }
-                                                      :onMouseLeave #(om/update! debug-ui-state [:code-show_index]
-                                                                                nil)}
-                                       (->
-                                        (str
-                                         (get
-                                          (get @debugger-ui :react-components-code)
+                                       (if (= (get debug-ui-state :code-show_index) debug-id)
+                                         (dom/pre #js {
+                                                       :style #js {:position "absolute" }
+                                                       :onMouseLeave #(om/update! debug-ui-state [:code-show_index]
+                                                                                  nil)}
+                                                  (->
+                                                   (str
+                                                    (get
+                                                     (get @debugger-ui :react-components-code)
 
                                           component-name
 
@@ -349,7 +352,7 @@
                                              :style #js {:position "absolute" }
                                                       :onMouseLeave #(om/update! debug-ui-state [:code-data-show_index]
                                                                                 nil)}
-                                       (pr-str component-data)
+                                       (show-tree component-data false)
 
                                         ))
 
