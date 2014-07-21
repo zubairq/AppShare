@@ -221,6 +221,7 @@
                                  event-name
                                  component-name
                                  component-data
+                                 component-path
                                  action-name
                                  input
                                  result
@@ -277,6 +278,7 @@
                              :id              debug-id
                              :event-type      event-type
                              :component-name  component-name
+                             :component-path  component-path
                              :component-data  component-data
                              })
 

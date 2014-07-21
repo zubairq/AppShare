@@ -550,7 +550,7 @@
     (do
       ;(log (str "render: " react-fn-name))
       ;(log (str "           : " (pr-str data)))
-      (add-debug-event :event-type      "render"
+      (comment add-debug-event :event-type      "render"
                        :component-name  react-fn-name
                        :component-data  data
                        )
@@ -726,19 +726,43 @@
 
 
 
-(defn record-component-call [caller-namespace-name  called-fn-name  state   parent-path  rel-path  ]
-  (do
+(defn record-component-call [caller-namespace-name  called-fn-name  state
+                             parent-path            rel-path]
+  (let [dfff   (get-in state rel-path)
+
+        ]
     (log (str "record-component-call" ))
     (log (str "    caller-namespace: " caller-namespace-name))
     (log (str "    called-fn-name:   " called-fn-name))
-    (log (str "    state:            " (keys (get-in state rel-path))))
+    (log (str "    state:            " (keys dfff)))
     (log (str "    UI parent path:   " parent-path))
     (log (str "    UI rel path:      " rel-path))
+
     (let [ entry-name  (str called-fn-name ": " parent-path ":" rel-path)]
-      (reset! gui-calls (assoc @gui-calls entry-name "loaded"))
-      )))
+      (reset! gui-calls (assoc @gui-calls entry-name
+
+
+                          (if (not (= (pr-str dfff) (last (get @gui-calls  entry-name) )))
+                            (do
+                              (add-debug-event :event-type      "render"
+                                               :component-name  called-fn-name
+                                               :component-path  (into [] (flatten (conj parent-path rel-path)))
+                                               :component-data  (pr-str dfff)
+                                               )
+
+                              (conj
+                               (if (get @gui-calls entry-name) (get @gui-calls  entry-name) [])   (pr-str dfff))
+
+                              )
+                            (get @gui-calls  entry-name))
+
+                            )))))
 
 
 
-(keys @gui-calls
-)
+
+(keys @gui-calls)
+
+(get @gui-calls "splash-screen: []:[:ui :splash-screen]")
+
+@gui-calls

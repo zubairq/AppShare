@@ -222,6 +222,7 @@
                    action-input  (get event-item :input)
                    action-result  (get event-item :result)
                    component-name   (get event-item :component-name)
+                   component-path   (get event-item :component-path)
                    component-data   (get event-item :component-data)
                    deleted     (first (data/diff old-value new-value))
                    added       (second (data/diff old-value new-value))
@@ -301,7 +302,10 @@
                                                                             }} (str
                                                                                 (if (= (get debug-ui-state :code-show_index) debug-id)
                                                                                   "-" "+")
-                                                                                component-name))
+                                                                                component-name
+                                                                                " "
+                                                                                component-path
+                                                                                ))
 
                                                                               (dom/div #js {
                                                      :onClick #(do (om/update!
