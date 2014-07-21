@@ -88,21 +88,21 @@
 
 
            ~'om/IRender
-           (~'render
-            [~'this]
+          (~'render
+           [~'this]
 
-            ~(if *show-code*
-                      `(~'let [~'path ~'(om/get-state owner :parent-path)]
-                        (webapp.framework.client.coreclient/debug-react
-                        ~(str `~fn-name)
-                        ~'owner
-                        ~(first data-paramater-name)
-                        (~'fn [~(first data-paramater-name)]
-                              ~@code)))
+           ~(if *show-code*
+              `(~'let [~'path ~'(om/get-state owner :parent-path)]
+                      (webapp.framework.client.coreclient/debug-react
+                       ~(str `~fn-name)
+                       ~'owner
+                       ~(first data-paramater-name)
+                       (~'fn [~(first data-paramater-name)]
+                             ~@code)))
 
-                       ;else
-                      (first code))
-            )
+              ;else
+              (first code))
+           )
          ))
 
 
@@ -254,18 +254,18 @@
 
 
 (defmacro component
-  [component-render-fn   state   parent-path   rel-path]
+  [component-render-fn   state   rel-path]
   `(do
      (webapp.framework.client.coreclient/record-component-call
       (~'ns-coils-debug)
       ~(str `~component-render-fn)
       ~state
-      ~parent-path
+      ~'path
       ~rel-path
       )
-    (~'component-fn ~component-render-fn ~state  ~parent-path ~rel-path)))
+    (~'component-fn ~component-render-fn ~state  ~'path ~rel-path)))
 
-(macroexpand '(component  main-view  app [] []) )
+(macroexpand '(component  main-view  app []) )
 (macroexpand  '(defn-ui-component    letter-a  [data]
   {}
     (div nil "a")))

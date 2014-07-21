@@ -24,7 +24,7 @@
                                                     set-ab-tests
                                                     set-ab-goals
                                                     ]]
-   [webapp.client.react.views.main                    :only   [main-view]]
+   [webapp.client.react.views.main         :only   [main-view]]
    [clojure.string :only [blank?]]
    )
    (:require-macros
@@ -162,6 +162,7 @@
 
 
 (defn ^:export main [app owner]
-    (component  main-view  app  []  []))
+  (let [path []]
+    (component  main-view  app  [])))
 
 

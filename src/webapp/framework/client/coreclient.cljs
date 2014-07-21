@@ -720,7 +720,7 @@
     (om/build
      coils-fn
      (get-in state rel-path)
-     {:init-state {:parent-path(into [] (flatten (conj parent-path rel-path))) }}
+     {:init-state {:parent-path (into [] (flatten (conj parent-path rel-path))) }}
      )))
 
 
