@@ -28,11 +28,11 @@
     [cljs.core.async.macros :refer [go]])
 
    (:use-macros
-     [webapp.framework.client.coreclient    :only  [component]])
+     [webapp.framework.client.coreclient    :only  [component  ns-coils]])
 
   )
 
-
+(ns-coils 'webapp.framework.client.init)
 
 
 

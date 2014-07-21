@@ -7,11 +7,11 @@
    )
 
   (:use-macros
-   [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils div a]])
+   [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils div a component]])
 
   (:use
    [webapp.framework.client.system-globals  :only  [touch]]
-   [webapp.framework.client.coreclient      :only  [log amend-record]]
+   [webapp.framework.client.coreclient      :only  [log amend-record  component-fn]]
    )
   )
 (ns-coils 'webapp.client.react.components.connection-graph)
@@ -57,14 +57,10 @@
 
 
 
-(defn graph [{:keys [data]} owner]
-  (reify
+(defn-ui-component   graph    [data]
+  {:absolute-path [:ui :companies]}
 
-    ;---------------------------------------------------------
-    om/IRender
-    (render
-     [this]
-     (dom/div
+  (dom/div
       #js {:style #js {:height "100%" :width "100%"}}
 
       (dom/div #js {:style #js {:padding-top "40px"}} "Connections")
@@ -78,7 +74,7 @@
                            :fill "yellow"} )
       )
 
-))))
+))
 
 
 

@@ -138,6 +138,7 @@
              (vector? a-tree)
              (seq? a-tree)
              (list? a-tree)
+             (coll? a-tree)
              )
             (dom/div #js {:style #js {:paddingLeft "20px"}} "[")
             )
@@ -166,13 +167,14 @@
              (vector? a-tree)
              (seq? a-tree)
              (list? a-tree)
+             (coll? a-tree)
              )
             (apply dom/div #js {:style #js {:paddingLeft "20px"}}  (map #(show-tree %1 false) a-tree))
 
 
             :else
             (dom/div  #js {:style #js {:paddingLeft "20px"}}
-                      (str a-tree ""))
+                      (pr-str a-tree ""))
 
             )
 
@@ -192,6 +194,7 @@
              (vector? a-tree)
              (seq? a-tree)
              (list? a-tree)
+             (coll? a-tree)
              )
             (dom/div #js {:style #js {:paddingLeft "20px" :paddingBottom "20px" }} "]")
 
@@ -300,7 +303,8 @@
                                                                             :text-decoration "underline"
                                                                             :display "inline-block"
                                                                             }} (str
-                                                                                (if (= (get debug-ui-state :code-show_index) debug-id)
+                                                                                (if (= (get debug-ui-state :code-show_index)
+                                                                                       debug-id)
                                                                                   "-" "+")
                                                                                 component-name
                                                                                 " "

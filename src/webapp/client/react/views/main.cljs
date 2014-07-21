@@ -105,7 +105,6 @@
           :onClick      #(om/update! splash-screen-data [:show] false)
           }
 
-         (component   letter-a    splash-screen-data  [] )
          (div {:style { :vertical-align "center" }}
 
               (div {:style {:padding "5px" :padding-bottom "0px" :font-size "40"}} (str "ConnectToUs"))
@@ -128,8 +127,6 @@
   (div {:style {:height "100%"}}
 
        (dom/h2 nil "ConnectToUs.co")
-
-       (component  letter-a    app  [] )
 
        (component  splash-screen  app  [:ui :splash-screen])
 
@@ -165,16 +162,16 @@
 
            (cond
             (= (-> app :ui :tab) "browser")
-            (om/build  browser-menu  (-> app ))
+            (component  browser-menu  app [])
            )
 
            (cond
             (= (-> app :ui :tab) "request")
-            (om/build  request-form  (-> app :ui :request))
+            (component  request-form  app [:ui :request] )
 
 
             (= (-> app :ui :tab) "login")
-            (om/build  login  (-> app :ui :login))
+            (component  login  app    [:ui :login])
 
             (and
              (= (-> app :ui :tab) "browser")
@@ -183,14 +180,12 @@
 
              ;(= (-> app :ui :graph-ab-test) "text")
              true
-             (om/build  text-graph    (-> app :ui :companies))
+             (component  text-graph    app [:ui :companies])
 
 
              (= (-> app :ui :graph-ab-test) "SVG")
-             (om/build  graph
-                        {
-                         :data    (:data    app)
-                         }))
+             (component  graph app
+                        [:data  :data ]))
 
 
             (and
@@ -200,22 +195,20 @@
 
              ;(= (-> app :ui :graph-ab-test) "text")
              true
-             (om/build  latest-endorsements
-                        (-> app :ui :latest-endorsements))
+             (component  latest-endorsements
+                        app [:ui :latest-endorsements])
 
 
              (= (-> app :ui :graph-ab-test) "SVG")
-             (om/build  graph
-                        {
-                         :data    (:data    app)
-                         }))
+             (component  graph app
+                        [:data  :data ]))
 
 
            (and
              (= (-> app :ui :tab) "browser")
              (= (-> app :ui :tab-browser) "company"))
 
-             (om/build  company-details2   (-> app :ui :company-details))
+             (component  company-details2   app [:ui :company-details])
 
 
 )))

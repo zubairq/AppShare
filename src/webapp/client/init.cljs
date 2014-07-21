@@ -28,7 +28,8 @@
    [clojure.string :only [blank?]]
    )
    (:require-macros
-    [cljs.core.async.macros :refer [go]])
+    [cljs.core.async.macros :refer [go]]
+    )
 
    (:use-macros
      [webapp.framework.client.coreclient    :only  [component  ns-coils]])
@@ -163,6 +164,6 @@
 
 (defn ^:export main [app owner]
   (let [path []]
-    (component  main-view  app  [])))
+    (component    main-view  app  [])))
 
 

@@ -3,19 +3,19 @@
    [om.core          :as om :include-macros true]
    [om.dom           :as dom :include-macros true]
    [clojure.data     :as data]
-   [clojure.string   :as string]
-   [webapp.framework.client.coreclient])
+   [clojure.string   :as string])
 
   (:use
-   [webapp.client.ui-helpers                :only  [validate-email
-                                                    ]]
+   [webapp.client.ui-helpers                :only  [validate-email]]
+   [webapp.framework.client.coreclient      :only  [log remote component-fn]]
    [webapp.framework.client.ui-helpers      :only  [blur-field
                                                     update-field-value
                                                     basic-input-box ]]
    [clojure.string :only [blank?]]
-   [webapp.framework.client.system-globals :only [debugger-ui]])
+   [webapp.framework.client.system-globals  :only [debugger-ui]])
+
   (:use-macros
-   [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils]]))
+   [webapp.framework.client.coreclient      :only  [defn-ui-component  ns-coils  component]]))
 
 (ns-coils 'webapp.client.react.components.login)
 
@@ -66,7 +66,7 @@
    nil
    (dom/div
     nil
-    (om/build  login-email-field   (-> ui-data :login-email ))
+    (component  login-email-field   ui-data [:login-email] )
 
     (dom/button #js {:onClick (fn [e]
                                 (js/alert (-> @ui-data :login-email :value ) )

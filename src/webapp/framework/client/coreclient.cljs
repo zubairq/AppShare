@@ -10,8 +10,10 @@
     [om.dom           :as dom]
     [cljs.core.async :as async :refer [chan close!]]
   )
+
   (:require-macros
    [cljs.core.async.macros :refer [go alt!]])
+
   (:use
    [clojure.browser.event :only [listen]]
    [webapp.framework.client.system-globals  :only  [touch
@@ -32,8 +34,7 @@
                                                     current-gui-path
                                                     ]]
 
-  )
-)
+))
 
 
 

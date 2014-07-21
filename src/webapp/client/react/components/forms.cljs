@@ -4,7 +4,7 @@
    [om.dom           :as dom :include-macros true]
    [clojure.data     :as data]
    [clojure.string   :as string]
-   [webapp.framework.client.coreclient])
+   )
 
   (:use
    [webapp.client.ui-helpers                :only  [validate-email
@@ -12,9 +12,14 @@
    [webapp.framework.client.ui-helpers      :only  [blur-field
                                                     update-field-value
                                                     basic-input-box ]]
+
+   [webapp.framework.client.coreclient      :only  [log  remote  component-fn]]
+
    [clojure.string :only [blank?]])
+
   (:use-macros
-   [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils div]]))
+   [webapp.framework.client.coreclient      :only  [defn-ui-component  ns-coils  div  component]]))
+
 (ns-coils 'webapp.client.react.components.forms)
 
 
@@ -115,15 +120,15 @@
    nil
 
    (if [get-in ui-data [:show-connection-confirmation]]
-     (om/build  show-connection-confirmation-dialog-box  ui-data))
+     (component  show-connection-confirmation-dialog-box  ui-data []))
 
 
 
    (div
     nil
-    (om/build from-email-field   (-> ui-data :from-email ))
+    (component   from-email-field   ui-data [:from-email] )
 
-    (om/build  to-email-field      (-> ui-data :to-email ))
+    (component  to-email-field      ui-data [:to-email] )
 
 
     (dom/button #js {:onClick (fn [e]
