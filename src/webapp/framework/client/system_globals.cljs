@@ -212,6 +212,9 @@
          }))
 
 
+(@debugger-ui :react-components)
+
+
 (def debug-count (atom 0))
 (defn add-debug-event [& {:keys [
                                  event-type
@@ -316,6 +319,10 @@
                     :pos (:total-events-count @debugger-ui)))))
 
       )))
+
+
+
+
 
 
 

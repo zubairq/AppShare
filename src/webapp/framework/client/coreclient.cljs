@@ -469,7 +469,7 @@
 
 
 
-(defn set-debug-component [component-name]
+(defn set-debug-component [component-name  component-path]
   (do
     (if (not-any? #(= %1 component-name) (get @debugger-ui :react-components))
       (reset! debugger-ui
@@ -490,7 +490,7 @@
 
 
 
-(defn unset-debug-component [component-name]
+(defn unset-debug-component [component-name   component-path]
   (do
     (reset! debugger-ui
 
@@ -516,18 +516,14 @@
     [
      react-fn-name    (str str-nm)
      ]
-    (do
-      ;(log (str "render: " react-fn-name))
-      ;(log (str "           : " (pr-str data)))
-      (comment add-debug-event :event-type      "render"
-                       :component-name  react-fn-name
-                       :component-data  data
-                       )
       (dom/div
        #js {
             :onMouseEnter #(if js/debug_live (om/set-state! owner :debug-highlight true))
+
             :onMouseLeave #(if js/debug_live (om/set-state! owner :debug-highlight false))
+
             :onClick component-clicked
+
             :style (if js/debug_live
                      #js {:backgroundColor
 
@@ -535,11 +531,11 @@
                             (om/get-state owner :debug-highlight)
                             (do
                               (if (not= (:mode @debugger-ui) "component")
-                                (set-debug-component  react-fn-name))
+                                (set-debug-component  react-fn-name   (om/get-state owner :parent-path)))
                               "lightGray")
                             (do
                               (if (not= (:mode @debugger-ui) "component")
-                                (unset-debug-component  react-fn-name))
+                                (unset-debug-component  react-fn-name  (om/get-state owner :parent-path)))
                               "")
                             ""
                             )
@@ -547,7 +543,7 @@
             }
 
        (react-fn data)
-     ""))))
+       "")))
 
 
 
@@ -586,6 +582,10 @@
           :fn       fn-def
           }))
 
+
+
+
+
 (defn when-value-changes [watcher path fn-def]
   (swap! watcher conj
          {
@@ -596,10 +596,17 @@
 
 
 
+
+
+
+
 (defn amend-record [records field value amend-fn]
   (into [] (map
             (fn[x] (if (= (get x field) value) (amend-fn x) x))
             records )))
+
+
+
 
 
 
@@ -617,6 +624,9 @@
 
 
 
+
+
+
 (defn when-ui-path-equals-fn
   [path value ui-fn]
 
@@ -628,6 +638,9 @@
 
 
 
+
+
+
 (defn when-ui-value-changes-fn
   [path ui-fn]
 
@@ -635,6 +648,10 @@
    ui-watchers
    path
    ui-fn))
+
+
+
+
 
 
 (defn when-ui-property-equals-in-record
@@ -664,6 +681,9 @@
 
 
 
+
+
+
 (defn when-data-value-changes-fn
   [path data-fn]
 
@@ -671,6 +691,10 @@
    data-watchers
    path
    data-fn))
+
+
+
+
 
 
 (defn when-data-property-equals-in-record
@@ -682,6 +706,8 @@
    field
    value
    data-fn))
+
+
 
 
 

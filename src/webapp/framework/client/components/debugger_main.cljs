@@ -380,16 +380,16 @@
     (render
      [_]
      (dom/div #js {
-                             :style #js {:height "300px"}
-                             :onMouseEnter #(reset! debugger-ui (assoc-in @debugger-ui [:mode] "show-event"))
-                             }
+                   :style #js {:height "300px"}
+                   :onMouseEnter #(reset! debugger-ui (assoc-in @debugger-ui [:mode] "show-event"))
+                   }
 
               (cond
                (= (:mode @debugger-ui) "browse")
-                (dom/h2 #js {
-                             :style #js {:height "100%"}
-                             :onMouseEnter #(reset! debugger-ui (assoc-in @debugger-ui [:mode] "show-event"))
-                             } (str (get @debugger-ui :react-components)))
+               (dom/h2 #js {
+                            :style #js {:height "100%"}
+                            :onMouseEnter #(reset! debugger-ui (assoc-in @debugger-ui [:mode] "show-event"))
+                            } (str (get @debugger-ui :react-components)))
 
 
                (= (:mode @debugger-ui) "show-event")
@@ -400,31 +400,31 @@
                (dom/h2 nil
                        (dom/div nil (:current-component @debugger-ui))
                        (dom/button #js {
-                                         :onClick
-                                         (fn[x](om/transact! app [:mode]
-                                                        #(str "browse")))
+                                        :onClick
+                                        (fn[x](om/transact! app [:mode]
+                                                            #(str "browse")))
 
-                                         } "Back")
+                                        } "Back")
                        (dom/pre nil
                                 (->
                                  (get
-                                 (get @debugger-ui :react-components-code)
+                                  (get @debugger-ui :react-components-code)
 
-                                 (:current-component @debugger-ui)
+                                  (:current-component @debugger-ui)
 
-                                 )
+                                  )
                                  (clojure.string/replace #"\(div\ " "(DIV " )
                                  ))
 
 
-                        (dom/button #js {
-                                         :onClick
-                                         (fn[x](om/transact! app [:mode]
-                                                        #(str "browse")))
+                       (dom/button #js {
+                                        :onClick
+                                        (fn[x](om/transact! app [:mode]
+                                                            #(str "browse")))
 
-                                         } "Back"))
+                                        } "Back"))
 
-              )))))
+               )))))
 
 
 
