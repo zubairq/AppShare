@@ -191,7 +191,7 @@
 
 (def debugger-ui
   (atom {
-         :mode                     "browse"
+         :mode                     "show-event"
          :react-components         []
          :react-components-code    {}
          :watchers-code            {}

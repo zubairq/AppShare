@@ -374,45 +374,19 @@
                    :onMouseEnter #(reset! debugger-ui (assoc-in @debugger-ui [:mode] "show-event"))
                    }
 
+              (dom/pre #js {
+                           :style #js { :fontSize "14px"}
+                           :onMouseEnter #(reset! debugger-ui (assoc-in @debugger-ui [:mode] "show-event"))
+                           } (apply str  (into [] (map (fn[li] (str (get li :fn-name) "   ")) (get @debugger-ui :react-components)))))
+
               (cond
-               (= (:mode @debugger-ui) "browse")
-               (dom/h2 #js {
-                            :style #js {:height "100%" }
-                            :onMouseEnter #(reset! debugger-ui (assoc-in @debugger-ui [:mode] "show-event"))
-                            } (show-tree (map (fn[li] (get li :fn-name)) (get @debugger-ui :react-components)) false))
 
 
                (= (:mode @debugger-ui) "show-event")
                (om/build  show-event-component   app)
 
 
-               (= (:mode @debugger-ui) "component")
-               (dom/h2 nil
-                       (dom/div nil (:current-component @debugger-ui))
-                       (dom/button #js {
-                                        :onClick
-                                        (fn[x](om/transact! app [:mode]
-                                                            #(str "browse")))
 
-                                        } "Back")
-                       (dom/pre nil
-                                (->
-                                 (get
-                                  (get @debugger-ui :react-components-code)
-
-                                  (:current-component @debugger-ui)
-
-                                  )
-                                 (clojure.string/replace #"\(div\ " "(DIV " )
-                                 ))
-
-
-                       (dom/button #js {
-                                        :onClick
-                                        (fn[x](om/transact! app [:mode]
-                                                            #(str "browse")))
-
-                                        } "Back"))
 
                )))))
 

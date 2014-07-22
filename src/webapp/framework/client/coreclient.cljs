@@ -414,7 +414,7 @@
     (reset! debugger-ui
             (assoc-in
              @debugger-ui
-             [:mode] "browse"))
+             [:mode] "show-event"))
 
 
     (om/root
@@ -446,26 +446,24 @@
 (defn component-clicked [x]
   (if js/debug_live
     (do
-      (reset! debugger-ui
-              (assoc-in @debugger-ui [:mode]
-                        "show-event"))
-      (reset! debugger-ui
-              (assoc-in @debugger-ui [:current-component]
-                        (last (get @debugger-ui :react-components))))
+      (reset! debugger-ui (assoc-in @debugger-ui [:mode]              "show-event"))
+      (reset! debugger-ui (assoc-in @debugger-ui [:current-component] (last (get @debugger-ui :react-components))))
 
       (if (get @component-usage  (get @debugger-ui :current-component))
         (do
-          (reset! debugger-ui
-                  (assoc-in @debugger-ui [:mode]
-                            "show-event"))
+          (reset! debugger-ui (assoc-in @debugger-ui [:mode] "show-event"))
 
-          (reset! debugger-ui
-                  (assoc-in @debugger-ui [:pos]
-                            (first (get @component-usage (get @debugger-ui :current-component))))))))))
+          (reset! debugger-ui (assoc-in @debugger-ui [:pos]
+                                        (first
+                                         (drop-while
+                                          (fn[xx] (< xx
+                                                     (get-in @debugger-ui [:pos])
+                                                     ))
+                                          (get @component-usage (get @debugger-ui :current-component)))
+                                         ))))))))
 
 
 ;@component-usage
-
 
 
 
@@ -479,7 +477,7 @@
                               )))
       (reset! debugger-ui
               (assoc-in @debugger-ui [:mode]
-                        "browse"))
+                        "show-event"))
       (display-debug-code)
       )))
 
