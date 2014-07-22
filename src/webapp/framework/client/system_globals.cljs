@@ -185,18 +185,6 @@
 
 
 
-;-----------------------------------------------------
-;-----------------------------------------------------
-(add-watch debug-event-timeline
-           :change
-
-           (fn [_ _ old-val new-val]
-             ;(. js/console log (str "***** " new-val))
-             nil
-             )
-           )
-
-
 (def component-usage (atom
                       {}
                       ))
@@ -211,8 +199,6 @@
          :total-events-count 0
          }))
 
-
-(@debugger-ui :react-components)
 
 
 (def debug-count (atom 0))

@@ -105,6 +105,8 @@
           :onClick      #(om/update! splash-screen-data [:show] false)
           }
 
+         (component letter-a splash-screen-data [])
+
          (div {:style { :vertical-align "center" }}
 
               (div {:style {:padding "5px" :padding-bottom "0px" :font-size "40"}} (str "ConnectToUs"))
@@ -130,6 +132,7 @@
 
        (component  splash-screen  app  [:ui :splash-screen])
 
+         (component letter-a  app [:ui])
 
 
            (dom/ul

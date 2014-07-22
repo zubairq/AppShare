@@ -174,7 +174,7 @@
 
             :else
             (dom/div  #js {:style #js {:paddingLeft "20px"}}
-                      (pr-str a-tree ""))
+                      (pr-str a-tree))
 
             )
 
@@ -389,7 +389,7 @@
                (dom/h2 #js {
                             :style #js {:height "100%"}
                             :onMouseEnter #(reset! debugger-ui (assoc-in @debugger-ui [:mode] "show-event"))
-                            } (str (get @debugger-ui :react-components)))
+                            } (show-tree (get @debugger-ui :react-components) false))
 
 
                (= (:mode @debugger-ui) "show-event")

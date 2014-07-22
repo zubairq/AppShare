@@ -470,12 +470,12 @@
 
 
 (defn set-debug-component [component-name  component-path]
-  (do
-    (if (not-any? #(= %1 component-name) (get @debugger-ui :react-components))
+  (let [component-identifier   (str component-name " " component-path)]
+    (if (not-any? #(= %1 component-identifier) (get @debugger-ui :react-components))
       (reset! debugger-ui
               (assoc-in @debugger-ui [:react-components]
                         (conj (get @debugger-ui :react-components)
-                              component-name
+                              component-identifier
                               )))
       (reset! debugger-ui
               (assoc-in @debugger-ui [:mode]
@@ -491,14 +491,14 @@
 
 
 (defn unset-debug-component [component-name   component-path]
-  (do
+  (let [component-identifier   (str component-name " " component-path)]
     (reset! debugger-ui
 
             (assoc-in
              @debugger-ui
              [:react-components]
              (into []
-                   (filter #(not= %1 component-name)
+                   (filter #(not= %1 component-identifier)
                            (get @debugger-ui :react-components))
                    ))
             )
