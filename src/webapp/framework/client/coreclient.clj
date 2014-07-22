@@ -8,6 +8,8 @@
   )
 
 
+;--------------------------------------------------------------------
+; use this when you want to comment out logging, by removing the 2
 (defmacro log2 [& x]
   `(comment ~@ x))
 
@@ -15,58 +17,53 @@
 
 (defmacro log [& x]
   `(.log js/console (str
-                     ~@ x
-                     ))
-)
-
-(macroexpand '(log "a" "b"))
+                     ~@ x)))
 
 
-(defmacro on-click [el & code]
-
-    `(webapp.framework.client.coreclient/on-click-fn
-             ~el
-             (fn [] (do ~@ code))
-    )
-  )
-
-(defmacro on-mouseover [el & code]
-
-    `(webapp.framework.client.coreclient/on-mouseover-fn
-             ~el
-             (fn [] (do ~@code))
-    )
-  )
+;(macroexpand '(log "a" "b"))
+;--------------------------------------------------------------------
 
 
-(comment macroexpand '(define-action
-                   "clear main page2"
-                   (clear "main")
-))
 
+
+
+
+
+
+;--------------------------------------------------------------------
 (defmacro sql [sql-str params]
   `(webapp.framework.client.coreclient.sql-fn
        ~(encrypt sql-str)
-       ~params
-   )
-)
-
+       ~params))
 
 ;( macroexpand '(sql "SELECT * FROM test_table where name = ?" ["shopping"] ))
+;--------------------------------------------------------------------
 
 
 
 
 
+
+
+
+;--------------------------------------------------------------------
 (defmacro ns-coils [namespace-name]
-  `(defn ~'ns-coils-debug  [] (str ~namespace-name))
-)
+  `(defn ~'ns-coils-debug  [] (str ~namespace-name)))
 
 
 ;(macroexpand '(ns-coils dfd))
+;--------------------------------------------------------------------
 
 
 
+
+
+
+
+
+
+
+;--------------------------------------------------------------------
 (defmacro defn-ui-component [fn-name data-paramater-name opts & code ]
 
     `(do
@@ -115,20 +112,32 @@
   '(defn-ui-component abc [data] {:path [:ui :request] }
      (dom/div  nil  " You asdsddsads")
       ))
+;--------------------------------------------------------------------
 
 
 
 
+
+
+
+
+
+
+
+
+;--------------------------------------------------------------------
 (defmacro div [attributes & more]
   `(dom/div  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 (defmacro a [attributes & more]
   `(dom/a  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 (defmacro h2 [attributes & more]
   `(dom/h2  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+;--------------------------------------------------------------------
 
 
 
 
+;--------------------------------------------------------------------
 (defmacro watch-ui
   [path & code]
 
@@ -145,11 +154,13 @@
      (~'when-ui-value-changes-fn
       ~path
       (~'fn [~'ui] (do ~@code)))))
+;--------------------------------------------------------------------
 
 
 
 
 
+;--------------------------------------------------------------------
 (defmacro ==ui
   [path value & code]
 
@@ -167,9 +178,15 @@
       ~path
       ~value
       (~'fn [~'ui] (do ~@code)))))
+;--------------------------------------------------------------------
 
 
 
+
+
+
+
+;--------------------------------------------------------------------
 (defmacro watch-data
   [path & code]
 
@@ -185,10 +202,15 @@
      (~'when-data-value-changes-fn
       ~path
       (~'fn [~'ui] (do ~@code)))))
+;--------------------------------------------------------------------
 
 
 
 
+
+
+
+;--------------------------------------------------------------------
 (defmacro ==data
   [path value & code]
 
@@ -206,9 +228,15 @@
       ~path
       ~value
       (~'fn [~'ui] (do ~@code)))))
+;--------------------------------------------------------------------
 
 
 
+
+
+
+
+;--------------------------------------------------------------------
 (defmacro ui-tree
   [path]
   `(~'get-in-tree ~'ui ~path))
@@ -217,7 +245,7 @@
   [path]
   `(~'get-in-tree ~'ui ~path))
 
-(macroexpand
+(comment macroexpand
  '(==ui  [:ui   :company-details   :clicked]    true
 
       (-->ui  [:ui  :company-details   :clicked  ] false)
@@ -251,8 +279,16 @@
        ;(log (pr-str l))
        (update-data [:company-details]  l)
        ))))
+;--------------------------------------------------------------------
 
 
+
+
+
+
+
+
+;--------------------------------------------------------------------
 (defmacro component
   [component-render-fn   state   rel-path]
   `(do
@@ -265,7 +301,6 @@
       )
     (~'component-fn ~component-render-fn ~state  ~'path ~rel-path)))
 
-(macroexpand '(component  main-view  app []) )
-(macroexpand  '(defn-ui-component    letter-a  [data]
-  {}
-    (div nil "a")))
+;(macroexpand '(component  main-view  app []) )
+;(macroexpand '(defn-ui-component    letter-a  [data] {}    (div nil "a")))
+;--------------------------------------------------------------------

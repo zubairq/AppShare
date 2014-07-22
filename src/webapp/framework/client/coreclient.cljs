@@ -32,9 +32,7 @@
                                                     component-usage
                                                     gui-calls
                                                     current-gui-path
-                                                    ]]
-
-))
+                                                    ]]))
 
 
 
@@ -43,15 +41,7 @@
 
 
 
-(def auto-gen-id (atom 0))
 
-(defn new-dom-id []
-  (swap! auto-gen-id inc)
-  (str "autodom" @auto-gen-id)
-  )
-
-(def gui-html (atom {}))
-(def el-fn-mapping (atom {}))
 (def debug-mode (atom false))
 
 
@@ -91,16 +81,16 @@
 
 
 (defn encode-parameter [name value]
-          (.
-            (goog.Uri.QueryData/createFromMap
-              (goog.structs.Map.
-                (make-js-map
-                  { name value}
-                )
-              )
-            )
-            (toString)
-           ))
+  (.
+   (goog.Uri.QueryData/createFromMap
+    (goog.structs.Map.
+     (make-js-map
+      { name value}
+      )
+     )
+    )
+   (toString)
+   ))
 
 
 
@@ -108,10 +98,14 @@
 (defn get-time [] (. (new js/Date)  (getTime)))
 
 
+
 (defn log [s]
   (.log js/console (str s))
-  nil
-)
+  nil)
+
+
+
+
 
 
 (defn send-request2 [ address   action  parameters-in]
@@ -214,28 +208,30 @@
 (defn sql-fn [sql-str params]
   (go
     (<! (remote
-                "!sql" {:sql sql-str :params params}))
-  )
-)
+                "!sql" {:sql sql-str :params params}))))
+
+
+
 
 (defn neo4j-fn [cypher-str params]
   (go
     (<! (remote
-                "!neo4j" {:cypher cypher-str :params params}))
-  )
-)
+                "!neo4j" {:cypher cypher-str :params params}))))
+
+
+
 
 (go
  (let [env (:value (<! (remote "!get-environment" {})))]
    (if (= env "dev")
-     (reset! debug-mode true)
-     )))
+     (reset! debug-mode true))))
+
+
 
 (go
  (let [record-pointer-locally-value (:value (<! (remote "!get-record-pointer-locally" {})))]
      (reset! record-pointer-locally
-             record-pointer-locally-value)
-     ))
+             record-pointer-locally-value)))
 
 
 
@@ -261,52 +257,6 @@
 
 
 
-(defn from-server []
-  (GET "http://127.0.0.1:3000/main.html")
-)
-
-
-
-
-
-(comment defn debug [html2 fname]
-
-
-    (let [
-            html            (make-el html2)
-            current-id      (attr ($ html) "id")
-            id              (if current-id
-                              current-id
-                              (let [new-id (new-dom-id)]
-                                (attr  ($ html) "id" new-id)
-                                new-id
-                              )
-                            )
-          ]
-
-      (attr  ($ html) "onmouseover"
-             (str "webapp.framework.client.coreclient.clicked2('" id  "');")
-             )
-      (attr  ($ html) "onclick"
-             (str "webapp.framework.client.coreclient.showcodepopover('" id  "');")
-             )
-      (attr  ($ html) "onmouseout"
-             (str "webapp.framework.client.coreclient.clicked3('" id  "');")
-             )
-      ;(.log js/console (str "ID: " id))
-      ;(.log js/console (str "fname: " fname))
-      (swap! el-fn-mapping assoc id fname)
-
-      html)
-
-
-)
-
-
-
-
-
-
 (defn- xml-str
  "Like clojure.core/str but escapes < > and &."
  [x]
@@ -315,6 +265,10 @@
       (clojure.string/replace #"&amp;" "&" )
       (clojure.string/replace #"&lt;" "<")
       (clojure.string/replace #"&gt;" ">" )))
+
+
+
+
 
 
 (defn record-path= [namespace-name path value tree-name & code]
@@ -364,16 +318,11 @@
                      (char 13) (char 13)
                      code-str
                      ""
-                     )))
-     )
-    )
-  )
+                     ))))))
 
 
 
-(comment
-  (record-defn-ui-component
-   "a.b" "start" '[a b] '(def 1)))
+
 
 (defn record-defn-ui-component [namespace-name fname args & code]
   (let [
@@ -401,11 +350,12 @@
                      args (char 13) (char 13)
                      code-str
                      ""
-                     )))
-     )
-    )
-  )
+                     ))))))
 
+
+(comment
+  (record-defn-ui-component
+   "a.b" "start" '[a b] '(def 1)))
 
 
 
@@ -420,9 +370,11 @@
                             ]
   (if absolute-path
     (do
-      (touch  absolute-path)))
+      (touch  absolute-path))))
 
-  )
+
+
+
 
 
 
@@ -437,10 +389,11 @@
     (om/root
      webapp.framework.client.components.debugger-main/main-debug-slider-comp
      debugger-ui
-     {:target (js/document.getElementById "main_playback_slider")})
+     {:target (js/document.getElementById "main_playback_slider")})))
 
 
-    ))
+
+
 
 
 (defn  ^:export unloadDebugger []
@@ -467,12 +420,14 @@
     (om/root
      (fn [app owner] (om/component (dom/div nil "")))
      debugger-ui
-     {:target (js/document.getElementById "right_of_main")})
-
-
-    ))
+     {:target (js/document.getElementById "right_of_main")})))
 
 ;(unloadDebugger)
+
+
+
+
+
 
 
 (defn display-debug-code []
@@ -480,6 +435,10 @@
     (reset! debugger-ui
             (assoc-in @debugger-ui [:current-component]
                       component-name))))
+
+
+
+
 
 
 
@@ -502,9 +461,10 @@
 
           (reset! debugger-ui
                   (assoc-in @debugger-ui [:pos]
-                            (first (get @component-usage (get @debugger-ui :current-component)))))))
+                            (first (get @component-usage (get @debugger-ui :current-component))))))))))
 
-      )))
+
+
 
 
 
@@ -525,6 +485,11 @@
 
 
 
+
+
+
+
+
 (defn unset-debug-component [component-name]
   (do
     (reset! debugger-ui
@@ -539,6 +504,9 @@
             )
     (display-debug-code)
     ))
+
+
+
 
 
 
@@ -580,6 +548,9 @@
 
        (react-fn data)
      ""))))
+
+
+
 
 
 
@@ -717,12 +688,16 @@
 
 (defn component-fn [coils-fn state parent-path rel-path]
   (do
-    (log (str "component: " rel-path))
+    ;(log (str "component: " rel-path))
     (om/build
      coils-fn
      (get-in state rel-path)
      {:init-state {:parent-path (into [] (flatten (conj parent-path rel-path))) }}
      )))
+
+
+
+
 
 
 
