@@ -261,7 +261,7 @@
 
          (and (= event-type     "render"))
 
-         (do
+         (let [component-id {:fn-name component-name :fn-path component-path}]
            (swap! debug-event-timeline assoc
                   debug-id  {
                              :id              debug-id
@@ -271,10 +271,10 @@
                              :component-data  component-data
                              })
 
-           (if (get @component-usage  component-name)
-             (reset! component-usage (assoc @component-usage component-name
-                                       (conj (get @component-usage component-name) debug-id)))
-             (reset! component-usage (assoc @component-usage component-name [debug-id]))
+           (if (get @component-usage  component-id)
+             (reset! component-usage (assoc @component-usage component-id
+                                       (conj (get @component-usage component-id) debug-id)))
+             (reset! component-usage (assoc @component-usage component-id [debug-id]))
              )
            )
 

@@ -234,11 +234,11 @@
                            (dom/h1
                             #js {:style #js {
                                              :color (cond
-                                                     (= event-type "render") "black"
-                                                     (= event-type "UI") "black"
-                                                     (= event-type "event") "blue"
-                                                     (= event-type "DATA") "red"
-                                                     (= event-type "remote") "red"
+                                                     (= event-type "render")  "black"
+                                                     (= event-type "UI")      "black"
+                                                     (= event-type "event")   "blue"
+                                                     (= event-type "DATA")    "red"
+                                                     (= event-type "remote")  "red"
                                                      )
                                              }}
                             (str  debug-id ") " event-type))
@@ -343,32 +343,22 @@
                                                     (get
                                                      (get @debugger-ui :react-components-code)
 
-                                          component-name
+                                                     component-name
 
-                                          ))
-                                        (clojure.string/replace #"\(div\ " "(DIV " )
-                                        (clojure.string/replace #"\(dom/h2\ " "(H2 " )
-                                        )))
-
-
-                              (if (= (get debug-ui-state :code-data-show_index) debug-id)
-                               (dom/pre #js {
-                                             :style #js {:position "absolute" }
-                                                      :onMouseLeave #(om/update! debug-ui-state [:code-data-show_index]
-                                                                                nil)}
-                                       (show-tree component-data false)
-
-                                        ))
+                                                     ))
+                                                   (clojure.string/replace #"\(div\ " "(DIV " )
+                                                   (clojure.string/replace #"\(dom/h2\ " "(H2 " )
+                                                   )))
 
 
+                                       (if (= (get debug-ui-state :code-data-show_index) debug-id)
+                                         (dom/pre #js {
+                                                       :style #js {:position "absolute" }
+                                                       :onMouseLeave #(om/update! debug-ui-state [:code-data-show_index]
+                                                                                  nil)}
+                                                  (show-tree component-data false)
 
-                                       ))
-
-
-
-
-
-                           ))))))))
+                                                  ))))))))))))
 
 
 
@@ -387,9 +377,9 @@
               (cond
                (= (:mode @debugger-ui) "browse")
                (dom/h2 #js {
-                            :style #js {:height "100%"}
+                            :style #js {:height "100%" }
                             :onMouseEnter #(reset! debugger-ui (assoc-in @debugger-ui [:mode] "show-event"))
-                            } (show-tree (get @debugger-ui :react-components) false))
+                            } (show-tree (map (fn[li] (get li :fn-name)) (get @debugger-ui :react-components)) false))
 
 
                (= (:mode @debugger-ui) "show-event")
