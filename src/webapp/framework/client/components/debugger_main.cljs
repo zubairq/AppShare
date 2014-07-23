@@ -52,7 +52,7 @@
           )
         )
       )
-    (reset! app-watch-on? true)
+    ;(reset! app-watch-on? true)
 
     (om/update! debugger-state
             [:mode] "show-event")

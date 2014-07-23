@@ -25,6 +25,12 @@
   (atom
    {}))
 
+;-----------------------------------------------------
+;  This is the application watch space. So whenever
+; the application changes then we record the event
+;-----------------------------------------------------
+(def app-watch-on? (atom true))
+
 
 
 
@@ -227,6 +233,7 @@
       (not (and (= event-type "UI") (get (first (data/diff old new)) :pointer)))
       )
      (not (= (get action-name 0) "!"))
+     @app-watch-on?
      )
 
 
@@ -363,11 +370,6 @@
 
 ;(contains-touch-id? [{:a {:touch-id 1}}])
 
-;-----------------------------------------------------
-;  This is the application watch space. So whenever
-; the application changes then we record the event
-;-----------------------------------------------------
-(def app-watch-on? (atom true))
 (add-watch app-state
            :change
            (fn [_ _ old-val new-val]

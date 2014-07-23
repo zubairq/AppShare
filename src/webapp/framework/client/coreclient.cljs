@@ -32,6 +32,7 @@
                                                     component-usage
                                                     gui-calls
                                                     current-gui-path
+                                                    app-watch-on?
                                                     ]]))
 
 
@@ -380,7 +381,9 @@
 
 
 (defn  ^:export loadDebugger []
-  (doall
+  (do
+   (reset! app-watch-on? false)
+
     (om/root
      webapp.framework.client.components.debugger-main/main-debug-comp
      debugger-ui
