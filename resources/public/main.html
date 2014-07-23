@@ -174,7 +174,7 @@
                     document.getElementById('right_of_main').style.width='49%';
                     dbutton = document.getElementById("debug_button");
                     dbutton.innerHTML=
-                        "<button onclick='debug_live=!debug_live;document.getElementById(\"debug_status\").innerHTML=\"\"+debug_live;if (debug_live == true) { webapp.framework.client.coreclient.loadDebugger();} else { webapp.framework.client.coreclient.unloadDebugger();};'>debug</button>" +
+                        "<button onclick='debug_live=true;document.getElementById(\"debug_button\").innerHTML=\"\";if (debug_live == true) { webapp.framework.client.coreclient.loadDebugger();} else { webapp.framework.client.coreclient.unloadDebugger();};'>debug</button>" +
                         "<div id='debug_status' style='display: inline-block; font-size: 25; color: red;'>&lt; ---- Play with the application below and then press Debug</div>";
                 };
                 company_url    = getQueryVariable("company_url");
