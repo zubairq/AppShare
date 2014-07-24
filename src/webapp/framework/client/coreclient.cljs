@@ -4,6 +4,7 @@
     [clojure.browser.repl    :as repl]
     [cljs.reader             :as reader]
     [goog.dom]
+    [clojure.zip]
     [goog.Uri.QueryData]
     [goog.events]
     [om.core          :as om :include-macros true]
@@ -130,8 +131,8 @@
               (add-debug-event
                :event-type  "remote"
                :action-name (str action)
-               :input       (pr-str parameters-in)
-               :result      (pr-str response-text)
+               :input       parameters-in
+               :result      (reader/read-string response-text)
                )
 
               (>! ch (reader/read-string response-text))
@@ -142,7 +143,7 @@
             (add-debug-event
              :event-type  "remote"
              :action-name (str action)
-             :input       (pr-str parameters-in)
+             :input       parameters-in
              :result      (str "ERROR IN RESPONSE, HTTP : " status)
              )
             (>! ch  {:error "true"})
@@ -769,3 +770,8 @@
 ;(get @gui-calls "splash-screen: []:[:ui :splash-screen]")
 
 ;@gui-calls
+
+
+
+
+clojure.zip/down

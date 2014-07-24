@@ -277,8 +277,8 @@
                            (if (= event-type "remote") (dom/div #js {:style #js {:color "red"}}
 
                                              (dom/div #js {:style #js {:color "blue"}} (str action-name))
-                                             (dom/div #js {:style #js {:color "black"}} (str action-input))
-                                             (dom/pre #js {:style #js {:color "green"}} action-result)
+                                             (dom/div #js {:style #js {:color "black"}} (show-tree action-input false))
+                                             (dom/pre #js {:style #js {:color "green"}} (show-tree action-result false))
                                              ))
 
 
