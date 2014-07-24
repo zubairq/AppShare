@@ -17,7 +17,8 @@
                                                     reset-app-state
                                                     playbackmode start-component
                                                     init-fn
-                                                    data-state]]
+                                                    data-state
+                                                    app-watch-on?]]
    [webapp.framework.client.components.system-container :only  [main-view]]
    [webapp.framework.client.components.playback  :only  [playback-controls-view ]]
    )
@@ -96,6 +97,7 @@
                   :shared {:tx-chan tx-pub-chan}
                   :tx-listen
                   (fn [tx-data root-cursor]
+                    (if @app-watch-on?
                     (go
                      ;(log (str "txdata:::" tx-data))
                      ;(log (str "path:::" (:path tx-data)))
@@ -120,12 +122,7 @@
                                 "
                                 {:session_id    @session-id
                                  :timestamp     ts}
-                                "w")))
-                     ))
-                  }))
-
-
-   ))
+                                "w"))))))}))))
 
 
 
