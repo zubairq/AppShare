@@ -775,5 +775,17 @@
 ;clojure.zip/down
 
 
-(defn write-ui-fn [tree path  sub-path  value]
-  (om/update!  tree  sub-path  value))
+(defn write-ui-fn [tree  path  sub-path  value]
+  (do
+    (reset!  data-accesses (assoc @data-accesses
+                             {
+                              :tree       "UI"
+                              :path       (into [] (flatten (conj path sub-path)))
+                              } value))
+    (om/update!  tree  sub-path  value)))
+
+
+
+
+(defn update-ui [app  path  value]
+  (write-ui-fn  app  [] path value))

@@ -24,6 +24,8 @@
   (atom
    {}))
 
+(map :path (keys @data-accesses))
+
 
 (def data-state
   (atom
@@ -152,9 +154,6 @@
   (get-in @data-state path))
 
 
-
-(defn update-ui [app path value]
-  (om/update! app path value))
 
 (defn add-init-state-fn [nm init-state-fn]
   (do

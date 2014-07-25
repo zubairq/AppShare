@@ -15,11 +15,11 @@
                                                     when-ui-path-equals-fn
                                                     when-ui-value-changes-fn
                                                     when-ui-property-equals-in-record
-                                                    amend-record]]
+                                                    amend-record
+                                                    update-ui]]
    [webapp.framework.client.system-globals  :only  [app-state
                                                     data-state
                                                     update-data
-                                                    update-ui
                                                     get-in-tree
                                                     ui-watchers
                                                     -->data

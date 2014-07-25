@@ -54,7 +54,7 @@
               :else
               {:className  ""
                :onClick        (fn[e] (write-ui  app  [:ui :tab-browser]  "top companies"))
-               :onTouchStart   (fn[e] (om/update! app [:ui :tab-browser]  "top companies"))
+               :onTouchStart   (fn[e] (write-ui app [:ui :tab-browser]  "top companies"))
                :style {:textDecoration "underline"
                        :display "inline-block"}
                })
@@ -74,8 +74,8 @@
                                	:display "inline-block"}
                    }
               {:className  ""
-                   :onClick        (fn[e] (om/update! app [:ui :tab-browser]  "latest endorsements"))
-                   :onTouchStart   (fn[e] (om/update! app [:ui :tab-browser]  "latest endorsements"))
+                   :onClick        (fn[e] (write-ui app [:ui :tab-browser]  "latest endorsements"))
+                   :onTouchStart   (fn[e] (write-ui app [:ui :tab-browser]  "latest endorsements"))
                    :style {:textDecoration "underline"
                                :display "inline-block"}
                    })
@@ -103,8 +103,8 @@
                   :background-color  "white"              :opacity "1.0"
                   :text-align        "center"
                   }
-          :onTouchStart #(om/update! splash-screen-data [:show] false)
-          :onClick      #(om/update! splash-screen-data [:show] false)
+          :onTouchStart #(write-ui splash-screen-data [:show] false)
+          :onClick      #(write-ui splash-screen-data [:show] false)
           }
 
          (component letter-a splash-screen-data [])
@@ -142,23 +142,23 @@
 
             (dom/li #js {:className  (if (= (-> app :ui :tab) "browser") "active" "")   }
                     (dom/a #js {:className  ""
-                                :onClick        (fn[e] (om/update! app [:ui :tab]  "browser"))
-                                :onTouchStart   (fn[e] (om/update! app [:ui :tab]  "browser"))
+                                :onClick        (fn[e] (write-ui app [:ui :tab]  "browser"))
+                                :onTouchStart   (fn[e] (write-ui app [:ui :tab]  "browser"))
 
                                 } "Search"))
 
             (dom/li #js {:className  (if (= (-> app :ui :tab) "request") "active" "") }
                     (dom/a #js {:className  ""
-                                :onClick        (fn[e] (om/update! app [:ui :tab]  "request"))
-                                :onTouchStart   (fn[e] (om/update! app [:ui :tab]  "request"))
+                                :onClick        (fn[e] (write-ui app [:ui :tab]  "request"))
+                                :onTouchStart   (fn[e] (write-ui app [:ui :tab]  "request"))
 
 
                                 } "Connect"))
 
             (dom/li #js {:className  (if (= (-> app :ui :tab) "login") "active" "")   }
                     (dom/a #js {:className  ""
-                                :onClick        (fn[e] (om/update! app [:ui :tab]  "login"))
-                                :onTouchStart   (fn[e] (om/update! app [:ui :tab]  "login"))
+                                :onClick        (fn[e] (write-ui app [:ui :tab]  "login"))
+                                :onTouchStart   (fn[e] (write-ui app [:ui :tab]  "login"))
 
                                 } "Login"))
 

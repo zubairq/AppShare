@@ -15,6 +15,7 @@
                                                     remote
                                                     when-data-path-equals-fn
                                                     when-data-value-changes-fn
+                                                    update-ui
                                                     ]]
    [webapp.framework.client.system-globals  :only  [app-state
                                                     playback-app-state
@@ -26,7 +27,7 @@
                                                     update-data
                                                     <--data
                                                     -->data
-                                                    update-ui
+
                                                     get-in-tree
                                                     ]]
    [clojure.string :only [blank?]]

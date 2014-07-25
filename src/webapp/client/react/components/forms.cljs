@@ -7,18 +7,16 @@
    )
 
   (:use
-   [webapp.client.ui-helpers                :only  [validate-email
-                                                    ]]
+   [webapp.client.ui-helpers                :only  [validate-email]]
    [webapp.framework.client.ui-helpers      :only  [blur-field
                                                     update-field-value
                                                     basic-input-box ]]
 
-   [webapp.framework.client.coreclient      :only  [log  remote  component-fn]]
-
-   [clojure.string :only [blank?]])
+   [webapp.framework.client.coreclient      :only  [log  remote  component-fn  write-ui-fn]]
+   [clojure.string                          :only [blank?]])
 
   (:use-macros
-   [webapp.framework.client.coreclient      :only  [defn-ui-component  ns-coils  div  component]]))
+   [webapp.framework.client.coreclient      :only  [defn-ui-component  ns-coils  div  component  write-ui]]))
 
 (ns-coils 'webapp.client.react.components.forms)
 
@@ -95,8 +93,8 @@
                   :background-color  "white"              :opacity "1.0"
                   :text-align        "center"
                   }
-          :onTouchStart #(om/update! dialog-data [:show-connection-confirmation] false)
-          :onClick      #(om/update! dialog-data [:show-connection-confirmation] false)
+          :onTouchStart #(write-ui  dialog-data [:show-connection-confirmation] false)
+          :onClick      #(write-ui  dialog-data [:show-connection-confirmation] false)
           }
 
          (div {:style { :vertical-align "center" }}
@@ -132,7 +130,7 @@
 
 
     (dom/button #js {:onClick (fn [e]
-                                (om/update! ui-data [:submit :value]  true))
+                                (write-ui ui-data [:submit :value]  true))
                      :style
                      #js {:margin-top "10px"}}
 

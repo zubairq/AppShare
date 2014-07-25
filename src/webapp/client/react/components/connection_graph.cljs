@@ -7,11 +7,11 @@
    )
 
   (:use-macros
-   [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils div a component]])
+   [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils div a component write-ui]])
 
   (:use
    [webapp.framework.client.system-globals  :only  [touch]]
-   [webapp.framework.client.coreclient      :only  [log amend-record  component-fn]]
+   [webapp.framework.client.coreclient      :only  [log amend-record  component-fn write-ui-fn]]
    )
   )
 (ns-coils 'webapp.client.react.components.connection-graph)
@@ -40,7 +40,7 @@
                           (get company-ui-record "company"))
 
                     (a {:href "#" :onClick
-                        #(om/update! companies [:values]
+                        #(write-ui companies [:values]
                                      (amend-record (into [] (get @companies :values))
                                                    "company"
                                                    (get @company-ui-record "company")
