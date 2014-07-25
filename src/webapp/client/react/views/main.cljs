@@ -43,7 +43,7 @@
               :else
               {:className  ""
                :onClick        (fn[e] (om/update! app [:ui :tab-browser]  "top companies"))
-               :onTouchStart   (fn[e] (om/update! app [:ui :tab]  "browser"))
+               :onTouchStart   (fn[e] (om/update! app [:ui :tab-browser]  "top companies"))
                :style {:textDecoration "underline"
                        :display "inline-block"}
                })
@@ -64,7 +64,7 @@
                    }
               {:className  ""
                    :onClick        (fn[e] (om/update! app [:ui :tab-browser]  "latest endorsements"))
-                   :onTouchStart   (fn[e] (om/update! app [:ui :tab]  "browser"))
+                   :onTouchStart   (fn[e] (om/update! app [:ui :tab-browser]  "latest endorsements"))
                    :style {:textDecoration "underline"
                                :display "inline-block"}
                    })
