@@ -16,6 +16,14 @@
 
 (def playbackmode (atom false))
 
+(def call-stack
+  (atom
+   []))
+
+(def data-accesses
+  (atom
+   {}))
+
 
 (def data-state
   (atom

@@ -25,15 +25,6 @@
 
 
 
-(defn select-browser [e app]
-  (om/update! app [:ui :tab]  "browser"))
-
-(defn select-request [e app]
-  (om/update! app [:ui :tab]  "request"))
-
-(defn select-login [e app]
-  (om/update! app [:ui :tab]  "login"))
-
 
 
 ;------------------------------------------------------------
@@ -52,7 +43,7 @@
               :else
               {:className  ""
                :onClick        (fn[e] (om/update! app [:ui :tab-browser]  "top companies"))
-               :onTouchStart   (fn[e] (select-browser e app))
+               :onTouchStart   (fn[e] (om/update! app [:ui :tab]  "browser"))
                :style {:textDecoration "underline"
                        :display "inline-block"}
                })
@@ -73,7 +64,7 @@
                    }
               {:className  ""
                    :onClick        (fn[e] (om/update! app [:ui :tab-browser]  "latest endorsements"))
-                   :onTouchStart   (fn[e] (select-browser e app))
+                   :onTouchStart   (fn[e] (om/update! app [:ui :tab]  "browser"))
                    :style {:textDecoration "underline"
                                :display "inline-block"}
                    })
@@ -140,23 +131,23 @@
 
             (dom/li #js {:className  (if (= (-> app :ui :tab) "browser") "active" "")   }
                     (dom/a #js {:className  ""
-                                :onClick        (fn[e] (select-browser e app))
-                                :onTouchStart   (fn[e] (select-browser e app))
+                                :onClick        (fn[e] (om/update! app [:ui :tab]  "browser"))
+                                :onTouchStart   (fn[e] (om/update! app [:ui :tab]  "browser"))
 
                                 } "Search"))
 
             (dom/li #js {:className  (if (= (-> app :ui :tab) "request") "active" "") }
                     (dom/a #js {:className  ""
-                                :onClick        (fn[e] (select-request e app))
-                                :onTouchStart   (fn[e] (select-request e app))
+                                :onClick        (fn[e] (om/update! app [:ui :tab]  "request"))
+                                :onTouchStart   (fn[e] (om/update! app [:ui :tab]  "request"))
 
 
                                 } "Connect"))
 
             (dom/li #js {:className  (if (= (-> app :ui :tab) "login") "active" "")   }
                     (dom/a #js {:className  ""
-                                :onClick        (fn[e] (select-login e app))
-                                :onTouchStart   (fn[e] (select-login e app))
+                                :onClick        (fn[e] (om/update! app [:ui :tab]  "login"))
+                                :onTouchStart   (fn[e] (om/update! app [:ui :tab]  "login"))
 
                                 } "Login"))
 

@@ -1,16 +1,16 @@
 (ns webapp.framework.client.coreclient
   (:require
-    [goog.net.XhrIo          :as xhr]
-    [clojure.browser.repl    :as repl]
-    [cljs.reader             :as reader]
-    [goog.dom]
-    [clojure.zip]
-    [goog.Uri.QueryData]
-    [goog.events]
-    [om.core          :as om :include-macros true]
-    [om.dom           :as dom]
-    [cljs.core.async :as async :refer [chan close!]]
-  )
+   [goog.net.XhrIo          :as xhr]
+   [clojure.browser.repl    :as repl]
+   [cljs.reader             :as reader]
+   [goog.dom]
+   [om.core                 :as om :include-macros true]
+   [om.dom                  :as dom]
+   [clojure.zip]
+   [goog.Uri.QueryData]
+   [goog.events]
+   [cljs.core.async         :as async :refer [chan close!]]
+   )
 
   (:require-macros
    [cljs.core.async.macros :refer [go alt!]])
@@ -34,6 +34,7 @@
                                                     gui-calls
                                                     current-gui-path
                                                     app-watch-on?
+                                                    data-accesses
                                                     ]]))
 
 
