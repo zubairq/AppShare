@@ -772,7 +772,8 @@
 
 ;@gui-calls
 
+;clojure.zip/down
 
 
-
-clojure.zip/down
+(defn write-ui-fn [tree path  sub-path  value]
+  (om/update!  tree  sub-path  value))

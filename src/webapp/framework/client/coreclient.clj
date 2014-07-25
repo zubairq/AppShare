@@ -304,3 +304,19 @@
 ;(macroexpand '(component  main-view  app []) )
 ;(macroexpand '(defn-ui-component    letter-a  [data] {}    (div nil "a")))
 ;--------------------------------------------------------------------
+
+
+
+
+
+;--------------------------------------------------------------------
+(defmacro write-ui
+  [tree sub-path value]
+  `(do
+     (webapp.framework.client.coreclient/write-ui-fn
+      ~tree
+      ~'path
+      ~sub-path
+      ~value)))
+
+;(macroexpand '(write-ui app [:ui :tab-browser]  "top companies"))

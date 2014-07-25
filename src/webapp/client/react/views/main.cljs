@@ -10,12 +10,23 @@
    [clojure.string :only [blank?]]
    [webapp.client.react.components.forms               :only  [request-form]]
    [webapp.client.react.components.login               :only  [login]]
-   [webapp.client.react.components.connection-graph    :only  [graph text-graph latest-endorsements]]
+   [webapp.client.react.components.connection-graph    :only  [graph
+                                                               text-graph
+                                                               latest-endorsements]]
+
    [webapp.client.react.components.company-details     :only  [company-details2]]
-   [webapp.framework.client.coreclient     :only  [log remote component-fn]]
+
+   [webapp.framework.client.coreclient                 :only  [log
+                                                               remote
+                                                               component-fn
+                                                               write-ui-fn]]
    )
   (:use-macros
-   [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils div component]]))
+   [webapp.framework.client.coreclient                 :only  [defn-ui-component
+                                                               ns-coils
+                                                               div
+                                                               component
+                                                               write-ui]]))
 
 (ns-coils 'webapp.client.react.views.main)
 
@@ -42,7 +53,7 @@
 
               :else
               {:className  ""
-               :onClick        (fn[e] (om/update! app [:ui :tab-browser]  "top companies"))
+               :onClick        (fn[e] (write-ui  app  [:ui :tab-browser]  "top companies"))
                :onTouchStart   (fn[e] (om/update! app [:ui :tab-browser]  "top companies"))
                :style {:textDecoration "underline"
                        :display "inline-block"}
