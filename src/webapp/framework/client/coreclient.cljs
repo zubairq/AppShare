@@ -461,15 +461,17 @@
           (reset! debugger-ui (assoc-in @debugger-ui [:pos]
                                         (first
                                          (drop-while
-                                          (fn[xx] (< xx
+                                          (fn[xx] (> xx
                                                      (get-in @debugger-ui [:pos])
                                                      ))
-                                          (get @component-usage (get @debugger-ui :current-component)))
+                                          (reverse (get @component-usage (get @debugger-ui :current-component))))
                                          ))))))))
 
 
 ;@component-usage
-
+;(get-in @debugger-ui [:pos])
+;(get @debugger-ui :current-component)
+;(get @component-usage (get @debugger-ui :current-component))
 
 
 (defn set-debug-component [component-name  component-path]

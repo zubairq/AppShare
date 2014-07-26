@@ -15,7 +15,8 @@
    [webapp.framework.client.system-globals :only  [debugger-ui
                                                    debug-event-timeline
                                                    app-state
-                                                   app-watch-on?]]
+                                                   app-watch-on?
+                                                   data-accesses]]
    )
   (:use-macros
    [webapp.framework.client.neo4j         :only  [neo4j]]
@@ -119,8 +120,10 @@
 
                )))))
 
+(get @data-accesses
+      {:tree "UI" :path [:ui :companies :values]})
 
-(defn show-tree [a-tree is-map?]
+(defn show-tree [a-tree is-map? current-path]
   (dom/div nil
            ;------
            ;START
@@ -128,8 +131,13 @@
            (cond
 
             is-map?
-            (dom/div #js {:style #js {:paddingLeft "20px" :display "inline-block"
-                                       :verticalAlign "top"}} (str (:key a-tree) ""))
+            (let [idt (get @data-accesses {:tree "UI" :path current-path})]
+              (dom/div #js {:style #js {:paddingLeft "20px" :display "inline-block"
+                                        :verticalAlign "top"
+                                        :color (if idt "red" "")
+                                        }} (str
+                                                                  (:key a-tree)
+                                                                  )))
 
             (map? a-tree)
             (dom/div #js {:style #js {:paddingLeft "20px"}} "{")
@@ -152,14 +160,14 @@
             is-map?
              (dom/div #js {:style #js {:paddingLeft "20px"  :display "inline-block"
                                         :verticalAlign "top"}}
-              (show-tree (:value a-tree) false)
+              (show-tree (:value a-tree) false current-path)
                       )
 
             (map? a-tree)
             (do
               (apply dom/div #js {:style #js {:paddingLeft "20px"}}
                      (map
-                      #(show-tree  {:key %1 :value (get a-tree %1)} true)
+                      #(show-tree  {:key %1 :value (get a-tree %1)} true (conj current-path %1 ))
                       (keys a-tree) ))
               )
 
@@ -169,7 +177,8 @@
              (list? a-tree)
              (coll? a-tree)
              )
-            (apply dom/div #js {:style #js {:paddingLeft "20px"}}  (map #(show-tree %1 false) a-tree))
+            (apply dom/div #js {:style #js {:paddingLeft "20px"}}
+                   (map #(show-tree %1 false (conj current-path %1 )) a-tree))
 
 
             :else
@@ -216,19 +225,19 @@
               (if event-item
                 (let
                   [
-                   debug-id    (get event-item :id)
-                   event-type  (get event-item :event-type)
-                   old-value   (get event-item :old-value)
-                   new-value   (get event-item :value)
-                   event-name  (get event-item :event-name)
-                   action-name  (get event-item :action-name)
-                   action-input  (get event-item :input)
-                   action-result  (get event-item :result)
+                   debug-id         (get event-item :id)
+                   event-type       (get event-item :event-type)
+                   old-value        (get event-item :old-value)
+                   new-value        (get event-item :value)
+                   event-name       (get event-item :event-name)
+                   action-name      (get event-item :action-name)
+                   action-input     (get event-item :input)
+                   action-result    (get event-item :result)
                    component-name   (get event-item :component-name)
                    component-path   (get event-item :component-path)
                    component-data   (get event-item :component-data)
-                   deleted     (first (data/diff old-value new-value))
-                   added       (second (data/diff old-value new-value))
+                   deleted          (first (data/diff old-value new-value))
+                   added            (second (data/diff old-value new-value))
                    ]
                    (dom/div nil
                            (dom/h1
@@ -245,12 +254,12 @@
 
                             (if deleted (dom/div #js {:style #js {:color "red"}}
                                                  (dom/div nil "Deleted")
-                                                 (show-tree  deleted false)
+                                                 (show-tree  deleted false [])
                                                  ))
 
                             (if added (dom/div #js {:style #js {:color "green"}}
                                                (dom/div nil "Added")
-                                               (show-tree  added false)
+                                               (show-tree  added false [])
                                                ))
 
 
@@ -277,8 +286,8 @@
                            (if (= event-type "remote") (dom/div #js {:style #js {:color "red"}}
 
                                              (dom/div #js {:style #js {:color "blue"}} (str action-name))
-                                             (dom/div #js {:style #js {:color "black"}} (show-tree action-input false))
-                                             (dom/pre #js {:style #js {:color "green"}} (show-tree action-result false))
+                                             (dom/div #js {:style #js {:color "black"}} (show-tree action-input false []))
+                                             (dom/pre #js {:style #js {:color "green"}} (show-tree action-result false []))
                                              ))
 
 
@@ -356,7 +365,7 @@
                                                        :style #js {:position "absolute" }
                                                        :onMouseLeave #(om/update! debug-ui-state [:code-data-show_index]
                                                                                   nil)}
-                                                  (show-tree component-data false)
+                                                  (show-tree  component-data  false  component-path)
 
                                                   ))))))))))))
 

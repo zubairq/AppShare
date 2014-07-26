@@ -414,7 +414,12 @@
 
 ;(map :event-type (vals @debug-event-timeline))
 
-(keys @debugger-ui)
+
+ (keys @debugger-ui)
 
 (def gui-calls (atom {}))
 (def current-gui-path (atom []))
+
+;(filter #(= (:fn-name %1) "text-graph") @component-usage)
+
+;@component-usage
