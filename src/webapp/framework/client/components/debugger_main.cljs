@@ -373,8 +373,8 @@
 
                                                   ))))))))))))
 
-
-
+;(get @data-accesses {:tree "UI" :path (get @debugger-ui :events-filter-path)})
+;(get @debugger-ui :events-filter-path)
 
 (defn main-debug-comp [app owner]
   (reify
@@ -386,6 +386,25 @@
                    :style #js {:height "300px"}
                    :onMouseEnter #(reset! debugger-ui (assoc-in @debugger-ui [:mode] "show-event"))
                    }
+
+              (apply dom/div nil
+                     (if (get app :events-filter-path)
+                       (map
+                        (fn[x]
+                          (dom/div #js {:style #js {:paddingLeft "20px"}
+                                        :onClick (fn[e] (update-app-pos app x))
+                                        }
+                                   (let [thisitem (get @debug-event-timeline x)]
+                                       (str x ":" (pr-str (get thisitem :event-type)))
+
+                                     )
+                                   ))
+
+                            (get @data-accesses {:tree "UI" :path (get app :events-filter-path)}))
+                       ))
+              (if (get app :events-filter-path)
+                (pr-str (get app :events-filter-path))
+                )
 
               (dom/pre #js {
                            :style #js { :fontSize "14px"}
