@@ -8,12 +8,14 @@
 
   (:use
    [webapp.client.ui-helpers                :only  [validate-email]]
+
    [webapp.framework.client.ui-helpers      :only  [blur-field
                                                     update-field-value
                                                     basic-input-box ]]
 
    [webapp.framework.client.coreclient      :only  [log  remote  component-fn  write-ui-fn]]
    [webapp.framework.client.system-globals  :only  [touch  remove-debug-event]]
+
    [clojure.string                          :only [blank?]])
 
   (:use-macros
@@ -34,7 +36,8 @@
   ;------------------------------------------------------------
   (dom/div
    nil
-   (basic-input-box :field       ui-data
+   (basic-input-box :path        path
+                    :field       ui-data
                     :text        "Your company email"
                     :placeholder "john@microsoft.com"
                     :error       "Email validation error"
@@ -43,7 +46,7 @@
 
 
             (if (get-in ui-data [:confirmed])
-              (dom/div  #js {:className "alert alert-success"}
+              (dom/div  #js {:className "alert  alert-success"}
                         (dom/a  #js {:href "#"
                                      :className "alert-link"}
                                 "Your email confirmed"
@@ -62,7 +65,8 @@
 
   (dom/div
    nil
-   (basic-input-box :field       ui-data
+   (basic-input-box :path        path
+                    :field       ui-data
                     :text        "Their company email"
                     :placeholder "pete@ibm.com"
                     :error       "Email validation error"

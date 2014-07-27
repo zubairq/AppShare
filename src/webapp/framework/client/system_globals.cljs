@@ -208,8 +208,9 @@
          :react-components         []
          :react-components-code    {}
          :watchers-code            {}
-         :pos 1
-         :total-events-count 0
+         :pos                      1
+         :total-events-count       0
+         :events-filter-path       nil
          }))
 
 
@@ -227,6 +228,7 @@
                                  action-name
                                  input
                                  result
+                                 parent-id
                                  ] :or {
                                         event-type     "UI"
                                         error          "Error in field"
@@ -258,7 +260,9 @@
                            :id          debug-id
                            :event-type  event-type
                            :old-value   old
-                           :value       new})
+                           :value       new
+                           :parent-id   parent-id
+                           })
 
 
 
@@ -388,6 +392,10 @@
 
 
 ;(contains-touch-id? [{:a {:touch-id 1}}])
+;(+ (:pos @debugger-ui ) 5)
+;(:total-events-count @debugger-ui )
+;(get @debug-event-timeline 20)
+
 
 (add-watch app-state
            :change
@@ -396,10 +404,12 @@
                ;(.log js/console (pr-str  new-val))
                (if (and @app-watch-on? (not (contains-touch-id?  new-val)))
                  ;(if @app-watch-on?
-                 (let [debug-id (add-debug-event
+                 (comment let [debug-id (add-debug-event
                                  :event-type  "UI"
                                  :old         old-val
-                                 :new         new-val)]
+                                 :new         new-val
+                                 :parent-id   (last @call-stack)
+                                 )]
                    (remove-debug-event debug-id)
                    )))))
 
@@ -410,13 +420,10 @@
                (let [debug-id (add-debug-event
                                :event-type  "DATA"
                                :old         old-val
-                               :new         new-val)]
+                               :new         new-val
+                               :parent-id   (last @call-stack)
+                               )]
                  (remove-debug-event debug-id)))))
-
-
-;(+ (:pos @debugger-ui ) 5)
-;(:total-events-count @debugger-ui )
-;(get @debug-event-timeline 20)
 
 
 
@@ -430,7 +437,7 @@
 ;(map :event-type (vals @debug-event-timeline))
 
 
- (keys @debugger-ui)
+; (:events-filter-path @debugger-ui)
 
 (def gui-calls (atom {}))
 (def current-gui-path (atom []))
@@ -440,6 +447,11 @@
 ;@component-usage
 
 
-@call-stack
+;@call-stack
 
-;@gui-calls
+;(keys @gui-calls)
+
+
+;(get @data-accesses (first (keys @data-accesses)))
+
+;@data-accesses

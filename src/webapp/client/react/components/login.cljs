@@ -30,7 +30,8 @@
   ;------------------------------------------------------------
   (dom/div nil (dom/div
    nil
-   (basic-input-box :field       ui-data
+   (basic-input-box :path        path
+                    :field       ui-data
                     :text        "Your company email"
                     :placeholder "john@microsoft.com"
                     :error       "Email validation error"

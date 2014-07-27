@@ -10,7 +10,7 @@
    [ankha.core       :as ankha]
    )
   (:use
-   [webapp.framework.client.coreclient      :only  [log remote]]
+   [webapp.framework.client.coreclient      :only  [log remote write-ui-fn]]
    [webapp.framework.client.system-globals  :only  [app-state
                                                     playback-app-state
                                                     playback-controls-state
@@ -23,23 +23,30 @@
    [clojure.string :only [blank?]]
    )
    (:require-macros
-    [cljs.core.async.macros :refer [go]]))
+    [cljs.core.async.macros :refer [go]])
+
+  (:use-macros
+   [webapp.framework.client.coreclient
+    :only  [defn-ui-component ns-coils div write-ui]]))
+
+(ns-coils 'webapp.framework.client.ui-helpers)
 
 
 
 
 
-(defn update-field-value [field e]
-  (om/update! field [:value] (.. e -target -value))
+
+(defn update-field-value [field e path]
+  (write-ui  field  [:value]  (.. e -target -value))
   )
 
 
 
-(defn blur-field [request]
+(defn blur-field [request path]
    (let [mode  (get-in @request [:mode])]
      (cond
       (and (= mode "empty") (not (blank? (get-in @request [:value]))))
-      (om/update! request [:mode]  "validate")
+      (write-ui  request  [:mode]  "validate")
       )))
 
 
@@ -103,6 +110,7 @@
   [& {:keys
       [
        field
+       path
        text
        placeholder
        error
@@ -131,8 +139,8 @@
 
 
                                     (get-in field [:value]))
-                  :onChange    #(update-field-value  field %1)
-                  :onBlur      #(blur-field  field)
+                  :onChange    #(update-field-value  field %1 path)
+                  :onBlur      #(blur-field  field path)
                   :style       #js {:width "100%"}
                   })
 

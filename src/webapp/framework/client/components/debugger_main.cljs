@@ -123,7 +123,7 @@
 (get @data-accesses
       {:tree "UI" :path [:ui :companies :values]})
 
-(defn show-tree [a-tree is-map? current-path]
+(defn show-tree [a-tree is-map? current-path tree debugger]
   (dom/div nil
            ;------
            ;START
@@ -131,13 +131,17 @@
            (cond
 
             is-map?
-            (let [idt (get @data-accesses {:tree "UI" :path current-path})]
+            (let [idt (get @data-accesses {:tree tree :path current-path})]
               (dom/div #js {:style #js {:paddingLeft "20px" :display "inline-block"
                                         :verticalAlign "top"
                                         :color (if idt "red" "")
-                                        }} (str
-                                                                  (:key a-tree)
-                                                                  )))
+                                        }
+                            :onClick (fn[e] (if idt
+                                              (om/update! debugger [:events-filter-path] current-path)
+                                              ))
+                            } (str
+                                            (:key a-tree)
+                                            )))
 
             (map? a-tree)
             (dom/div #js {:style #js {:paddingLeft "20px"}} "{")
@@ -160,14 +164,14 @@
             is-map?
              (dom/div #js {:style #js {:paddingLeft "20px"  :display "inline-block"
                                         :verticalAlign "top"}}
-              (show-tree (:value a-tree) false current-path)
+              (show-tree (:value a-tree) false current-path tree debugger)
                       )
 
             (map? a-tree)
             (do
               (apply dom/div #js {:style #js {:paddingLeft "20px"}}
                      (map
-                      #(show-tree  {:key %1 :value (get a-tree %1)} true (conj current-path %1 ))
+                      #(show-tree  {:key %1 :value (get a-tree %1)} true (conj current-path %1 ) tree debugger)
                       (keys a-tree) ))
               )
 
@@ -178,7 +182,7 @@
              (coll? a-tree)
              )
             (apply dom/div #js {:style #js {:paddingLeft "20px"}}
-                   (map #(show-tree %1 false (conj current-path %1 )) a-tree))
+                   (map #(show-tree %1 false (conj current-path %1 ) tree debugger) a-tree))
 
 
             :else
@@ -254,12 +258,12 @@
 
                             (if deleted (dom/div #js {:style #js {:color "red"}}
                                                  (dom/div nil "Deleted")
-                                                 (show-tree  deleted false [])
+                                                 (show-tree  deleted false [] event-type debug-ui-state)
                                                  ))
 
                             (if added (dom/div #js {:style #js {:color "green"}}
                                                (dom/div nil "Added")
-                                               (show-tree  added false [])
+                                               (show-tree  added false [] event-type debug-ui-state)
                                                ))
 
 
@@ -286,8 +290,8 @@
                            (if (= event-type "remote") (dom/div #js {:style #js {:color "red"}}
 
                                              (dom/div #js {:style #js {:color "blue"}} (str action-name))
-                                             (dom/div #js {:style #js {:color "black"}} (show-tree action-input false []))
-                                             (dom/pre #js {:style #js {:color "green"}} (show-tree action-result false []))
+                                             (dom/div #js {:style #js {:color "black"}} (show-tree action-input false [] nil debug-ui-state) )
+                                             (dom/pre #js {:style #js {:color "green"}} (show-tree action-result false [] nil debug-ui-state) )
                                              ))
 
 
@@ -365,7 +369,7 @@
                                                        :style #js {:position "absolute" }
                                                        :onMouseLeave #(om/update! debug-ui-state [:code-data-show_index]
                                                                                   nil)}
-                                                  (show-tree  component-data  false  component-path)
+                                                  (show-tree  component-data  false  component-path "UI" debug-ui-state)
 
                                                   ))))))))))))
 

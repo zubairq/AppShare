@@ -5,6 +5,7 @@
    [cljs.reader             :as reader]
    [goog.dom]
    [om.core                 :as om :include-macros true]
+   [clojure.data            :as data]
    [om.dom                  :as dom]
    [clojure.zip]
    [goog.Uri.QueryData]
@@ -25,6 +26,7 @@
                                                     playback-controls-state
                                                     reset-app-state
                                                     ui-watchers
+                                                    call-stack
                                                     playbackmode
                                                     data-watchers
                                                     data-state
@@ -777,13 +779,29 @@
 
 
 (defn write-ui-fn [tree  path  sub-path  value]
-  (do
-    (reset!  data-accesses (assoc @data-accesses
-                             {
-                              :tree       "UI"
-                              :path       (into [] (flatten (conj path sub-path)))
-                              } value))
-    (om/update!  tree  sub-path  value)))
+  (let [
+        full-path          (into [] (flatten (conj path sub-path)))
+        old-val            @app-state
+        data-access-key    {:tree  "UI"
+                            :path  full-path}
+        current-value      (get @data-accesses  data-access-key)
+        ]
+    (om/update!  tree  sub-path  value)
+    (let [debug-id (add-debug-event
+                    :event-type  "UI"
+                    :old         old-val
+                    :new         @app-state
+                    :parent-id   (last @call-stack)
+                    )]
+      (reset!  data-accesses (assoc @data-accesses
+                               data-access-key
+                               (if current-value
+                                 (conj current-value  debug-id)
+                                 [debug-id])))
+
+      (remove-debug-event debug-id)
+      )
+    ))
 
 
 
