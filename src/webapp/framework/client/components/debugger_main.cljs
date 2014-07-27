@@ -394,8 +394,8 @@
                           (dom/div #js {:style #js {:paddingLeft "20px"}
                                         :onClick (fn[e] (update-app-pos app x))
                                         }
-                                   (let [thisitem (get @debug-event-timeline x)]
-                                       (str x ":" (pr-str (get thisitem :event-type)))
+                                   (let [thisitem (keys (get @debug-event-timeline x) )]
+                                       (str x ":" (pr-str thisitem))
 
                                      )
                                    ))

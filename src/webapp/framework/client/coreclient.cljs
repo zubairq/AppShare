@@ -787,12 +787,16 @@
         current-value      (get @data-accesses  data-access-key)
         ]
     (om/update!  tree  sub-path  value)
-    (let [debug-id (add-debug-event
-                    :event-type  "UI"
-                    :old         old-val
-                    :new         @app-state
-                    :parent-id   (last @call-stack)
-                    )]
+    (let [calls          @call-stack
+          parent-id      (last calls)
+          debug-id       (add-debug-event
+                          :event-type  "UI"
+                          :old         old-val
+                          :new         @app-state
+                          :parent-id   parent-id
+                          )]
+      (log (str "call stack: " calls))
+      (log (str "parent id: " parent-id))
       (reset!  data-accesses (assoc @data-accesses
                                data-access-key
                                (if current-value
