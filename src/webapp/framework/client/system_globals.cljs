@@ -316,9 +316,21 @@
         (if (> (+ (:pos @debugger-ui) 5) (:total-events-count @debugger-ui))
           (reset! debugger-ui
                   (assoc @debugger-ui
-                    :pos (:total-events-count @debugger-ui)))))
+                    :pos (:total-events-count @debugger-ui))))
+
+        (swap! call-stack conj debug-id)
+        debug-id
+        )
 
       )))
+
+(defn remove-debug-event [did]
+  (reset! call-stack
+          (into [] (filter #(not= %1 did) @call-stack))
+          )
+  )
+
+
 
 
 
@@ -383,20 +395,23 @@
              (do
                ;(.log js/console (pr-str  new-val))
                (if (and @app-watch-on? (not (contains-touch-id?  new-val)))
-               ;(if @app-watch-on?
-                 (add-debug-event
-                  :event-type  "UI"
-                  :old         old-val
-                  :new         new-val)))))
+                 ;(if @app-watch-on?
+                 (let [debug-id (add-debug-event
+                                 :event-type  "UI"
+                                 :old         old-val
+                                 :new         new-val)]
+                   (remove-debug-event debug-id)
+                   )))))
 
 (add-watch data-state
            :change
            (fn [_ _ old-val new-val]
              (if @app-watch-on?
-               (add-debug-event
-                :event-type  "DATA"
-                :old         old-val
-                :new         new-val))))
+               (let [debug-id (add-debug-event
+                               :event-type  "DATA"
+                               :old         old-val
+                               :new         new-val)]
+                 (remove-debug-event debug-id)))))
 
 
 ;(+ (:pos @debugger-ui ) 5)
@@ -423,3 +438,8 @@
 ;(filter #(= (:fn-name %1) "text-graph") @component-usage)
 
 ;@component-usage
+
+
+@call-stack
+
+;@gui-calls

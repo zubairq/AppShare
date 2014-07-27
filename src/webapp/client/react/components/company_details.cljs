@@ -8,7 +8,7 @@
    [webapp.framework.client.coreclient]
    )
   (:use
-   [webapp.framework.client.system-globals  :only  [touch]]
+   [webapp.framework.client.system-globals  :only  [touch  remove-debug-event]]
    )
   (:use-macros
    [webapp.framework.client.coreclient

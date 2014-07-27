@@ -16,6 +16,7 @@
                                                     reset-app-state ui-watchers
                                                     playbackmode
                                                     data-watchers
+                                                    remove-debug-event
                                                     data-state
                                                     update-data
                                                     set-ab-tests

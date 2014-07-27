@@ -23,6 +23,7 @@
                                                          init-state-fns
                                                          data-and-ui-events-on?
                                                          add-debug-event
+                                                         remove-debug-event
                                                          current-gui-path
                                                          ]]
    )
@@ -88,24 +89,30 @@
                          (= (:type watch) "path equals")
                          ;------------------------------
                          (if (= (get-in new-val (:path watch)) (:value watch) )
-                           (do
-                             (add-debug-event
-                              :event-type  "event"
-                              :event-name  (str "==" tree-name " " (:path watch) " " (:value watch))
-                              )
-                             (apply (:fn watch) args)))
+                           (let [debug-id
+                                 (add-debug-event
+                                  :event-type  "event"
+                                  :event-name  (str "==" tree-name " " (:path watch) " " (:value watch))
+                                  )]
+                             (apply (:fn watch) args)
+                             (remove-debug-event  debug-id)
+
+                             ))
 
 
 
                          (= (:type watch) "value change")
                          ;-------------------------------
-                         (do
-                           (add-debug-event
-                            :event-type  "event"
-                            :event-name  (str "watch-" tree-name " " (:path watch))
-                            )
+                         (let [debug-id
+                               (add-debug-event
+                                :event-type  "event"
+                                :event-name  (str "watch-" tree-name " " (:path watch))
+                                )]
                            ;(js/alert (str "watch-" tree-name " " (:path watch)))
-                           (apply (:fn watch) args))
+                           (apply (:fn watch) args)
+                           (remove-debug-event  debug-id)
+
+                           )
 
 
 

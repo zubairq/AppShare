@@ -23,6 +23,7 @@
                                                     get-in-tree
                                                     ui-watchers
                                                     -->data
+                                                    remove-debug-event
                                                     <--data
                                                     ]]
    [clojure.string :only [blank?]]

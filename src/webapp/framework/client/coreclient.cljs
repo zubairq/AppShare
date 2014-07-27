@@ -30,6 +30,7 @@
                                                     data-state
                                                     update-data
                                                     add-debug-event
+                                                    remove-debug-event
                                                     component-usage
                                                     gui-calls
                                                     current-gui-path
@@ -129,27 +130,31 @@
          (if (= status 200)
            (let [response-text   (. target (getResponseText))]
              (go
-              (add-debug-event
-               :event-type  "remote"
-               :action-name (str action)
-               :input       parameters-in
-               :result      (reader/read-string response-text)
-               )
+              (let [debug-id
+                    (add-debug-event
+                     :event-type  "remote"
+                     :action-name (str action)
+                     :input       parameters-in
+                     :result      (reader/read-string response-text)
+                     )]
 
-              (>! ch (reader/read-string response-text))
-              (close! ch)
-              ))
+                (>! ch (reader/read-string response-text))
+                (close! ch)
+                (remove-debug-event  debug-id)
+                )))
 
            (go
-            (add-debug-event
-             :event-type  "remote"
-             :action-name (str action)
-             :input       parameters-in
-             :result      (str "ERROR IN RESPONSE, HTTP : " status)
-             )
-            (>! ch  {:error "true"})
-            (close! ch)
-            )
+            (let [debug-id
+                  (add-debug-event
+                   :event-type  "remote"
+                   :action-name (str action)
+                   :input       parameters-in
+                   :result      (str "ERROR IN RESPONSE, HTTP : " status)
+                   )]
+              (>! ch  {:error "true"})
+              (close! ch)
+              (remove-debug-event  debug-id)
+              ))
 
 
 
@@ -733,37 +738,31 @@
 
 
 
-(defn record-component-call [caller-namespace-name  called-fn-name  state
-                             parent-path            rel-path]
-  (let [dfff   (get-in state rel-path)
+(defn record-component-call [caller-namespace-name
+                             called-fn-name
+                             state
+                             parent-path
+                             rel-path]
 
+  (let [
+        local-state   (get-in state rel-path)
+        entry-name    (str called-fn-name ": " parent-path ":" rel-path)
+        is-diff?      (not (= (pr-str local-state) (last (get @gui-calls  entry-name) )))
+        debug-id      (if is-diff?
+                        (add-debug-event :event-type      "render"
+                                         :component-name  called-fn-name
+                                         :component-path  (into [] (flatten (conj parent-path rel-path)))
+                                         :component-data  local-state))
         ]
-    (log (str "record-component-call" ))
-    (log (str "    caller-namespace: " caller-namespace-name))
-    (log (str "    called-fn-name:   " called-fn-name))
-    (log (str "    state:            " (keys dfff)))
-    (log (str "    UI parent path:   " parent-path))
-    (log (str "    UI rel path:      " rel-path))
-
-    (let [ entry-name  (str called-fn-name ": " parent-path ":" rel-path)]
-      (reset! gui-calls (assoc @gui-calls entry-name
+    (reset! gui-calls (assoc @gui-calls entry-name
 
 
-                          (if (not (= (pr-str dfff) (last (get @gui-calls  entry-name) )))
-                            (do
-                              (add-debug-event :event-type      "render"
-                                               :component-name  called-fn-name
-                                               :component-path  (into [] (flatten (conj parent-path rel-path)))
-                                               :component-data  dfff
-                                               )
-
-                              (conj
-                               (if (get @gui-calls entry-name) (get @gui-calls  entry-name) [])   (pr-str dfff))
-
-                              )
-                            (get @gui-calls  entry-name))
-
-                            )))))
+                        (if is-diff?
+                          (conj
+                           (if (get @gui-calls entry-name) (get @gui-calls  entry-name) [])   (pr-str local-state))
+                          (get @gui-calls  entry-name))))
+    debug-id
+    ))
 
 
 

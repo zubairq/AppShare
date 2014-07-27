@@ -10,7 +10,7 @@
    [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils div a component write-ui]])
 
   (:use
-   [webapp.framework.client.system-globals  :only  [touch]]
+   [webapp.framework.client.system-globals  :only  [touch  remove-debug-event]]
    [webapp.framework.client.coreclient      :only  [log amend-record  component-fn write-ui-fn]]
    )
   )

@@ -12,7 +12,7 @@
                                                     update-field-value
                                                     basic-input-box ]]
    [clojure.string :only [blank?]]
-   [webapp.framework.client.system-globals  :only [debugger-ui]])
+   [webapp.framework.client.system-globals  :only [debugger-ui  remove-debug-event]])
 
   (:use-macros
    [webapp.framework.client.coreclient      :only  [defn-ui-component  ns-coils  component]]))

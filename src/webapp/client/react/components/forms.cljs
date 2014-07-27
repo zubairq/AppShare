@@ -13,6 +13,7 @@
                                                     basic-input-box ]]
 
    [webapp.framework.client.coreclient      :only  [log  remote  component-fn  write-ui-fn]]
+   [webapp.framework.client.system-globals  :only  [touch  remove-debug-event]]
    [clojure.string                          :only [blank?]])
 
   (:use-macros

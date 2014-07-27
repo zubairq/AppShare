@@ -18,6 +18,7 @@
                                                     playback-controls-state
                                                     reset-app-state ui-watchers
                                                     playbackmode
+                                                    remove-debug-event
                                                     data-watchers
                                                     data-state
                                                     update-data

@@ -291,21 +291,32 @@
 ;--------------------------------------------------------------------
 (defmacro component
   [component-render-fn   state   rel-path]
-  `(do
-     (webapp.framework.client.coreclient/record-component-call
-      (~'ns-coils-debug)
-      ~(str `~component-render-fn)
-      ~state
-      ~'path
-      ~rel-path
-      )
-    (~'component-fn ~component-render-fn ~state  ~'path ~rel-path)))
+  `(let [~'debug-id
+         (webapp.framework.client.coreclient/record-component-call
+          (~'ns-coils-debug)
+          ~(str `~component-render-fn)
+          ~state
+          ~'path
+          ~rel-path
+          )
 
-;(macroexpand '(component  main-view  app []) )
+         ~'return-value
+         (~'component-fn ~component-render-fn ~state  ~'path ~rel-path)
+
+
+
+         ~'removed-id
+         (~'remove-debug-event  ~'debug-id)
+
+         ]
+     (do
+       ~'return-value
+       )
+     ))
+
+(macroexpand '(component  main-view  app []) )
 ;(macroexpand '(defn-ui-component    letter-a  [data] {}    (div nil "a")))
 ;--------------------------------------------------------------------
-
-
 
 
 

@@ -15,6 +15,7 @@
                                                                latest-endorsements]]
 
    [webapp.client.react.components.company-details     :only  [company-details2]]
+   [webapp.framework.client.system-globals  :only  [touch  remove-debug-event]]
 
    [webapp.framework.client.coreclient                 :only  [log
                                                                remote
