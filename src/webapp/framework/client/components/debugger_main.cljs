@@ -376,6 +376,8 @@
 ;(get @data-accesses {:tree "UI" :path (get @debugger-ui :events-filter-path)})
 ;(get @debugger-ui :events-filter-path)
 
+
+
 (defn main-debug-comp [app owner]
   (reify
     om/IRender
@@ -394,8 +396,16 @@
                           (dom/div #js {:style #js {:paddingLeft "20px"}
                                         :onClick (fn[e] (update-app-pos app x))
                                         }
-                                   (let [thisitem (keys (get @debug-event-timeline x) )]
-                                       (str x ":" (pr-str thisitem))
+                                   (let [thisitem      (get @debug-event-timeline x)
+                                         parentitemid  (get thisitem :parent-id)
+                                         parentitem    (if parentitemid (get  @debug-event-timeline  parentitemid))
+                                         ]
+                                       (str x ":" (pr-str (keys thisitem)) " - "
+                                            (if parentitem (cond
+                                                            (= (:event-type parentitem) "event")
+                                                            (str (:event-type parentitem) "::"  (:event-name parentitem) )
+                                                            ))
+                                            )
 
                                      )
                                    ))

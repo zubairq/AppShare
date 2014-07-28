@@ -795,8 +795,9 @@
                           :new         @app-state
                           :parent-id   parent-id
                           )]
-      (log (str "call stack: " calls))
-      (log (str "parent id: " parent-id))
+      (log (str full-path))
+      (log (str "    call stack: " calls))
+      (log (str "    parent id: " parent-id))
       (reset!  data-accesses (assoc @data-accesses
                                data-access-key
                                (if current-value
