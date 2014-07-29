@@ -394,18 +394,26 @@
                        (map
                         (fn[x]
                           (dom/div #js {:style #js {:paddingLeft "20px"}
-                                        :onClick (fn[e] (update-app-pos app x))
                                         }
+                                    (let [thisitem      (get @debug-event-timeline x)]
+                                   (dom/pre #js {:style #js {:paddingLeft "20px"}
+                                                 :onClick (fn[e] (update-app-pos app x))}
+                                            (str x " "  (:event-type thisitem))))
+
                                    (let [thisitem      (get @debug-event-timeline x)
                                          parentitemid  (get thisitem :parent-id)
                                          parentitem    (if parentitemid (get  @debug-event-timeline  parentitemid))
                                          ]
-                                       (str x ":" (pr-str (keys thisitem)) " - "
+
+                                     (dom/pre #js {:style #js {:paddingLeft "20px"}
+                                                 :onClick (fn[e] (update-app-pos app parentitemid))}
+
+                                       (str
                                             (if parentitem (cond
                                                             (= (:event-type parentitem) "event")
-                                                            (str (:event-type parentitem) "::"  (:event-name parentitem) )
+                                                            (str parentitemid " " (:event-type parentitem) "::"  (:event-name parentitem) )
                                                             ))
-                                            )
+                                            ))
 
                                      )
                                    ))
