@@ -31,6 +31,7 @@
   (dom/div nil (dom/div
    nil
    (basic-input-box :path        path
+                    :parent-id   parent-id
                     :field       ui-data
                     :text        "Your company email"
                     :placeholder "john@microsoft.com"
@@ -41,8 +42,9 @@
 
             (if (get-in ui-data [:confirmed])
               (dom/div  #js {:className "alert alert-success"}
-                        (dom/a  #js {:href "#"
-                                     :className "alert-link"}
+
+                        (dom/a  #js {:href "#"  :className "alert-link"}
+
                                 "Your email confirmed"
                                 )))
             ) ))

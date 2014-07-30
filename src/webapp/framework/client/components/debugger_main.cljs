@@ -412,6 +412,11 @@
                                             (if parentitem (cond
                                                             (= (:event-type parentitem) "event")
                                                             (str parentitemid " " (:event-type parentitem) "::"  (:event-name parentitem) )
+
+                                                            (= (:event-type parentitem) "render")
+                                                            (str parentitemid " " (:event-type parentitem) " "
+                                                                 (:component-name parentitem) "::"  (:component-path parentitem) )
+
                                                             ))
                                             ))
 

@@ -89,7 +89,9 @@
            [~'this]
 
            ~(if *show-code*
-              `(~'let [~'path ~'(om/get-state owner :parent-path)]
+              `(~'let [~'path       ~'(om/get-state owner :parent-path)
+                       ~'parent-id  ~'(om/get-state owner :parent-id)]
+
                       (webapp.framework.client.coreclient/debug-react
                        ~(str `~fn-name)
                        ~'owner
@@ -301,7 +303,7 @@
           )
 
          ~'return-value
-         (~'component-fn ~component-render-fn ~state  ~'path ~rel-path)
+         (~'component-fn ~component-render-fn ~state  ~'path ~rel-path ~'debug-id)
 
 
 
@@ -328,6 +330,8 @@
       ~tree
       ~'path
       ~sub-path
-      ~value)))
+      ~value
+      ~'parent-id
+      )))
 
 ;(macroexpand '(write-ui app [:ui :tab-browser]  "top companies"))

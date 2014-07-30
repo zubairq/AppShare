@@ -37,6 +37,7 @@
   (dom/div
    nil
    (basic-input-box :path        path
+                    :parent-id   parent-id
                     :field       ui-data
                     :text        "Your company email"
                     :placeholder "john@microsoft.com"
@@ -66,6 +67,7 @@
   (dom/div
    nil
    (basic-input-box :path        path
+                    :parent-id   parent-id
                     :field       ui-data
                     :text        "Their company email"
                     :placeholder "pete@ibm.com"

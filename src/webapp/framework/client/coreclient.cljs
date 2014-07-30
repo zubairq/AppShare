@@ -724,13 +724,16 @@
 
 
 
-(defn component-fn [coils-fn state parent-path rel-path]
+(defn component-fn [coils-fn state parent-path rel-path debug-id]
   (do
     ;(log (str "component: " rel-path))
     (om/build
      coils-fn
      (get-in state rel-path)
-     {:init-state {:parent-path (into [] (flatten (conj parent-path rel-path))) }}
+     {:init-state {
+                   :parent-path               (into [] (flatten (conj parent-path rel-path)))
+                   :parent-id                 debug-id
+                   }}
      )))
 
 
@@ -750,12 +753,12 @@
         local-state   (get-in state rel-path)
         entry-name    (str called-fn-name ": " parent-path ":" rel-path)
         is-diff?      (not (= (pr-str local-state) (last (get @gui-calls  entry-name) )))
-        debug-id      (if is-diff?
-                        (add-debug-event :event-type      "render"
+        debug-id      (add-debug-event :event-type      "render"
                                          :component-name  called-fn-name
                                          :component-path  (into [] (flatten (conj parent-path rel-path)))
-                                         :component-data  local-state))
+                                         :component-data  local-state)
         ]
+    (do
     (reset! gui-calls (assoc @gui-calls entry-name
 
 
@@ -763,8 +766,9 @@
                           (conj
                            (if (get @gui-calls entry-name) (get @gui-calls  entry-name) [])   (pr-str local-state))
                           (get @gui-calls  entry-name))))
+    (log (str "DEBUG ID: "debug-id))
     debug-id
-    ))
+    )))
 
 
 
@@ -778,7 +782,7 @@
 ;clojure.zip/down
 
 
-(defn write-ui-fn [tree  path  sub-path  value]
+(defn write-ui-fn [tree  path  sub-path  value  parent-id]
   (let [
         full-path          (into [] (flatten (conj path sub-path)))
         old-val            @app-state
@@ -787,16 +791,13 @@
         current-value      (get @data-accesses  data-access-key)
         ]
     (om/update!  tree  sub-path  value)
-    (let [calls          @call-stack
-          parent-id      (last calls)
-          debug-id       (add-debug-event
+    (let [debug-id       (add-debug-event
                           :event-type  "UI"
                           :old         old-val
                           :new         @app-state
                           :parent-id   parent-id
                           )]
       (log (str full-path))
-      (log (str "    call stack: " calls))
       (log (str "    parent id: " parent-id))
       (reset!  data-accesses (assoc @data-accesses
                                data-access-key
@@ -810,6 +811,10 @@
 
 
 
-
 (defn update-ui [app  path  value]
-  (write-ui-fn  app  [] path value))
+  (let
+    [
+     calls          @call-stack
+     parent-id      (last calls)
+     ]
+  (write-ui-fn  app  [] path value parent-id)))

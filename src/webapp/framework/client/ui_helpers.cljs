@@ -36,13 +36,13 @@
 
 
 
-(defn update-field-value [field e path]
+(defn update-field-value [field e path parent-id]
   (write-ui  field  [:value]  (.. e -target -value))
   )
 
 
 
-(defn blur-field [request path]
+(defn blur-field [request path parent-id]
    (let [mode  (get-in @request [:mode])]
      (cond
       (and (= mode "empty") (not (blank? (get-in @request [:value]))))
@@ -111,6 +111,7 @@
       [
        field
        path
+       parent-id
        text
        placeholder
        error
@@ -139,8 +140,8 @@
 
 
                                     (get-in field [:value]))
-                  :onChange    #(update-field-value  field %1 path)
-                  :onBlur      #(blur-field  field path)
+                  :onChange    #(update-field-value  field %1 path parent-id)
+                  :onBlur      #(blur-field  field path parent-id)
                   :style       #js {:width "100%"}
                   })
 
