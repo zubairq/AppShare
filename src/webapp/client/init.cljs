@@ -86,6 +86,12 @@
                            :value ""
                            :private true
                            }
+             :from-email           {:label          "Your company email"
+                                    :placeholder    "john@microsoft.com"
+                                    :value          ""
+                                    :mode           "empty"
+                                    :private        true
+                                    }
              }
 
 

@@ -11,6 +11,8 @@
    [webapp.framework.client.ui-helpers      :only  [blur-field
                                                     update-field-value
                                                     basic-input-box ]]
+   [webapp.client.react.components.forms    :only  [from-email-field]]
+
    [clojure.string :only [blank?]]
    [webapp.framework.client.system-globals  :only [debugger-ui  remove-debug-event]])
 
@@ -30,10 +32,11 @@
   ;------------------------------------------------------------
   (dom/div nil (dom/div
    nil
+
    (basic-input-box :path        path
                     :parent-id   parent-id
                     :field       ui-data
-                    :text        "Your company email"
+                    :text        "Your login email"
                     :placeholder "john@microsoft.com"
                     :error       "Email validation error"
                     )
@@ -70,6 +73,9 @@
    (dom/div
     nil
     (component  login-email-field   ui-data [:login-email] )
+
+    (component   from-email-field   ui-data [:from-email] )
+
 
     (dom/button #js {:onClick (fn [e]
                                 (js/alert (-> @ui-data :login-email :value ) )
