@@ -410,70 +410,72 @@
     ;---------
     (render
      [_]
-     (dom/div #js {
-                   :style #js {:height "300px"}
-                   :onMouseEnter #(reset! debugger-ui (assoc-in @debugger-ui [:mode] "show-event"))
-                   }
+     (dom/div nil
+              (dom/div #js {
+                            :style #js {:height "300px" :border "1px solid black"
+                                        :border-radius "15px" :padding "5px"}
+                            :onMouseEnter #(reset! debugger-ui (assoc-in @debugger-ui [:mode] "show-event"))
+                            }
 
-              (dom/div #js {:style #js {:height "250px" :overflow "scroll" :paddingRight "40px"}}
-              (apply dom/div nil
-                     (if (get app :events-filter-path)
-                       (map
-                        (fn[x]
-                          (dom/div #js {:style #js {:paddingLeft "20px"}
-                                        }
-                                    (let [thisitem      (get @debug-event-timeline x)]
-                                   (dom/pre #js {:style #js {:paddingLeft "20px"
-                                                             :backgroundColor "darkgray"}
-                                                 :onClick (fn[e] (update-app-pos app x))
-                                                 }
-                                            (str x " "  (:event-type thisitem))))
+                       (dom/div nil  (str "Filter: " (if (get app :events-filter-path)
+                                       (pr-str (get app :events-filter-path))
+                                       )))
 
-                                   (let [thisitem      (get @debug-event-timeline x)
-                                         parentitemid  (get thisitem :parent-id)
-                                         parentitem    (if parentitemid (get  @debug-event-timeline  parentitemid))
-                                         ]
+                       (dom/div #js {:style #js {:height "250px" :overflow "scroll" :paddingRight "40px"}}
+                                (apply dom/div nil
+                                       (if (get app :events-filter-path)
+                                         (map
+                                          (fn[x]
+                                            (dom/div #js {:style #js {:paddingLeft "20px"}
+                                                          }
+                                                     (let [thisitem      (get @debug-event-timeline x)]
+                                                       (dom/pre #js {:style #js {:paddingLeft "20px"
+                                                                                 :backgroundColor "darkgray"}
+                                                                     :onClick (fn[e] (update-app-pos app x))
+                                                                     }
+                                                                (str x " "  (:event-type thisitem))))
 
-                                     (dom/pre #js {:style #js {:paddingLeft "20px" :marginLeft "50px"
-                                                               }
-                                                 :onClick (fn[e] (update-app-pos  app  parentitemid))}
+                                                     (let [thisitem      (get @debug-event-timeline x)
+                                                           parentitemid  (get thisitem :parent-id)
+                                                           parentitem    (if parentitemid (get  @debug-event-timeline  parentitemid))
+                                                           ]
 
-                                       (str
-                                            (if parentitem (cond
-                                                            (= (:event-type parentitem) "event")
-                                                            (str parentitemid " " (:event-type parentitem) "::"
-                                                                 (:event-name parentitem) )
+                                                       (dom/pre #js {:style #js {:paddingLeft "20px" :marginLeft "50px"
+                                                                                 }
+                                                                     :onClick (fn[e] (update-app-pos  app  parentitemid))}
 
-                                                            (= (:event-type parentitem) "render")
-                                                            (str parentitemid " " (:event-type parentitem) " "
-                                                                 (:component-name parentitem) "::"
-                                                                 (:component-path parentitem) )
+                                                                (str
+                                                                 (if parentitem (cond
+                                                                                 (= (:event-type parentitem) "event")
+                                                                                 (str parentitemid " " (:event-type parentitem) "::"
+                                                                                      (:event-name parentitem) )
 
-                                                            ))
-                                            ))
+                                                                                 (= (:event-type parentitem) "render")
+                                                                                 (str parentitemid " " (:event-type parentitem) " "
+                                                                                      (:component-name parentitem) "::"
+                                                                                      (:component-path parentitem) )
 
-                                     )
-                                   ))
+                                                                                 ))
+                                                                 ))
 
-                            (reverse (get @data-accesses {:tree "UI" :path (get app :events-filter-path)})))
-                       )))
-              (if (get app :events-filter-path)
-                (pr-str (get app :events-filter-path))
-                )
+                                                       )
+                                                     ))
+
+                                          (reverse (get @data-accesses {:tree "UI" :path (get app :events-filter-path)})))
+                                         ))))
+
+
 
               (dom/pre #js {
-                           :style #js { :fontSize "14px"}
-                           :onMouseEnter #(reset! debugger-ui (assoc-in @debugger-ui [:mode] "show-event"))
-                           } (apply str  (into [] (map (fn[li] (str (get li :fn-name) "   ")) (get @debugger-ui :react-components)))))
+                            :style #js { :fontSize "14px"}
+                            :onMouseEnter #(reset! debugger-ui (assoc-in @debugger-ui [:mode] "show-event"))
+                            } (apply str  (into [] (map (fn[li] (str (get li :fn-name) "   ")) (get @debugger-ui :react-components)))))
 
               (cond
 
 
                (= (:mode @debugger-ui) "show-event")
                (om/build  show-event-component   app)
-
-
-
 
                )))))
 
