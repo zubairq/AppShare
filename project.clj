@@ -1,10 +1,10 @@
 (defproject org.clojars.zubairq/coils "0.5"
   :dependencies [
-                   [org.clojure/clojure "1.5.1"]
+                   [org.clojure/clojure "1.6.0"]
                    [org.clojure/google-closure-library-third-party "0.0-2029"]
                    [org.clojure/tools.reader "0.7.10"]
-                   [org.clojure/clojurescript "0.0-2173"]
-                   [om "0.6.4"]
+                   [org.clojure/clojurescript "0.0-2268"]
+                   [om "0.6.5"]
                    [om-sync "0.1.1"]
                    [org.clojure/core.async "0.1.267.0-0d7780-alpha"]
 
@@ -31,7 +31,7 @@
   :url "http://org.clojars.zubair/coils"
 
   :plugins  [
-               [lein-cljsbuild "1.0.2"]
+               [lein-cljsbuild "1.0.3"]
                [lein-httpd "1.0.0"]
                [lein-ring "0.8.10"]
             ]
