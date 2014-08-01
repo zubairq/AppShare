@@ -121,7 +121,19 @@
                (str (-> app :pos) " of "
                     (-> app :total-events-count ))
 
-               )))))
+               )
+
+              (dom/pre #js {
+                            :style #js { :fontSize "14px"}
+                            :onMouseEnter #(reset! debugger-ui (assoc-in @debugger-ui [:mode] "show-event"))
+                            }
+                       (if (pos? (count (get @debugger-ui :react-components)))
+                         (apply str  (into [] (map (fn[li] (str (get li :fn-name) "   "))
+                                                   (get @debugger-ui :react-components))))
+                         "Mouse over components to show code"
+                         )))
+
+              )))
 
 
 
@@ -465,11 +477,6 @@
                                          ))))
 
 
-
-              (dom/pre #js {
-                            :style #js { :fontSize "14px"}
-                            :onMouseEnter #(reset! debugger-ui (assoc-in @debugger-ui [:mode] "show-event"))
-                            } (apply str  (into [] (map (fn[li] (str (get li :fn-name) "   ")) (get @debugger-ui :react-components)))))
 
               (cond
 
