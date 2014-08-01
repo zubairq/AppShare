@@ -89,15 +89,32 @@
            [~'this]
 
            ~(if *show-code*
-              `(~'let [~'path       ~'(om/get-state owner :parent-path)
-                       ~'parent-id  ~'(om/get-state owner :parent-id)]
+              `(~'let [
 
-                      (webapp.framework.client.coreclient/debug-react
-                       ~(str `~fn-name)
-                       ~'owner
-                       ~(first data-paramater-name)
-                       (~'fn [~(first data-paramater-name)]
-                             ~@code)))
+                       ~'debug-id       (webapp.framework.client.coreclient/record-component-call
+                                         (~'ns-coils-debug)
+                                         ~(str `~fn-name)
+                                         ~(first data-paramater-name)
+                                         ~'(om/get-state owner :parent-path)
+                                         )
+
+
+                       ~'path       ~'(om/get-state owner :parent-path)
+
+                       ~'parent-id  ~'debug-id
+
+                       ~'return-val (webapp.framework.client.coreclient/debug-react
+                                     ~(str `~fn-name)
+                                     ~'owner
+                                     ~(first data-paramater-name)
+                                     (~'fn [~(first data-paramater-name)]
+                                           ~@code))
+
+                       ~'removed-id     (~'remove-debug-event  ~'debug-id)
+
+                       ]
+
+                      ~'return-val)
 
               ;else
               (first code))
@@ -293,28 +310,11 @@
 ;--------------------------------------------------------------------
 (defmacro component
   [component-render-fn   state   rel-path]
-  `(let [~'debug-id
-         (webapp.framework.client.coreclient/record-component-call
-          (~'ns-coils-debug)
-          ~(str `~component-render-fn)
-          ~state
-          ~'path
-          ~rel-path
-          )
-
-         ~'return-value
-         (~'component-fn ~component-render-fn ~state  ~'path ~rel-path ~'debug-id)
-
-
-
-         ~'removed-id
-         (~'remove-debug-event  ~'debug-id)
-
+  `(let [
+         ~'return-value   (~'component-fn ~component-render-fn ~state  ~'path ~rel-path)
          ]
      (do
-       ~'return-value
-       )
-     ))
+       ~'return-value)))
 
 (macroexpand '(component  main-view  app []) )
 ;(macroexpand '(defn-ui-component    letter-a  [data] {}    (div nil "a")))

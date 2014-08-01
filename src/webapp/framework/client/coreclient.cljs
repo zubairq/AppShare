@@ -724,7 +724,7 @@
 
 
 
-(defn component-fn [coils-fn state parent-path rel-path debug-id]
+(defn component-fn [coils-fn state parent-path rel-path]
   (do
     ;(log (str "component: " rel-path))
     (om/build
@@ -732,7 +732,6 @@
      (get-in state rel-path)
      {:init-state {
                    :parent-path               (into [] (flatten (conj parent-path rel-path)))
-                   :parent-id                 debug-id
                    }}
      )))
 
@@ -746,17 +745,15 @@
 (defn record-component-call [caller-namespace-name
                              called-fn-name
                              state
-                             parent-path
-                             rel-path]
+                             full-path]
 
   (let [
-        local-state   (get-in state rel-path)
-        entry-name    (str called-fn-name ": " parent-path ":" rel-path)
-        is-diff?      (not (= (pr-str local-state) (last (get @gui-calls  entry-name) )))
+        entry-name    (str called-fn-name ": " full-path)
+        is-diff?      (not (= (pr-str state) (last (get @gui-calls  entry-name) )))
         debug-id      (add-debug-event :event-type      "render"
                                          :component-name  called-fn-name
-                                         :component-path  (into [] (flatten (conj parent-path rel-path)))
-                                         :component-data  local-state)
+                                         :component-path  full-path
+                                         :component-data  state)
         ]
     (do
     (reset! gui-calls (assoc @gui-calls entry-name
@@ -764,7 +761,7 @@
 
                         (if is-diff?
                           (conj
-                           (if (get @gui-calls entry-name) (get @gui-calls  entry-name) [])   (pr-str local-state))
+                           (if (get @gui-calls entry-name) (get @gui-calls  entry-name) [])   (pr-str state))
                           (get @gui-calls  entry-name))))
     (log (str "DEBUG ID: "debug-id))
     debug-id
