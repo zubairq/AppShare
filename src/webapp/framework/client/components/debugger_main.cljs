@@ -64,6 +64,9 @@
 
 
 
+
+
+
 (defn main-debug-slider-comp [app owner]
   (reify
     om/IRender
@@ -120,8 +123,19 @@
 
                )))))
 
-(get @data-accesses
-      {:tree "UI" :path [:ui :companies :values]})
+
+
+
+
+;(get @data-accesses
+;      {:tree "UI" :path [:ui :companies :values]})
+
+
+
+
+
+
+
 
 (defn show-tree [a-tree is-map? current-path tree debugger]
   (dom/div nil
@@ -212,6 +226,13 @@
             (dom/div #js {:style #js {:paddingLeft "20px" :paddingBottom "20px" }} "]")
 
             )))
+
+
+
+
+
+
+
 
 (defn show-event-component[ debug-ui-state  owner ]
   (reify
@@ -378,6 +399,11 @@
 
 
 
+
+
+
+
+
 (defn main-debug-comp [app owner]
   (reify
     om/IRender
@@ -389,6 +415,7 @@
                    :onMouseEnter #(reset! debugger-ui (assoc-in @debugger-ui [:mode] "show-event"))
                    }
 
+              (dom/div #js {:style #js {:height "250px" :overflow "scroll" :paddingRight "40px"}}
               (apply dom/div nil
                      (if (get app :events-filter-path)
                        (map
@@ -396,8 +423,10 @@
                           (dom/div #js {:style #js {:paddingLeft "20px"}
                                         }
                                     (let [thisitem      (get @debug-event-timeline x)]
-                                   (dom/pre #js {:style #js {:paddingLeft "20px"}
-                                                 :onClick (fn[e] (update-app-pos app x))}
+                                   (dom/pre #js {:style #js {:paddingLeft "20px"
+                                                             :backgroundColor "darkgray"}
+                                                 :onClick (fn[e] (update-app-pos app x))
+                                                 }
                                             (str x " "  (:event-type thisitem))))
 
                                    (let [thisitem      (get @debug-event-timeline x)
@@ -405,17 +434,20 @@
                                          parentitem    (if parentitemid (get  @debug-event-timeline  parentitemid))
                                          ]
 
-                                     (dom/pre #js {:style #js {:paddingLeft "20px"}
-                                                 :onClick (fn[e] (update-app-pos app parentitemid))}
+                                     (dom/pre #js {:style #js {:paddingLeft "20px" :marginLeft "50px"
+                                                               }
+                                                 :onClick (fn[e] (update-app-pos  app  parentitemid))}
 
                                        (str
                                             (if parentitem (cond
                                                             (= (:event-type parentitem) "event")
-                                                            (str parentitemid " " (:event-type parentitem) "::"  (:event-name parentitem) )
+                                                            (str parentitemid " " (:event-type parentitem) "::"
+                                                                 (:event-name parentitem) )
 
                                                             (= (:event-type parentitem) "render")
                                                             (str parentitemid " " (:event-type parentitem) " "
-                                                                 (:component-name parentitem) "::"  (:component-path parentitem) )
+                                                                 (:component-name parentitem) "::"
+                                                                 (:component-path parentitem) )
 
                                                             ))
                                             ))
@@ -423,8 +455,8 @@
                                      )
                                    ))
 
-                            (get @data-accesses {:tree "UI" :path (get app :events-filter-path)}))
-                       ))
+                            (reverse (get @data-accesses {:tree "UI" :path (get app :events-filter-path)})))
+                       )))
               (if (get app :events-filter-path)
                 (pr-str (get app :events-filter-path))
                 )
