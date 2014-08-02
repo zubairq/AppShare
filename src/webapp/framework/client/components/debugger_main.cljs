@@ -447,7 +447,13 @@
                                                                                  :backgroundColor "darkgray"}
                                                                      :onClick (fn[e] (update-app-pos app x))
                                                                      }
-                                                                (str x " "  (:event-type thisitem))))
+                                                                (str x " "  (:event-type thisitem) " "
+                                                                     (cond
+                                                                      (=  (:event-type thisitem) "render")
+                                                                      (str (:component-name thisitem) " " (:component-path thisitem))
+                                                                      )
+
+                                                                     )))
 
                                                      (let [thisitem      (get @debug-event-timeline x)
                                                            parentitemid  (get thisitem :parent-id)
@@ -467,8 +473,10 @@
 
                                                                                  (= (:event-type parentitem) "render")
                                                                                  (str parentitemid " " (:event-type parentitem) " "
-                                                                                      (:component-name parentitem) "::"
-                                                                                      (:component-path parentitem) )
+                                                                                      (:component-name parentitem) " "
+                                                                                      (:component-path parentitem)
+
+                                                                                      )
 
                                                                                  ))
                                                                  )))
