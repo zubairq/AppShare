@@ -83,7 +83,9 @@
                                         :onClick
                                         (fn[x]
                                           (if (pos? (get-in @app [:pos]))
-                                            (update-app-pos  app  (dec (get-in @app [:pos])))
+                                            (do
+                                              (update-app-pos  app  (dec (get-in @app [:pos])))
+                                              (om/update! app [:events-filter-path] nil))
 
                                           ))
 
@@ -94,9 +96,9 @@
                                         :onClick
                                         (fn[x]
                                           (if (pos? (get-in @app [:pos]))
-                                            (update-app-pos  app  (inc (get-in @app [:pos])))
-
-                                          ))
+                                            (do
+                                              (update-app-pos  app  (inc (get-in @app [:pos])))
+                                              (om/update! app [:events-filter-path] nil))))
 
                                         } ">")
                        (dom/input
@@ -112,6 +114,7 @@
                              (fn[e]
                                (let [value (js/parseInt (.. e -target -value))]
                                  (update-app-pos   app value)
+                                 (om/update! app [:events-filter-path] nil)
                                  ))
                              })
 
@@ -440,7 +443,8 @@
 
                                          (map
                                           (fn[x]
-                                            (dom/div #js {:style #js {:paddingLeft "20px"}
+                                            (if x
+                                              (dom/div #js {:style #js {:paddingLeft "20px"}
                                                           }
                                                      (let [thisitem      (get @debug-event-timeline x)]
                                                        (dom/pre #js {:style #js {:paddingLeft "20px"
@@ -482,7 +486,7 @@
                                                                  )))
 
                                                        )
-                                                     ))
+                                                     )))
 
                                           (if (get app :events-filter-path)
                                             (reverse (get @data-accesses {:tree "UI" :path (get app :events-filter-path)}))
