@@ -39,13 +39,9 @@
 
 
 
-;------------------------------------------------------------
 (defn-ui-component     main-view   [app]
   {:absolute-path []}
-;------------------------------------------------------------
 
   (div nil
-           (h2 nil "Coils")
-           "Build webapps with Neo4j"
-
-))
+       (h2 nil "Coils")
+       "Build webapps with Neo4j"))
