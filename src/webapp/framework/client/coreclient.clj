@@ -334,4 +334,16 @@
       ~'parent-id
       )))
 
+
+
+(defmacro read-ui
+  [tree sub-path]
+  `(do
+     (webapp.framework.client.coreclient/read-ui-fn
+      ~tree
+      ~'path
+      ~sub-path
+      ~'parent-id
+      )))
+
 ;(macroexpand '(write-ui app [:ui :tab-browser]  "top companies"))

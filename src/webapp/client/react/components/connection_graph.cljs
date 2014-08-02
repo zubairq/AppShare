@@ -7,11 +7,11 @@
    )
 
   (:use-macros
-   [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils div a component write-ui]])
+   [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils div a component write-ui read-ui]])
 
   (:use
    [webapp.framework.client.system-globals  :only  [touch  remove-debug-event]]
-   [webapp.framework.client.coreclient      :only  [log amend-record  component-fn write-ui-fn]]
+   [webapp.framework.client.coreclient      :only  [log amend-record  component-fn write-ui-fn  read-ui-fn]]
    )
   )
 (ns-coils 'webapp.client.react.components.connection-graph)
@@ -27,7 +27,7 @@
   ;---------------------------------------------------------
   (div  {:style {:height "100%" :width "100%"}}
 
-        (let [all-company-records    (-> companies :values )]
+        (let [all-company-records    (read-ui companies :values )]
 
           (apply
            dom/div nil
