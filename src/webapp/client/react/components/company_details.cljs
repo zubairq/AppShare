@@ -56,9 +56,4 @@
                  "src='http://connecttous.co/connecttous/connecttous.html"
                  "?company_url="
                  (str (-> company-details :company-url))
-                 "'></iframe>")
-            )
-
-
-
-   ))
+                 "'></iframe>"))))
