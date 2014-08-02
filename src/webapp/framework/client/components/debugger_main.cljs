@@ -429,13 +429,15 @@
                             :onMouseEnter #(reset! debugger-ui (assoc-in @debugger-ui [:mode] "show-event"))
                             }
 
-                       (dom/div nil  (str "Filter: " (if (get app :events-filter-path)
-                                       (pr-str (get app :events-filter-path))
-                                       )))
+                       (dom/div nil  (str "Filter: "
+                                          (if (get app :events-filter-path)
+                                            (pr-str (get app :events-filter-path))
+                                            "Show all in past"
+                                            )))
 
                        (dom/div #js {:style #js {:height "250px" :overflow "scroll" :paddingRight "40px"}}
                                 (apply dom/div nil
-                                       (if (get app :events-filter-path)
+
                                          (map
                                           (fn[x]
                                             (dom/div #js {:style #js {:paddingLeft "20px"}
@@ -452,7 +454,8 @@
                                                            parentitem    (if parentitemid (get  @debug-event-timeline  parentitemid))
                                                            ]
 
-                                                       (dom/pre #js {:style #js {:paddingLeft "20px" :marginLeft "50px"
+                                                       (if parentitemid
+                                                         (dom/pre #js {:style #js {:paddingLeft "20px" :marginLeft "50px"
                                                                                  }
                                                                      :onClick (fn[e] (update-app-pos  app  parentitemid))}
 
@@ -468,12 +471,20 @@
                                                                                       (:component-path parentitem) )
 
                                                                                  ))
-                                                                 ))
+                                                                 )))
 
                                                        )
                                                      ))
 
-                                          (reverse (get @data-accesses {:tree "UI" :path (get app :events-filter-path)})))
+                                          (if (get app :events-filter-path)
+                                            (reverse (get @data-accesses {:tree "UI" :path (get app :events-filter-path)}))
+                                            (reverse
+                                             (let [aps   (- (-> app :pos) 20)
+                                                   act   (if (> aps 0) aps 1)
+                                                   ]
+                                               (into [] (range act (+ 1 (-> app :pos))))
+                                               ))
+                                            )
                                          ))))
 
 
