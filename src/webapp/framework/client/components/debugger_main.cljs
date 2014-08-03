@@ -451,13 +451,55 @@
                                                                                  :backgroundColor "darkgray"}
                                                                      :onClick (fn[e] (update-app-pos app x))
                                                                      }
-                                                                (str x " "  (:event-type thisitem) " "
+
+                                                                (dom/div #js {:style #js {  :display         "inline-block"}}
+                                                                                     (str x " "  (:event-type thisitem) " "
                                                                      (cond
                                                                       (=  (:event-type thisitem) "render")
                                                                       (str (:component-name thisitem) " " (:component-path thisitem))
                                                                       )
 
-                                                                     )))
+                                                                     ))
+
+
+                                                                (cond
+                                                                 (= (:event-type thisitem) "render")
+                                                                 (dom/div #js {
+                                                                               :onClick #(do
+                                                                                           (om/update!
+                                                                                            app
+                                                                                            [:code-data-show_index2]
+                                                                                            (if (= (get @app :code-data-show_index2) x)
+                                                                                              nil
+                                                                                              x))
+                                                                                           (om/update!
+                                                                                            app
+                                                                                            [:code-show_index2] nil))
+                                                                               :style #js {:color           "blue"
+                                                                                           :text-decoration "underline"
+                                                                                           :display         "inline-block"
+                                                                                           :paddingLeft     "10px"
+                                                                                           }
+                                                                               }
+                                                                          (str
+                                                                           (if (= (get app :code-data-show_index2) x)
+                                                                             "-" "+")
+                                                                           "Input data")))
+
+
+                                                                (if (= (get app :code-data-show_index2) x)
+                                                                  (dom/pre #js {
+                                                                                :style #js {:position "absolute" }
+                                                                                :onMouseLeave #(om/update! app [:code-data-show_index2]
+                                                                                                           nil)}
+                                                                           (show-tree
+                                                                            (get thisitem :component-data)  false
+                                                                            (get thisitem :component-path) "UI" app)
+
+                                                                           ))
+
+
+                                                                ))
 
                                                      (let [thisitem      (get @debug-event-timeline x)
                                                            parentitemid  (get thisitem :parent-id)
@@ -479,7 +521,6 @@
                                                                                  (str parentitemid " " (:event-type parentitem) " "
                                                                                       (:component-name parentitem) " "
                                                                                       (:component-path parentitem)
-
                                                                                       )
 
                                                                                  ))
