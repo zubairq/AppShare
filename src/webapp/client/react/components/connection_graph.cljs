@@ -27,7 +27,7 @@
   ;---------------------------------------------------------
   (div  {:style {:height "100%" :width "100%"}}
 
-        (let [all-company-records    (read-ui companies :values )]
+        (let [all-company-records    (read-ui companies [:values] )]
 
           (apply
            dom/div nil

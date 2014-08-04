@@ -814,7 +814,7 @@
 (defn read-ui-fn [tree  path  sub-path  parent-id]
   (let [
         full-path          (into [] (flatten (conj path sub-path)))
-        value              (get-in @app-state full-path)
+        value              (get-in  tree  sub-path)
         data-access-key    {:tree  "UI"
                             :path  full-path}
         current-value      (get @data-accesses  data-access-key)
@@ -828,8 +828,10 @@
                                (conj current-value  debug-id)
                                [debug-id])))
 
-    (remove-debug-event debug-id)
+    (remove-debug-event  debug-id)
     value))
+
+
 
 
 (defn update-ui [app  path  value]

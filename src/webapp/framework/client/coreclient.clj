@@ -346,4 +346,6 @@
       ~'parent-id
       )))
 
+;(macroexpand '(read-ui app [:ui :tab-browser]))
+
 ;(macroexpand '(write-ui app [:ui :tab-browser]  "top companies"))
