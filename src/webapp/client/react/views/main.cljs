@@ -109,7 +109,7 @@
           :onClick      #(write-ui splash-screen-data [:show] false)
           }
 
-         (div {:style { :vertical-align "center" }}
+         (div {:style { :vertical-align "center" :width "100%" :height "100%"}}
 
               (div {:style {:padding "5px" :padding-bottom "0px" :font-size "40"}} (str "Coils"))
 
