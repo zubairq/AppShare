@@ -140,7 +140,10 @@
   {:absolute-path []}
 ;------------------------------------------------------------
 
-  (div {:style {:height "100%"}}
+  (div {:style {
+                :height       (- (-> app :view :height) 100)
+                :width        (-> app :view :width)
+                }}
 
        (dom/h2 nil "ConnectToUs.co")
 
