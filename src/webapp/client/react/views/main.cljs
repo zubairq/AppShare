@@ -27,7 +27,8 @@
                                                                ns-coils
                                                                div
                                                                component
-                                                               write-ui]]))
+                                                               write-ui
+                                                               a]]))
 
 (ns-coils 'webapp.client.react.views.main)
 
@@ -88,7 +89,7 @@
 (defn-ui-component    letter-a  [data]
   {}
   ;------------------------------------------------------------
-    (div nil "a"))
+    (div nil "-----------------------------------------------"))
 
 
 
@@ -108,14 +109,24 @@
           :onClick      #(write-ui splash-screen-data [:show] false)
           }
 
-         (component letter-a splash-screen-data [])
-
          (div {:style { :vertical-align "center" }}
 
-              (div {:style {:padding "5px" :padding-bottom "0px" :font-size "40"}} (str "ConnectToUs"))
+              (div {:style {:padding "5px" :padding-bottom "0px" :font-size "40"}} (str "Coils"))
 
               (div {:style {:padding "5px" :padding-bottom "20px"  :font-size "25"}}
-                   (str "Sell more by showing your customer connections"))
+                   (str "Build Neo4j Web Apps"))
+
+              (a {:href "https://github.com/zubairq/coils"}
+                 "Follow us on GitHub")
+
+              (component   letter-a   splash-screen-data [])
+
+
+
+              (div {:style {:padding "5px" :padding-bottom "20px"  :font-size "20"}}
+                   (str "This is a basic demo app called ConnectToUs to show the basic capabilities of Coils"))
+
+
 
                    (div {:style {:padding "5px" :padding-bottom "20px"}} "Click to start...")
               ))))
