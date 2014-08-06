@@ -455,3 +455,15 @@
 ;(get @data-accesses (first (keys @data-accesses)))
 
 ;@data-accesses
+
+
+(def tester (atom {}))
+
+(comment om/root
+      (get (:react-components-fns @debugger-ui)
+     "letter-a")
+      tester
+      {:target (js/document.getElementById "debugger_ui_preview")})
+
+
+;(keys (:react-components-fns @debugger-ui))

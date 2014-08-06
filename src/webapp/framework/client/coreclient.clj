@@ -116,6 +116,7 @@
 
        (webapp.framework.client.coreclient/record-defn-ui-component
              (~'ns-coils-debug)
+             ~fn-name
              ~(str `~fn-name) ~(str `~data-paramater-name)
 
           (str ~(with-out-str   (write (first `~code))
