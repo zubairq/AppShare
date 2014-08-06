@@ -124,7 +124,10 @@
                 <div id=main style='display: inline-block; color=black; width: 100%;vertical-align:text-top;'>
                 </div>
             </div>
-            <div id=right_of_main      style='vertical-align:text-top;color=black;display: inline-block;'></div>
+            <div id=right_of_main_parent      style='vertical-align:text-top;color=black;display: inline-block;'>
+                <div id=right_of_main      style='vertical-align:text-top;color=black;display: inline-block;'></div>
+                <div id=debugger_details      style='vertical-align:text-top;color=black;display: inline-block;'></div>
+            </div>
         </div>
 
         <div id=main_playback      style='color=black;'></div>
@@ -171,7 +174,7 @@
                 livedebug    = getQueryVariable("livedebug");
                 if (livedebug) {
                     document.getElementById('main_parent').style.width='49%';
-                    document.getElementById('right_of_main').style.width='49%';
+                    document.getElementById('right_of_main_parent').style.width='49%';
                     dbutton = document.getElementById("debug_button");
                     dbutton.innerHTML=
                         "<button onclick='debug_live=true;document.getElementById(\"debug_button\").innerHTML=\"\";if (debug_live == true) { webapp.framework.client.coreclient.loadDebugger();} else { webapp.framework.client.coreclient.unloadDebugger();};'>debug</button>" +

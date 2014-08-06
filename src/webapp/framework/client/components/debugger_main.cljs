@@ -536,20 +536,23 @@
                                                    act   (if (> aps 0) aps 1)
                                                    ]
                                                (into [] (range act (+ 1 (-> app :pos))))
-                                               ))
-                                            )
-                                         ))))
+)))))))))))
 
 
 
+
+
+
+(defn details-debug-comp [app owner]
+  (reify
+    om/IRender
+    ;---------
+    (render
+     [_]
+     (dom/div nil
               (cond
-
-
                (= (:mode @debugger-ui) "show-event")
-               (om/build  show-event-component   app)
-
-               )))))
-
+               (om/build  show-event-component   app))))))
 
 ;(reverse (get @data-accesses {:tree "UI" :path (get @debugger-ui :events-filter-path)}))
 ;(keys @debug-event-timeline )
