@@ -15,20 +15,38 @@
                                                                latest-endorsements]]
 
    [webapp.client.react.components.company-details     :only  [company-details2]]
-   [webapp.framework.client.system-globals  :only  [touch  remove-debug-event]]
+   [webapp.framework.client.system-globals  :only  [touch
+                                                    remove-debug-event
+                                                    app-state
+                                                    data-state
+                                                    update-data
+                                                    get-in-tree
+                                                    ui-watchers
+                                                    -->data
+                                                    remove-debug-event
+                                                    <--data]]
 
    [webapp.framework.client.coreclient                 :only  [log
                                                                remote
                                                                component-fn
-                                                               write-ui-fn]]
+                                                               write-ui-fn
+                                                               when-ui-path-equals-fn
+                                                               when-ui-value-changes-fn
+                                                               when-ui-property-equals-in-record
+                                                               amend-record
+                                                               update-ui]]
    )
   (:use-macros
    [webapp.framework.client.coreclient                 :only  [defn-ui-component
-                                                               ns-coils
                                                                div
                                                                component
                                                                write-ui
-                                                               a]]))
+                                                               a
+                                                               ==ui
+                                                               watch-ui
+                                                               <--ui
+                                                               -->ui
+                                                               ns-coils]]))
 
 (ns-coils 'webapp.client.react.views.main)
 
@@ -105,8 +123,8 @@
                   :background-color  "white"              :opacity "1.0"
                   :text-align        "center"
                   }
-          :onTouchStart #(write-ui splash-screen-data [:show] false)
-          :onClick      #(write-ui splash-screen-data [:show] false)
+          :onTouchStart #(write-ui splash-screen-data [:click] true)
+          :onClick      #(write-ui splash-screen-data [:click] true)
           }
 
          (div {:style { :vertical-align "center" :width "100%" :height "100%"}}
@@ -131,6 +149,17 @@
                    (div {:style {:padding "5px" :padding-bottom "20px"}} "Click to start...")
               ))))
 
+
+
+
+
+
+
+(==ui  [:ui :splash-screen :click]   true
+
+    (do
+      (-->ui [:ui  :splash-screen  :click]  false)
+      (-->ui [:ui  :splash-screen  :show]   false)))
 
 
 
