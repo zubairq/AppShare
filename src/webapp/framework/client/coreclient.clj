@@ -68,14 +68,6 @@
 
     `(do
 
-       (webapp.framework.client.coreclient/record-defn-ui-component
-             (~'ns-coils-debug)
-             ~(str `~fn-name) ~(str `~data-paramater-name)
-
-          (str ~(with-out-str   (write (first `~code))
-                                        :dispatch clojure.pprint/code-dispatch))
-        )
-
        (defn ~fn-name [~(first data-paramater-name)  ~'owner]
          (~'reify
 
@@ -120,6 +112,16 @@
               (first code))
            )
          ))
+
+
+       (webapp.framework.client.coreclient/record-defn-ui-component
+             (~'ns-coils-debug)
+             ~(str `~fn-name) ~(str `~data-paramater-name)
+
+          (str ~(with-out-str   (write (first `~code))
+                                        :dispatch clojure.pprint/code-dispatch)))
+
+
 
 
        (~'webapp.framework.client.coreclient/process-ui-component  ~opts)

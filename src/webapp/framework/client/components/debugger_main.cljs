@@ -425,10 +425,13 @@
     ;---------
     (render
      [_]
-     (dom/div nil
+     (dom/div #js {
+                   :style #js {:width "100%"}
+                   }
               (dom/div #js {
                             :style #js {:height "300px" :border "1px solid black"
-                                        :border-radius "15px" :padding "5px"}
+                                        :border-radius "15px" :padding "5px"
+                                        :width "100%"}
                             :onMouseEnter #(reset! debugger-ui (assoc-in @debugger-ui [:mode] "show-event"))
                             }
 
