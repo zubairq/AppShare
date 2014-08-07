@@ -116,10 +116,12 @@
   {}
   ;------------------------------------------------------------
   (if (get-in splash-screen-data [:show])
+    (div {:style {:position          "relative" :width   "0" :height  "0"
+                  }}
     (div {:style {:position          "absolute"           :left    "5%"  :top "5%"
-                  :width   "90%"
-                  :height  "90%"
-                  :border            "solid 1px black;"   :zIndex  "2000"
+                  :width   "400"
+                  :height  "400"
+                  :border            "solid 1px black;"   :zIndex  "2200"
                   :background-color  "white"              :opacity "1.0"
                   :text-align        "center"
                   }
@@ -147,7 +149,7 @@
 
 
                    (div {:style {:padding "5px" :padding-bottom "20px"}} "Click to start...")
-              ))))
+              )))))
 
 
 
@@ -171,6 +173,7 @@
 
   (div {:style {
                 :height       (- (-> app :view :height) 100)
+                :zIndex       "1"
                 }}
 
        (dom/h2 nil "ConnectToUs.co")

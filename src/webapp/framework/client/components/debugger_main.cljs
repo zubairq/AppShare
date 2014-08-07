@@ -336,6 +336,14 @@
 
 
                             (if (= event-type "render")
+                              (do
+                                (if (=  debug-id (-> debug-ui-state :pos))
+                                  (om/root
+                                   (get (:react-components-fns @debugger-ui)
+                                        (str component-name))
+                                   (atom component-data)
+                                   {:target (js/document.getElementById "debugger_ui_preview")}))
+
                               (dom/div #js {:style #js {:color "green"}}
 
                                        (dom/div #js {
@@ -407,7 +415,7 @@
                                                                                   nil)}
                                                   (show-tree  component-data  false  component-path "UI" debug-ui-state)
 
-                                                  ))))))))))))
+                                                  )))))))))))))
 
 ;(get @data-accesses {:tree "UI" :path (get @debugger-ui :events-filter-path)})
 ;(get @debugger-ui :events-filter-path)
