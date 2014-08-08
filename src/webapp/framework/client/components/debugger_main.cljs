@@ -335,9 +335,9 @@
 
 
 
-                            (if (= event-type "render")
+                            (if (=  debug-id (-> debug-ui-state :pos))
                               (do
-                                (if (=  debug-id (-> debug-ui-state :pos))
+                                (if (= event-type "render")
                                   (om/root
                                    (fn [ partial-state  partial-owner ]
                                      (reify
@@ -377,7 +377,23 @@
                                                  ))))
 
                                    (atom component-data)
-                                   {:target (js/document.getElementById "debugger_ui_preview")}))
+                                   {:target (js/document.getElementById "debugger_ui_preview")})
+                                  (om/root
+                                   (fn [ partial-state  partial-owner ]
+                                     (reify
+                                       om/IRender
+                                       ;---------
+                                       (render
+                                        [state]
+
+                                        (dom/div nil "")
+                                                          )
+                                                 ))
+
+                                   (atom {})
+                                   {:target (js/document.getElementById "debugger_ui_preview")})
+
+                                  )
 
                               (dom/div #js {:style #js {:color "green"}}
 
