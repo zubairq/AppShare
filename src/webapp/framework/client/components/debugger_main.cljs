@@ -339,8 +339,43 @@
                               (do
                                 (if (=  debug-id (-> debug-ui-state :pos))
                                   (om/root
-                                   (get (:react-components-fns @debugger-ui)
-                                        (str component-name))
+                                   (fn [ partial-state  partial-owner ]
+                                     (reify
+                                       om/IRender
+                                       ;---------
+                                       (render
+                                        [state]
+
+                                        (dom/div #js {:style #js {:paddingTop "25px"}}
+                                                 (om/build
+                                                  (get (:react-components-fns @debugger-ui)
+                                                       (str component-name))
+                                                  partial-state)
+                                                 (dom/svg #js {:style #js {:width "40" :height "40"}}
+                                                          (dom/line #js {:x1 "0"
+                                                                           :y1 "20"
+                                                                           :x2  "21"
+                                                                           :y2  "0"
+                                                                           :stroke "black"
+                                                                           :strokeWidth "4"
+                                                                           :fill "black"} )
+                                                          (dom/line #js {:x1 "19"
+                                                                           :y1 "0"
+                                                                           :x2  "40"
+                                                                           :y2  "20"
+                                                                           :stroke "black"
+                                                                           :strokeWidth "4"
+                                                                           :fill "black"} )
+                                                          (dom/line #js {:x1 "20"
+                                                                           :y1 "0"
+                                                                           :x2  "20"
+                                                                           :y2  "40"
+                                                                           :stroke "black"
+                                                                           :strokeWidth "4"
+                                                                           :fill "black"} )
+                                                          )
+                                                 ))))
+
                                    (atom component-data)
                                    {:target (js/document.getElementById "debugger_ui_preview")}))
 
