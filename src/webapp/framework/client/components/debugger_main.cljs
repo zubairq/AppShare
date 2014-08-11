@@ -259,7 +259,7 @@
             (for [event-item (into []
                               (map (fn[xx] (get @debug-event-timeline xx))
                                    (reverse
-                                    (into [] (range (- (-> debug-ui-state :pos) 20) (+ 1 (-> debug-ui-state :pos))))
+                                    (into [] (range (- (-> debug-ui-state :pos) 0) (+ 1 (-> debug-ui-state :pos))))
                                    )))
                               ]
               (if event-item
