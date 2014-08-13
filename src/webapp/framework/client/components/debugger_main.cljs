@@ -378,6 +378,9 @@
 
                                    (atom component-data)
                                    {:target (js/document.getElementById "debugger_ui_preview")})
+
+
+
                                   (om/root
                                    (fn [ partial-state  partial-owner ]
                                      (reify
@@ -397,29 +400,33 @@
 
                               (dom/div #js {:style #js {:color "green"}}
 
-                                       (dom/div #js {
-                                                     :onClick #(do (om/update!
-                                                                debug-ui-state
-                                                                [:code-show_index]
-                                                                (if (= (get @debug-ui-state :code-show_index) debug-id)
-                                                                  nil
-                                                                  debug-id))
-                                                                 (om/update!
-                                                                            debug-ui-state
-                                                                            [:code-data-show_index] nil))
-                                                                :style #js {:color "blue"
-                                                                            :text-decoration "underline"
-                                                                            :display "inline-block"
-                                                                            }} (str
-                                                                                (if (= (get debug-ui-state :code-show_index)
-                                                                                       debug-id)
-                                                                                  "-" "+")
-                                                                                component-name
-                                                                                " "
-                                                                                component-path
-                                                                                ))
 
-                                       (dom/div #js {
+                                       (if (= event-type "render")
+
+                                         (dom/div #js {
+                                                       :onClick #(do (om/update!
+                                                                      debug-ui-state
+                                                                      [:code-show_index]
+                                                                      (if (= (get @debug-ui-state :code-show_index) debug-id)
+                                                                        nil
+                                                                        debug-id))
+                                                                   (om/update!
+                                                                    debug-ui-state
+                                                                    [:code-data-show_index] nil))
+                                                       :style #js {:color "blue"
+                                                                   :text-decoration "underline"
+                                                                   :display "inline-block"
+                                                                   }} (str
+                                                                       (if (= (get debug-ui-state :code-show_index)
+                                                                              debug-id)
+                                                                         "-" "+")
+                                                                       component-name
+                                                                       " "
+                                                                       component-path
+                                                                       )))
+
+                                       (if (= event-type "render")
+                                         (dom/div #js {
                                                      :onClick #(do
                                                                  (om/update!
                                                                   debug-ui-state
@@ -439,7 +446,7 @@
                                                 (str
                                                  (if (= (get debug-ui-state :code-data-show_index) debug-id)
                                                    "-" "+")
-                                                 "Input data"))
+                                                 "Input data")))
 
                                        (if (= (get debug-ui-state :code-show_index) debug-id)
                                          (dom/pre #js {
