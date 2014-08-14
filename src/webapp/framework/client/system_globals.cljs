@@ -393,8 +393,6 @@
 
 ;(contains-touch-id? [{:a {:touch-id 1}}])
 
-;(:total-events-count @debugger-ui )
-;(get @debug-event-timeline 20)
 
 
 (add-watch app-state
