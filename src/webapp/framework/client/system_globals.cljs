@@ -392,7 +392,7 @@
 
 
 ;(contains-touch-id? [{:a {:touch-id 1}}])
-;(+ (:pos @debugger-ui ) 5)
+
 ;(:total-events-count @debugger-ui )
 ;(get @debug-event-timeline 20)
 
