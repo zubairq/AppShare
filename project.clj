@@ -39,7 +39,7 @@
   :profiles {
              :dev
              {
-              :source-paths ["src" "../srcdev"]
+              :source-paths ["src" "srcdev"]
               :cljsbuild
               {
                :builds
