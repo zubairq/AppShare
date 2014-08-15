@@ -26,8 +26,16 @@
    [cljs.core.async.macros :refer [go]]))
 
 
+
+
+
+
+
 ;-----------------------------------------------------
-; This changes the app state
+; This changes the position of the debugger in the
+; debugger timeline
+;
+; While the app is being debugged
 ;-----------------------------------------------------
 (defn update-app-pos [debugger-state value]
   (let
@@ -35,8 +43,14 @@
      current-event       (get @debug-event-timeline value)
      debug-ids           (reverse (range 1 (+ 1 (:pos @debugger-state))))
      ]
+
+    ;update the debugger state
+    ;-------------------------
     (om/update! debugger-state [:pos] value)
 
+
+    ;stop recording events in the application (in case they are recording)
+    ;---------------------------------------------------------------------
     (reset! app-watch-on? false)
     (if (= (:event-type current-event) "UI")
       (reset! app-state (:value current-event))
@@ -49,15 +63,14 @@
           ;(.log js/console (pr-str "UI pos" new-pos))
           (if (pos? new-pos)
              (reset! app-state (:value (get @debug-event-timeline new-pos)))
-            )
-          )
-        )
-      )
+            ))))
     ;(reset! app-watch-on? true)
 
+
+    ; not sure if this is needed anymore as the debugger mode is always the same
+    ;---------------------------------------------------------------------------
     (om/update! debugger-state
-            [:mode] "show-event")
-))
+            [:mode] "show-event")))
 
 
 
@@ -65,8 +78,9 @@
 
 
 
-
-
+;-----------------------------------------------------
+; The slider used to move the debug timeline
+;-----------------------------------------------------
 (defn main-debug-slider-comp [app owner]
   (reify
     om/IRender
@@ -138,10 +152,6 @@
 
               )))
 
-
-
-
-
 ;(get @data-accesses
 ;      {:tree "UI" :path [:ui :companies :values]})
 
@@ -152,7 +162,19 @@
 
 
 
-(defn show-tree [a-tree is-map? current-path tree debugger]
+
+
+
+
+
+
+
+
+
+;-----------------------------------------------------
+; The GUI tree used to show a clojure data structure
+;-----------------------------------------------------
+(defn show-tree [a-tree  is-map?  current-path   tree  debugger]
   (dom/div nil
            ;------
            ;START
@@ -248,7 +270,9 @@
 
 
 
-
+;-----------------------------------------------------
+; Used to show the details section of the debugger
+;-----------------------------------------------------
 (defn show-event-component[ debug-ui-state  owner ]
   (reify
     om/IRender

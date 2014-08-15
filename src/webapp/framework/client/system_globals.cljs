@@ -445,9 +445,8 @@
 ;@component-usage
 
 
-;@call-stack
 
-;(keys @gui-calls)
+(keys @gui-calls)
 
 
 ;(get @data-accesses (first (keys @data-accesses)))
@@ -460,3 +459,5 @@
 
 
 (keys (:react-components-fns @debugger-ui))
+
+
