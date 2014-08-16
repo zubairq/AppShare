@@ -215,7 +215,7 @@
 
               (do
                 (reset! current-gui-path [])
-                (@start-component    app    owner))
+                (@ start-component    app    owner))
 
               (if @playbackmode
                 (dom/div #js {

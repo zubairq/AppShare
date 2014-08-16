@@ -8,20 +8,6 @@
    )
 )
 
-;-----------------------------------------------------
-;              record-pointer-locally
-;
-;
-;-----------------------------------------------------
-(def record-pointer-locally (atom true))
-
-
-;-----------------------------------------------------
-;              start-component
-;
-;
-;-----------------------------------------------------
-(def start-component (atom nil))
 
 
 
@@ -29,12 +15,96 @@
 
 
 
-;-----------------------------------------------------
-;                   playbackmode
-;
-;
-;-----------------------------------------------------
-(def playbackmode (atom false))
+
+
+
+
+
+
+
+
+
+(def record-pointer-locally
+  "
+ This determines whether the mouse pointer events are
+ recorded for the local Coils debugger. For an example
+ of mouse pointer events looks at the playback of a Coils
+ app where you can see where the use moved the mouse. In the
+ React/Om UI tree this is stored in:
+
+  {
+     :pointer
+     {
+         :mouse-x 0
+         :mouse-y 0
+     }
+  }
+
+
+ To enable or disable this you must be specify
+ it as a global setting in system_globals.clj as
+
+ (defonce ^:dynamic *record-pointer-locally* false)
+  "
+  (atom true))
+
+
+
+
+
+
+
+
+
+(def start-component
+  "
+ This is a reference to the first component of a Coils
+ app that must be loaded
+
+
+ It is actually specified in:
+
+  src/webapp/framework/client/main/main.cljs
+
+ :in the functions:
+
+  load_main
+  load_admin
+  load_debug
+
+ :These are called from the first webpage that is loaded
+  in coils. See the file:
+
+  resources/public/main.html
+
+  : and you will find:
+
+   webapp.framework.client.main.load_main(
+                                    webapp.framework.client.init.main,
+                                    webapp.framework.client.init.setup);
+
+  Looking at   webapp.framework.client.init.main  you will see:
+
+
+(defn ^:export main [app owner]
+  (let [path []]
+    (component  main-view  app  [])))
+
+
+  which will actually point to the first component. This is a bit clunky
+  "
+
+  (atom nil))
+
+
+
+
+
+
+
+(def playbackmode
+  ""
+  (atom false))
 
 
 
