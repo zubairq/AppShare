@@ -37,7 +37,7 @@
 ;
 ; While the app is being debugged
 ;-----------------------------------------------------
-(defn update-app-pos [debugger-state value]
+(defn update-app-pos [debugger-state  value]
   (let
     [
      current-event       (get @debug-event-timeline value)
@@ -88,12 +88,12 @@
     (render
      [_]
      (dom/div #js {
-                             :onMouseEnter #(om/update! app [:mode] "show-event")
-                             }
+                   :onMouseEnter #(om/update! app [:mode] "show-event")
+                   }
               (dom/div nil
                        (dom/button #js {
                                         :style #js {:display "inline-block"
-                                                     :marginRight "5px"}
+                                                    :marginRight "5px"}
                                         :onClick
                                         (fn[x]
                                           (if (pos? (get-in @app [:pos]))
@@ -101,12 +101,12 @@
                                               (update-app-pos  app  (dec (get-in @app [:pos])))
                                               (om/update! app [:events-filter-path] nil))
 
-                                          ))
+                                            ))
 
                                         } "<")
                        (dom/button #js {
                                         :style #js {:display "inline-block"
-                                                     :marginRight "5px"}
+                                                    :marginRight "5px"}
                                         :onClick
                                         (fn[x]
                                           (if (pos? (get-in @app [:pos]))
@@ -135,10 +135,10 @@
                        )
 
               (dom/div nil
-               (str (-> app :pos) " of "
-                    (-> app :total-events-count ))
+                       (str (-> app :pos) " of "
+                            (-> app :total-events-count ))
 
-               )
+                       )
 
               (dom/pre #js {
                             :style #js { :fontSize "14px"}
@@ -150,7 +150,7 @@
                          "Mouse over components to show code"
                          )))
 
-              )))
+     )))
 
 ;(get @data-accesses
 ;      {:tree "UI" :path [:ui :companies :values]})
@@ -191,8 +191,8 @@
                                               (om/update! debugger [:events-filter-path] current-path)
                                               ))
                             } (str
-                                            (:key a-tree)
-                                            )))
+                               (:key a-tree)
+                               )))
 
             (map? a-tree)
             (dom/div #js {:style #js {:paddingLeft "20px"}} "{")
@@ -213,10 +213,10 @@
            (cond
 
             is-map?
-             (dom/div #js {:style #js {:paddingLeft "20px"  :display "inline-block"
-                                        :verticalAlign "top"}}
-              (show-tree (:value a-tree) false current-path tree debugger)
-                      )
+            (dom/div #js {:style #js {:paddingLeft "20px"  :display "inline-block"
+                                      :verticalAlign "top"}}
+                     (show-tree (:value a-tree) false current-path tree debugger)
+                     )
 
             (map? a-tree)
             (do
@@ -329,21 +329,24 @@
 
 
 
-                           (if (= event-type "event") (dom/div #js {:style #js {:color "green"}}
+                            (if (= event-type "event") (dom/div #js {:style #js {:color "green"}}
 
-                                             (dom/div #js {:style #js {:color "blue"}} (str event-name))
-                                             (dom/pre nil
+                                                                (dom/div #js {:style #js {:color "blue"}} (str event-name))
+                                                                (dom/pre nil
 
-                                                      (->
-                                                       (str
-                                                       (get
-                                                        (get @debugger-ui :watchers-code)
+                                                                         (->
+                                                                          (str
+                                                                           (get
+                                                                            (get @debugger-ui :watchers-code)
 
-                                                        event-name
+                                                                            event-name
 
-                                                        ))
-                                                       (clojure.string/replace #"\(div\ " "(DIV " )
-                                                       ))))
+                                                                            ))
+                                                                          (clojure.string/replace #"\(div\ " "(DIV " )
+                                                                          ))
+                                                                (dom/div nil "PATHS ACCESSED:")
+
+                                                                ))
 
 
 
