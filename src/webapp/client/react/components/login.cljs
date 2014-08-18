@@ -7,7 +7,7 @@
 
   (:use
    [webapp.client.ui-helpers                :only  [validate-email]]
-   [webapp.framework.client.coreclient      :only  [log remote component-fn]]
+   [webapp.framework.client.coreclient      :only  [log remote component-fn write-ui-fn]]
    [webapp.framework.client.ui-helpers      :only  [blur-field
                                                     update-field-value
                                                     basic-input-box ]]
@@ -17,7 +17,7 @@
    [webapp.framework.client.system-globals  :only [debugger-ui  remove-debug-event]])
 
   (:use-macros
-   [webapp.framework.client.coreclient      :only  [defn-ui-component  ns-coils  component]]))
+   [webapp.framework.client.coreclient      :only  [defn-ui-component  ns-coils  component write-ui]]))
 
 (ns-coils 'webapp.client.react.components.login)
 
@@ -78,15 +78,17 @@
 
 
     (dom/button #js {:onClick (fn [e]
-                                (js/alert (-> @ui-data :login-email :value ) )
-                                )
+                                (do
+                                  (js/alert (-> @ui-data :login-email :value ) )
+                                  (write-ui
+                                   ui-data [:submit :message] "Submit not working" )))
                      :style
                      #js {:margin-top "10px"}}
                 "Login")
 
     (if (not (blank?
               (get-in ui-data [:submit :message])))
-      (dom/div nil "Submitted")
+      (dom/div nil (str (get-in ui-data [:submit :message])))
 ))))
 
 
