@@ -218,20 +218,20 @@
 
 
 ;--------------------------------------------------------
-(defn ^:export load_main [component-to-load  init-fn-arg]
+(defn ^:export  load_main [setup-config]
 ;--------------------------------------------------------
-  (reset!  start-component  component-to-load)
-  (reset!  init-fn          init-fn-arg)
+  (reset!  start-component  (get setup-config :start-component))
+  (reset!  init-fn          (get setup-config :setup-fn))
    (main))
 
 
 
 
 ;--------------------------------------------------------
-(defn ^:export load_admin [component-to-load  init-fn-arg]
+(defn ^:export load_admin [setup-config]
 ;--------------------------------------------------------
-  (reset! start-component  component-to-load)
-  (reset! init-fn          init-fn-arg)
+  (reset!  start-component  (get setup-config :start-component))
+  (reset!  init-fn          (get setup-config :setup-fn))
   (admin))
 
 
@@ -240,8 +240,8 @@
 
 
 ;--------------------------------------------------------
-(defn ^:export load_debug [component-to-load  init-fn-arg]
+(defn ^:export load_debug [setup-config]
 ;--------------------------------------------------------
-  (reset! start-component  component-to-load)
-  (reset! init-fn          init-fn-arg)
+  (reset!  start-component  (get setup-config :start-component))
+  (reset!  init-fn          (get setup-config :setup-fn))
   (debug))

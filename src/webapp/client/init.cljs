@@ -42,135 +42,133 @@
 
 
 
-
-
-
-
-(defn  ^:export setup []
-
-  (reset!
-   app-state
-
-   (assoc-in
-    @app-state [:ui]
-    {
-     :splash-screen {
-                     :show true
-                     }
-
-     :request {
-               :from-email           {:label          "Your company email"
-                                      :placeholder    "john@microsoft.com"
-                                      :value          ""
-                                      :mode           "empty"
-                                      :private        true
-                                      }
-
-               :to-email             {:label          "Their email"
-                                      :placeholder    "pete@ibm.com"
-                                      :value          ""
-                                      :mode           "empty"
-                                      :private        true
-                                      }
-
-               :show-connection-confirmation false
-
-               :submit               {:value false}
-               }
-
-     :tab         "browser"
-     :tab-browser "top companies"
-     :login {
-
-             :login-email {
-                           :value ""
-                           :private true
-                           }
-             :from-email           {:label          "Your company email"
-                                    :placeholder    "john@microsoft.com"
-                                    :value          ""
-                                    :mode           "empty"
-                                    :private        true
-                                    }
-             }
-
-
-     }))
-
-
-  (reset! data-state {
-                      :submit {}
-                      })
-
-
-
-  (if js/company_url
-    (do
-      (reset! app-state
-       (assoc-in
-        @app-state [:ui :company-details :company-url]
-        (str js/company_url)))
-
-      (reset! app-state
-       (assoc-in
-        @app-state [:ui  :company-details   :skills]
-        nil))
-
-      (reset! app-state
-       (assoc-in
-        @app-state [:ui :tab-browser]
-        "company"))
-
-
-      (go
-       (let [ l (<! (remote "get-company-details"
-                            {
-                             :company-url    (str js/company_url)
-                             }))]
-
-         ;(log (pr-str l))
-         (reset! data-state
-                 (assoc-in
-                  @data-state [:company-details]
-                  l))
-
-
-        (reset! app-state
-         (assoc-in
-          @app-state [:ui :company-details :skills]
-               (get-in @data-state [:company-details])))
-
-         ))
-
-      )
-    )
-
-
-
-  (set-ab-tests {
-                 "graph type"
-                 {
-                    :path [:ui :graph-ab-test]
-                    :choices    [
-                                 {:name "SVG" :percentage 90}
-                                 {:name "text" :percentage 10}
-                                 ]
-                  }
-
-                 })
-
-
-
-
-  )
-
-
-
-
-
-
-(defn ^:export main [app owner]
+(defn main [app owner]
   (let [path []]
     (component    main-view  app  [])))
+
+
+
+(def  ^:export setup
+
+  {
+   :start-component
+   main
+
+   :setup-fn
+   (fn[]
+     (do
+     (reset!
+      app-state
+
+      (assoc-in
+       @app-state [:ui]
+       {
+        :splash-screen {
+                        :show true
+                        }
+
+        :request {
+                  :from-email           {:label          "Your company email"
+                                         :placeholder    "john@microsoft.com"
+                                         :value          ""
+                                         :mode           "empty"
+                                         :private        true
+                                         }
+
+                  :to-email             {:label          "Their email"
+                                         :placeholder    "pete@ibm.com"
+                                         :value          ""
+                                         :mode           "empty"
+                                         :private        true
+                                         }
+
+                  :show-connection-confirmation false
+
+                  :submit               {:value false}
+                  }
+
+        :tab         "browser"
+        :tab-browser "top companies"
+        :login {
+
+                :login-email {
+                              :value ""
+                              :private true
+                              }
+                :from-email           {:label          "Your company email"
+                                       :placeholder    "john@microsoft.com"
+                                       :value          ""
+                                       :mode           "empty"
+                                       :private        true
+                                       }
+                }
+
+
+        }))
+
+
+     (reset! data-state {
+                         :submit {}
+                         })
+
+
+
+     (if js/company_url
+       (do
+         (reset! app-state
+                 (assoc-in
+                  @app-state [:ui :company-details :company-url]
+                  (str js/company_url)))
+
+         (reset! app-state
+                 (assoc-in
+                  @app-state [:ui  :company-details   :skills]
+                  nil))
+
+         (reset! app-state
+                 (assoc-in
+                  @app-state [:ui :tab-browser]
+                  "company"))
+
+
+         (go
+          (let [ l (<! (remote "get-company-details"
+                               {
+                                :company-url    (str js/company_url)
+                                }))]
+
+            ;(log (pr-str l))
+            (reset! data-state
+                    (assoc-in
+                     @data-state [:company-details]
+                     l))
+
+
+            (reset! app-state
+                    (assoc-in
+                     @app-state [:ui :company-details :skills]
+                     (get-in @data-state [:company-details])))
+
+            ))
+
+         )
+       )
+
+
+
+     (set-ab-tests {
+                    "graph type"
+                    {
+                     :path [:ui :graph-ab-test]
+                     :choices    [
+                                  {:name "SVG" :percentage 90}
+                                  {:name "text" :percentage 10}
+                                  ]
+                     }})))})
+
+
+
+
+
 
 

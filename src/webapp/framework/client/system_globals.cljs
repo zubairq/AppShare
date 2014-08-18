@@ -29,8 +29,8 @@
  This determines whether the mouse pointer events are
  recorded for the local Coils debugger. For an example
  of mouse pointer events looks at the playback of a Coils
- app where you can see where the use moved the mouse. In the
- React/Om UI tree this is stored in:
+ app where you can see where the website user moved the
+ mouse. In the React/Om UI tree this is stored in:
 
   {
      :pointer

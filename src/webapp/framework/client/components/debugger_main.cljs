@@ -272,7 +272,7 @@
 ;-----------------------------------------------------
 ; Used to show the details section of the debugger
 ;-----------------------------------------------------
-(defn show-event-component[ debug-ui-state  owner ]
+(defn show-event-component [ debug-ui-state  owner ]
   (reify
     om/IRender
     ;---------
@@ -280,7 +280,7 @@
      [_]
      (apply dom/div nil
             (for [event-item (into []
-                              (map (fn[xx] (get @debug-event-timeline xx))
+                              (map (fn[xx] (get @ debug-event-timeline xx))
                                    (reverse
                                     (into [] (range (- (-> debug-ui-state :pos) 0) (+ 1 (-> debug-ui-state :pos))))
                                    )))
@@ -524,7 +524,7 @@
                             :style #js {:height "300px" :border "1px solid black"
                                         :border-radius "15px" :padding "5px"
                                         :width "100%"}
-                            :onMouseEnter #(reset! debugger-ui (assoc-in @debugger-ui [:mode] "show-event"))
+                            :onMouseEnter #(reset! debugger-ui (assoc-in @ debugger-ui [:mode] "show-event"))
                             }
 
                        (dom/div nil
@@ -551,7 +551,7 @@
                                             (if x
                                               (dom/div #js {:style #js {:paddingLeft "20px"}
                                                           }
-                                                     (let [thisitem      (get @debug-event-timeline x)]
+                                                     (let [thisitem      (get @ debug-event-timeline x)]
                                                        (dom/pre #js {:style #js {:paddingLeft "20px"
                                                                                  :backgroundColor "darkgray"}
                                                                      :onClick (fn[e] (update-app-pos app x))
