@@ -40,19 +40,11 @@
 
 
 
-
-
-(defn main [app owner]
-  (let [path []]
-    (component    main-view  app  [])))
-
-
-
 (def  ^:export setup
 
   {
    :start-component
-   main
+   main-view
 
    :setup-fn
    (fn[]

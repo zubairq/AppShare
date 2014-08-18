@@ -7,7 +7,8 @@
    [om-sync.core     :as async]
    [clojure.data     :as data]
    [clojure.string   :as string]
-   [ankha.core       :as ankha])
+   [ankha.core       :as ankha]
+   )
 
   (:use
    [webapp.framework.client.coreclient           :only  [log remote debug-mode component-fn]]
@@ -215,7 +216,11 @@
 
               (do
                 (reset! current-gui-path [])
-                (@ start-component    app    owner))
+                ;(@ start-component    app    owner)
+                (let [path []]
+                  (component    @start-component app  [])
+                  )
+                )
 
               (if @playbackmode
                 (dom/div #js {
