@@ -16,7 +16,6 @@
                                                     playback-controls-state
                                                     reset-app-state
                                                     ui-watchers
-                                                    playbackmode
                                                     data-watchers
                                                     data-state
                                                     update-data

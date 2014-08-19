@@ -27,7 +27,6 @@
                                                     reset-app-state
                                                     ui-watchers
                                                     call-stack
-                                                    playbackmode
                                                     data-watchers
                                                     data-state
                                                     update-data

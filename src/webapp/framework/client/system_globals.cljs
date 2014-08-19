@@ -80,18 +80,25 @@
   : and you will find:
 
    webapp.framework.client.main.load_main(
-                                    webapp.framework.client.init.main,
                                     webapp.framework.client.init.setup);
 
-  Looking at   webapp.framework.client.init.main  you will see:
+  Looking at:
+
+  webapp.framework.client.init/setup
+
+  :you will see:
 
 
-(defn ^:export main [app owner]
-  (let [path []]
-    (component  main-view  app  [])))
+(def  ^:export setup
+  {
+   :start-component
+   main-view
 
+   :setup-fn
+   (fn[]
+     (do
+      ...
 
-  which will actually point to the first component. This is a bit clunky
   "
 
   (atom nil))
@@ -103,7 +110,10 @@
 
 
 (def playbackmode
-  ""
+  "
+  If set to true then this means that the user interface is being replayed based on
+  the server side recording
+  "
   (atom false))
 
 
@@ -116,6 +126,8 @@
 ;
 ;-----------------------------------------------------
 (def call-stack
+  "
+  "
   (atom
    []))
 
