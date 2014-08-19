@@ -11,7 +11,7 @@
    )
   (:use
    [webapp.framework.client.coreclient      :only  [log remote component-fn]]
-   [webapp.framework.client.system-globals  :only  [app-state   playback-app-state
+   [webapp.framework.client.system-globals  :only  [app-state
                                                     playback-controls-state
                                                     reset-app-state ui-watchers
                                                     data-watchers

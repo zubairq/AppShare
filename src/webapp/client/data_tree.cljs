@@ -18,7 +18,6 @@
                                                     update-ui
                                                     ]]
    [webapp.framework.client.system-globals  :only  [app-state
-                                                    playback-app-state
                                                     playback-controls-state
                                                     reset-app-state ui-watchers
                                                     remove-debug-event

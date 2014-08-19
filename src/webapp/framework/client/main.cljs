@@ -13,7 +13,6 @@
   (:use
    [webapp.framework.client.coreclient      :only  [log remote]]
    [webapp.framework.client.system-globals  :only  [app-state
-                                                    playback-app-state
                                                     playback-controls-state
                                                     reset-app-state
                                                     playbackmode

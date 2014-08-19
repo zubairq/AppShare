@@ -12,7 +12,6 @@
   (:use
    [webapp.framework.client.coreclient      :only  [log remote write-ui-fn read-ui-fn]]
    [webapp.framework.client.system-globals  :only  [app-state
-                                                    playback-app-state
                                                     playback-controls-state
                                                     reset-app-state ui-watchers
                                                     playbackmode
