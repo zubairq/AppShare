@@ -274,16 +274,16 @@
 
 
 
-;-----------------------------------------------------
-;                    blank-app-state
-;
-;
-;-----------------------------------------------------
+
 (def blank-app-state
+  "
+  The initial starting state for the UI tree
+  "
   {
-   :data {
-          :width "50"
-          }
+   :data
+   {
+    :width "50"
+    }
    :pointer
    {
     :mouse-x 0
@@ -297,18 +297,17 @@
    }
   )
 
-;(reset! app-state (assoc-in @app-state [:data :width ] "20"))
 
 
 
 
 
-;-----------------------------------------------------
-;                    reset-app-state
-;
-;
-;-----------------------------------------------------
-(defn reset-app-state []
+
+(defn reset-app-state
+  "
+  Resets the UI to be blank
+  "
+  []
   (reset!  app-state  blank-app-state))
 
 
@@ -317,12 +316,12 @@
 
 
 
-;-----------------------------------------------------
-;                        init-fn
-;
-;
-;-----------------------------------------------------
-(def init-fn (atom nil))
+
+(def init-fn
+  "
+  An Initialise function called when the web app first starts up
+  "
+  (atom nil))
 
 
 
@@ -331,12 +330,13 @@
 
 
 
-;-----------------------------------------------------
-;                      playback-app-state
-;
-;
-;-----------------------------------------------------
+
 (def playback-app-state
+  "
+  This holds the UI state of the web applications when
+  it is being played back. I'm not sure why we didn't just
+  use the normal app state for this?
+  "
   (atom
    {}
    ))
@@ -372,12 +372,11 @@
 
 
 
-;-----------------------------------------------------
-;
-;
-;
-;-----------------------------------------------------
-(defn reset-playback-app-state []
+(defn reset-playback-app-state
+  "
+
+  "
+  []
   (reset!  playback-app-state  blank-app-state))
 
 
