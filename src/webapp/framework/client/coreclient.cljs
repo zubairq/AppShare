@@ -22,7 +22,6 @@
                                                     debugger-ui
                                                     record-pointer-locally
                                                     app-state
-                                                    playback-controls-state
                                                     reset-app-state
                                                     ui-watchers
                                                     call-stack

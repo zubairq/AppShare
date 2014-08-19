@@ -13,7 +13,6 @@
   (:use
    [webapp.framework.client.coreclient           :only  [log remote debug-mode component-fn]]
    [webapp.framework.client.system-globals       :only  [app-state
-                                                         playback-controls-state
                                                          playbackmode
                                                          ui-watchers
                                                          data-watchers
