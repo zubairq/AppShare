@@ -120,13 +120,12 @@
 
 
 
-;-----------------------------------------------------
-;                   call-stack
-;
-;
-;-----------------------------------------------------
 (def call-stack
   "
+  This is supposed to be a vector which lists the debug IDs of what has
+  been called, eg:
+
+  [1 45 99 103]
   "
   (atom
    []))
@@ -135,16 +134,40 @@
 
 
 
-;-----------------------------------------------------
-;                   data-accesses
-;
-;
-;-----------------------------------------------------
+
+
 (def data-accesses
+  "
+  This shows where the UI and DATA trees change. The list contains
+  the debug IDs of where an action reads or writes this part of
+  the tree
+
+  {
+      {:tree UI, :path [:ui :companies :values]}
+          [7 14 18 nil nil nil nil]
+
+      {:tree UI, :path [:ui :latest-endorsements :values]}
+          [30]
+
+      {:tree UI, :path [:ui :splash-screen :click]}
+          [37]
+
+      {:tree UI, :path [:ui :splash-screen :show]}
+          [36]
+
+      {:tree UI, :path [:values]}
+          [nil nil nil nil nil nil nil]
+  }
+
+  Some of these seem erroneous, like:
+
+  - nil values should never be there
+  - {:tree UI, :path [:values]} does not even exist
+
+  "
   (atom
    {}))
 
-(map :path (keys @data-accesses))
 
 
 
@@ -152,24 +175,20 @@
 
 
 
-;-----------------------------------------------------
-;                      data-state
-;
-;
-;-----------------------------------------------------
 (def data-state
+  "
+  The data tree
+  "
   (atom
    {}))
 
 
 
 
-;-----------------------------------------------------
-;                      app-state
-;
-;
-;-----------------------------------------------------
 (def app-state
+  "
+  The UI tree
+  "
   (atom
    {}))
 
@@ -177,67 +196,68 @@
 
 
 
-;-----------------------------------------------------
-;  This is the application watch space. So whenever
-; the application changes then we record the event
-;-----------------------------------------------------
-(def app-watch-on? (atom true))
-
-
-
-
-;-----------------------------------------------------
-;                      ui-watchers
-;
-;
-;-----------------------------------------------------
-(def ui-watchers (atom []))
+(def app-watch-on?
+  "
+ Whenever the application UI changes then we record the event,
+ unless the app-watch-on? is set to false
+  "
+  (atom true))
 
 
 
 
 
-
-;-----------------------------------------------------
-;                      data-watchers
-;
-;
-;-----------------------------------------------------
-(def data-watchers (atom []))
-
-
-
-
-;-----------------------------------------------------
-;                      ab-tests
-;
-;
-;-----------------------------------------------------
-(def ab-tests (atom {}))
+(def ui-watchers
+  "
+  This is a list of all the code that waits for things to happen
+  on the UI tree
+  "
+  (atom []))
 
 
 
 
 
 
-;-----------------------------------------------------
-;                      ab-tests
-;
-;
-;-----------------------------------------------------
-(def ab-goals (atom {}))
+(def data-watchers
+  "
+  This is a list of all the code that waits for things to happen
+  on the DATA tree
+  "
+
+  (atom []))
+
+
+
+
+(def ab-tests
+  "
+  The list of all the AB tests
+  "
+  (atom {}))
 
 
 
 
 
 
-;-----------------------------------------------------
-;                    init-state-fns
-;
-;
-;-----------------------------------------------------
-(def init-state-fns (atom []))
+(def ab-goals
+  "
+  The list of all the AB goals
+  "
+  (atom {}))
+
+
+
+
+
+
+(def init-state-fns
+  "
+  This holds all the fns to call at the start of the
+  webapp
+  "
+  (atom []))
 
 
 
@@ -786,32 +806,6 @@
 ;(contains-touch-id? [{:a {:touch-id 1}}])
 
 
-
-
-
-
-
-
-;-----------------------------------------------------
-;
-;
-;
-;-----------------------------------------------------
-(add-watch app-state
-           :change
-           (fn [_ _ old-val new-val]
-             (do
-               ;(.log js/console (pr-str  new-val))
-               (if (and @app-watch-on? (not (contains-touch-id?  new-val)))
-                 ;(if @app-watch-on?
-                 (comment let [debug-id (add-debug-event
-                                 :event-type  "UI"
-                                 :old         old-val
-                                 :new         new-val
-                                 :parent-id   (last @call-stack)
-                                 )]
-                   (remove-debug-event debug-id)
-                   )))))
 
 
 

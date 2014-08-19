@@ -833,8 +833,8 @@
         value              (get-in  tree  sub-path)
         data-access-key    {:tree  "UI"
                             :path  full-path}
-        current-value      (get @data-accesses  data-access-key)
-        debug-id           (last @call-stack)
+        current-value      (get @ data-accesses  data-access-key)
+        debug-id           (last @ call-stack)
         ]
     (log (str full-path))
     (log (str "    parent id: " debug-id))
