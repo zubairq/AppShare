@@ -344,11 +344,10 @@
 
 
 
-;-----------------------------------------------------
-;
-;
-;-----------------------------------------------------
 (def playback-controls-state
+  "
+  The react/Om UI state for the debugger
+  "
   (atom
    {:ui
     {
@@ -374,7 +373,7 @@
 
 (defn reset-playback-app-state
   "
-
+  Reset the app state for playback using the initial blank state
   "
   []
   (reset!  playback-app-state  blank-app-state))
@@ -386,11 +385,6 @@
 
 
 
-;-----------------------------------------------------
-;
-;
-;
-;-----------------------------------------------------
 (defn  update-data [path value]
    (reset! data-state (assoc-in @data-state path value)))
 
