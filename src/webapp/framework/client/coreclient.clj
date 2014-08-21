@@ -184,6 +184,7 @@
 
 ;--------------------------------------------------------------------
 (defmacro ==ui
+  "Checks the UI tree for a value"
   [path value & code]
 
   `(do
@@ -280,6 +281,7 @@
   `(~'update-ui ~'ui ~path ~value))
 
 (defmacro -->ui
+  "Writes to the UI tree"
   [path value]
   `(~'update-ui ~'ui ~path ~value))
 
