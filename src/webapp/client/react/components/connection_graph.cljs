@@ -27,7 +27,7 @@
   ;---------------------------------------------------------
   (div  {:style {:height "100%" :width "100%"}}
 
-        (let [all-company-records    (read-ui companies [:values] )]
+        (let [all-company-records    (read-ui  companies [:values] )]
 
           (apply
            dom/div nil
@@ -40,7 +40,7 @@
                           (get company-ui-record "company"))
 
                     (a {:href "#" :onClick
-                        #(write-ui companies [:values]
+                        #(write-ui  companies  [:values]
                                      (amend-record (into [] (get @companies :values))
                                                    "company"
                                                    (get @company-ui-record "company")
@@ -53,6 +53,10 @@
 
             all-company-records)
            ))))
+
+
+
+
 
 
 

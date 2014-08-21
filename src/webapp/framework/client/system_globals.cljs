@@ -723,6 +723,9 @@
 
 
 
+
+
+
 (defn remove-debug-event
   "
   "
@@ -780,6 +783,7 @@
 
 (defn contains-touch-id?
   "
+  Does the current structure contain a touch ID?
   "
   [x]
   (cond
@@ -803,7 +807,7 @@
 
 
 ;-----------------------------------------------------
-;
+; watch when the data changes
 ;
 ;
 ;-----------------------------------------------------
@@ -875,7 +879,8 @@
             ....
   }
 
-  I'm not sure how this is used, it may be able to be removed
+  This can be removed as it is not used by the system
+  anywhere
   "
   (atom {}))
 
