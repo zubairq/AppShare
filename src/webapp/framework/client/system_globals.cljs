@@ -839,9 +839,47 @@
 
 (def gui-calls
   "
+  A UI state history of all the GUI components
+
+  {
+      'main-view: []'
+            ....
+
+      'splash-screen: [:ui :splash-screen]'
+            [
+               {:show true}
+               {:show false, :click false}
+               {:show true}
+             ]
+
+      'letter-a: [:ui :splash-screen]'
+            ....
+
+      'letter-a: [:ui]'
+            ....
+
+      'browser-menu: []'
+            ....
+
+      'text-graph: [:ui :companies]'
+           [
+               nil
+               {:values [{company apple.com inbound 3}
+                         {company were.com inbound 1}
+                         ]}
+           ]
+      'browser-menu:'
+            ....
+
+      'text-graph:'
+            ....
+  }
+
+  I'm not sure how this is used, it may be able to be removed
   "
   (atom {}))
 
+ ;(get @gui-calls "text-graph: [:ui :companies]")
 
 
 
