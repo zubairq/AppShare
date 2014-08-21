@@ -843,7 +843,6 @@
       (remove-debug-event debug-id)
       )))
 
-@ data-accesses
 
 
 (defn read-ui-fn [tree  path  sub-path  parent-id]
@@ -872,7 +871,16 @@
   "
   "
   [app path]
-  (get-in @app path))
+  (let
+    [
+     calls          @call-stack
+     parent-id      (last calls)
+     ]
+  (read-ui-fn   @app   []  path   parent-id)
+  ))
+
+@ data-accesses
+
 
 
 (defn update-ui [app  path  value]
