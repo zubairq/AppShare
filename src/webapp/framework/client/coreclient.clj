@@ -260,10 +260,6 @@
 
 
 ;--------------------------------------------------------------------
-(defmacro ui-tree
-  [path]
-  `(~'get-in-tree ~'ui ~path))
-
 (defmacro <--ui
   [path]
   `(~'get-in-tree ~'ui ~path))
@@ -276,16 +272,12 @@
 
 
 
-(defmacro ui-tree!
-  [path value]
-  `(~'update-ui ~'ui ~path ~value))
-
 (defmacro -->ui
   "Writes to the UI tree"
   [path value]
   `(~'update-ui ~'ui ~path ~value))
 
-;(macroexpand '(ui-tree! [:ui :request :from-email :error] ""))
+;(macroexpand '(-->ui [:ui :request :from-email :error] ""))
 
 
 

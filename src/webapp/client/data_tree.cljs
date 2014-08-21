@@ -16,6 +16,7 @@
                                                     when-data-path-equals-fn
                                                     when-data-value-changes-fn
                                                     update-ui
+                                                    get-in-tree
                                                     ]]
    [webapp.framework.client.system-globals  :only  [app-state
                                                     reset-app-state ui-watchers
@@ -25,8 +26,6 @@
                                                     update-data
                                                     <--data
                                                     -->data
-
-                                                    get-in-tree
                                                     ]]
    [clojure.string :only [blank?]]
    )

@@ -15,19 +15,21 @@
                                                                latest-endorsements]]
 
    [webapp.client.react.components.company-details     :only  [company-details2]]
-   [webapp.framework.client.system-globals  :only  [touch
+   [webapp.framework.client.system-globals  :only  [
+                                                    touch
                                                     remove-debug-event
                                                     app-state
                                                     data-state
                                                     update-data
-                                                    get-in-tree
                                                     ui-watchers
                                                     -->data
                                                     remove-debug-event
-                                                    <--data]]
+                                                    <--data
+                                                    ]]
 
    [webapp.framework.client.coreclient                 :only  [log
                                                                remote
+                                                               get-in-tree
                                                                component-fn
                                                                write-ui-fn
                                                                when-ui-path-equals-fn

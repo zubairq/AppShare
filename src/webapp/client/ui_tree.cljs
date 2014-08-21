@@ -14,13 +14,13 @@
    [webapp.framework.client.coreclient      :only  [log remote
                                                     when-ui-path-equals-fn
                                                     when-ui-value-changes-fn
+                                                    get-in-tree
                                                     when-ui-property-equals-in-record
                                                     amend-record
                                                     update-ui]]
    [webapp.framework.client.system-globals  :only  [app-state
                                                     data-state
                                                     update-data
-                                                    get-in-tree
                                                     ui-watchers
                                                     -->data
                                                     remove-debug-event

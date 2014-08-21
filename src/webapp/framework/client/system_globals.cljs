@@ -471,12 +471,6 @@
 
 
 
-(defn get-in-tree
-  "
-  "
-  [app path]
-  (get-in @app path))
-
 
 
 

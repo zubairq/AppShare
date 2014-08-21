@@ -819,8 +819,31 @@
       )))
 
 
+(defn write-data-fn [tree  path  value  parent-id]
+  (let [
+        full-path          path
+        old-val            @ data-state
+        data-access-key    {:tree  "DATA"
+                            :path  full-path}
+        current-value      (get @data-accesses  data-access-key)
+        ]
+    (om/update!  tree  path  value)
+    (let [debug-id       (add-debug-event
+                          :event-type  "DATA"
+                          :old         old-val
+                          :new         @app-state
+                          :parent-id   parent-id
+                          )]
+      (reset!  data-accesses (assoc @data-accesses
+                               data-access-key
+                               (if current-value
+                                 (conj current-value  debug-id)
+                                 [debug-id])))
 
-@data-accesses
+      (remove-debug-event debug-id)
+      )))
+
+@ data-accesses
 
 
 (defn read-ui-fn [tree  path  sub-path  parent-id]
@@ -832,18 +855,24 @@
         current-value      (get @ data-accesses  data-access-key)
         debug-id           (last @ call-stack)
         ]
-    (log (str full-path))
-    (log (str "    parent id: " debug-id))
+    (log (str "*read-ui-fn: " full-path "    parent id: " debug-id))
     (reset!  data-accesses (assoc @data-accesses
                              data-access-key
                              (if current-value
                                (conj current-value  debug-id)
                                [debug-id])))
 
-    (remove-debug-event  debug-id)
+    ;(remove-debug-event  debug-id)
     value))
 
 
+
+
+(defn get-in-tree
+  "
+  "
+  [app path]
+  (get-in @app path))
 
 
 (defn update-ui [app  path  value]
