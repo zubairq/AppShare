@@ -261,7 +261,12 @@
 
 
 
-(defn subtree-different? [orig-val new-val path]
+(defn subtree-different?
+  "
+  This checks to see if a subtree of a tree is
+  different
+  "
+  [orig-val new-val path]
   (let [
         orig-subset    (get-in orig-val  path)
         new-subset     (get-in new-val   path)
@@ -385,7 +390,11 @@
 
 
 
-(defn  update-data [path value]
+(defn  update-data
+  "
+  Updates the data tree
+  "
+  [path value]
    (reset! data-state (assoc-in @data-state path value)))
 
 
@@ -393,40 +402,11 @@
 
 
 
-;-----------------------------------------------------
-;
-;
-;
-;-----------------------------------------------------
-(defn  data-tree! [path value]
-   (reset! data-state (assoc-in @data-state path value)))
-
-
-
-
-
-
-
-;-----------------------------------------------------
-;
-;
-;
-;-----------------------------------------------------
-(defn  data-tree [path]
-  (get-in @data-state path))
-
-
-
-
-
-
-
-;-----------------------------------------------------
-;
-;
-;
-;-----------------------------------------------------
-(defn  -->data [path value]
+(defn  data-tree!
+  "
+  Updates the data tree
+  "
+  [path value]
    (reset! data-state (assoc-in @data-state path value)))
 
 
@@ -435,12 +415,11 @@
 
 
 
-;-----------------------------------------------------
-;
-;
-;
-;-----------------------------------------------------
-(defn  <--data [path]
+
+(defn  data-tree
+  "
+  "
+  [path]
   (get-in @data-state path))
 
 
@@ -450,12 +429,37 @@
 
 
 
-;-----------------------------------------------------
-;
-;
-;
-;-----------------------------------------------------
-(defn add-init-state-fn [nm init-state-fn]
+(defn  -->data
+  "
+  "
+  [path value]
+   (reset! data-state (assoc-in @data-state path value)))
+
+
+
+
+
+
+
+
+(defn  <--data
+  "
+  "
+  [path]
+  (get-in @data-state path))
+
+
+
+
+
+
+
+
+
+(defn add-init-state-fn
+  "
+  "
+  [nm init-state-fn]
   (do
     ;(.log js/console (str "Init function added: " nm))
     (swap!  init-state-fns conj init-state-fn)))
@@ -466,12 +470,11 @@
 
 
 
-;-----------------------------------------------------
-;
-;
-;
-;-----------------------------------------------------
-(defn get-in-tree [app path]
+
+(defn get-in-tree
+  "
+  "
+  [app path]
   (get-in @app path))
 
 
@@ -480,12 +483,11 @@
 
 
 
-;-----------------------------------------------------
-;
-;
-;
-;-----------------------------------------------------
-(defn  set-ab-tests [tree]
+
+(defn  set-ab-tests
+  "
+  "
+  [tree]
   (do
     (reset! ab-tests tree)
 ))
@@ -497,12 +499,10 @@
 
 
 
-;-----------------------------------------------------
-;
-;
-;
-;-----------------------------------------------------
-(defn  set-ab-goals [tree]
+(defn  set-ab-goals
+  "
+  "
+  [tree]
    (reset! ab-goals tree))
 
 
@@ -513,24 +513,22 @@
 
 
 
-;-----------------------------------------------------
-;
-;
-;
-;-----------------------------------------------------
-(def touch-id  (atom 0))
+
+(def touch-id
+  "
+  "
+  (atom 0))
 
 
 
 
 
 
-;-----------------------------------------------------
-;
-;
-;
-;-----------------------------------------------------
-(defn touch [path]
+
+(defn touch
+  "
+  "
+  [path]
     (reset! app-state (assoc-in @app-state path
                                 (assoc
                                   (get-in @app-state path)
@@ -545,12 +543,11 @@
 
 
 
-;-----------------------------------------------------
-;
-;
-;
-;-----------------------------------------------------
-(def debug-event-timeline (atom {}))
+
+(def debug-event-timeline
+  "
+  "
+  (atom {}))
 ;(map #(str %1) @debug-event-timeline)
 ;(keys (get @debug-event-timeline 49))
 
@@ -563,12 +560,10 @@
 
 
 
-;-----------------------------------------------------
-;
-;
-;
-;-----------------------------------------------------
-(def component-usage (atom
+(def component-usage
+  "
+  "
+  (atom
                       {}
                       ))
 
@@ -577,12 +572,10 @@
 
 
 
-;-----------------------------------------------------
-;
-;
-;
-;-----------------------------------------------------
+
 (def debugger-ui
+  "
+  "
   (atom {
          :mode                     "show-event"
          :react-components         []
@@ -600,23 +593,22 @@
 
 
 
-;-----------------------------------------------------
-;
-;
-;
-;-----------------------------------------------------
-(def debug-count (atom 0))
+
+(def debug-count
+  "
+  "
+  (atom 0))
 
 
 
 
 
-;-----------------------------------------------------
-;
-;
-;
-;-----------------------------------------------------
-(defn add-debug-event [& {:keys [
+
+
+(defn add-debug-event
+  "
+  "
+  [& {:keys [
                                  event-type
                                  old
                                  new
@@ -728,7 +720,13 @@
 
       )))
 
-(defn remove-debug-event [did]
+
+
+
+(defn remove-debug-event
+  "
+  "
+  [did]
   (reset! call-stack
           (into [] (filter #(not= %1 did) @call-stack))
           )
@@ -779,12 +777,11 @@
 
 
 
-;-----------------------------------------------------
-;
-;
-;
-;-----------------------------------------------------
-(defn contains-touch-id? [x]
+
+(defn contains-touch-id?
+  "
+  "
+  [x]
   (cond
    (vector? x)
    (some #(if (contains-touch-id? %1) true) x)
@@ -837,21 +834,24 @@
 ; (:events-filter-path @debugger-ui)
 
 
-;-----------------------------------------------------
-;                  gui-calls
-;
-;
-;-----------------------------------------------------
-(def gui-calls (atom {}))
 
 
 
-;-----------------------------------------------------
-;             current-gui-path
-;
-;
-;-----------------------------------------------------
-(def current-gui-path (atom []))
+(def gui-calls
+  "
+  "
+  (atom {}))
+
+
+
+
+
+
+
+(def current-gui-path
+  "
+  "
+  (atom []))
 
 ;(filter #(= (:fn-name %1) "text-graph") @component-usage)
 
@@ -867,7 +867,10 @@
 ;@data-accesses
 
 
-(def tester (atom {}))
+(def tester
+  "
+  "
+  (atom {}))
 
 
 
