@@ -848,32 +848,3 @@
 
 
 
-(def current-gui-path
-  "
-  "
-  (atom []))
-
-;(filter #(= (:fn-name %1) "text-graph") @component-usage)
-
-;@component-usage
-
-
-
-;(get @gui-calls (first (keys @gui-calls)))
-
-
-;(get @data-accesses (first (keys @data-accesses)))
-
-;@data-accesses
-
-
-(def tester
-  "
-  "
-  (atom {}))
-
-
-
-(keys (:react-components-fns @debugger-ui))
-
-

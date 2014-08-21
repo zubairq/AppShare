@@ -32,7 +32,6 @@
                                                     remove-debug-event
                                                     component-usage
                                                     gui-calls
-                                                    current-gui-path
                                                     app-watch-on?
                                                     data-accesses
                                                     ]]))

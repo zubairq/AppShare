@@ -23,7 +23,6 @@
                                                          data-and-ui-events-on?
                                                          add-debug-event
                                                          remove-debug-event
-                                                         current-gui-path
                                                          ]]
    )
   (:use-macros
@@ -213,8 +212,6 @@
 
 
               (do
-                (reset! current-gui-path [])
-                ;(@ start-component    app    owner)
                 (let [path []]
                   (component    @start-component app  [])
                   )
