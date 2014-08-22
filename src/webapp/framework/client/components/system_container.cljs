@@ -108,9 +108,7 @@
                                 )]
                            ;(js/alert (str "watch-" tree-name " " (:path watch)))
                            (apply (:fn watch) args)
-                           (remove-debug-event  debug-id)
-
-                           )
+                           (remove-debug-event  debug-id))
 
 
 

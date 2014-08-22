@@ -277,7 +277,7 @@
 
 
 
-(defn record-path= [namespace-name path value tree-name & code]
+(defn record-path= [namespace-name  path  value  tree-name  &  code]
   (let [
         code-str
         (str (apply str (map #(if (= "\n" %1) (str "\r\n")  %1) code)))
@@ -293,7 +293,7 @@
                 (char 13) (char 13)
 
 
-                "(==" tree-name " " path "  "
+                "(==" tree-name " " path "  " value
                      (char 13) (char 13)
                      code-str
                      ""
