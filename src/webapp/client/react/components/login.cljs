@@ -3,23 +3,21 @@
    [om.core          :as om :include-macros true]
    [om.dom           :as dom :include-macros true]
    [clojure.data     :as data]
-   [clojure.string   :as string])
+   [clojure.string   :as string]
+   [webapp.framework.client.coreclient   :as coils :include-macros true]
+   )
 
   (:use
    [webapp.client.ui-helpers                :only  [validate-email]]
-   [webapp.framework.client.coreclient      :only  [log remote component-fn write-ui-fn remove-debug-event]]
    [webapp.framework.client.ui-helpers      :only  [blur-field
                                                     update-field-value
                                                     basic-input-box ]]
    [webapp.client.react.components.forms    :only  [from-email-field]]
 
-   [clojure.string :only [blank?]]
-   [webapp.framework.client.system-globals  :only [debugger-ui  ]])
+   [clojure.string :only [blank?]])
+  )
 
-  (:use-macros
-   [webapp.framework.client.coreclient      :only  [defn-ui-component  ns-coils  component write-ui]]))
-
-(ns-coils 'webapp.client.react.components.login)
+(coils/ns-coils 'webapp.client.react.components.login)
 
 
 
@@ -27,7 +25,7 @@
 
 
 ;------------------------------------------------------------
-(defn-ui-component    login-email-field  [ui-data]
+(coils/defn-ui-component    login-email-field  [ui-data]
     {:absolute-path [:ui :login :login-email]}
   ;------------------------------------------------------------
   (dom/div nil (dom/div
@@ -64,7 +62,7 @@
 
 
 ;------------------------------------------------------------
-(defn-ui-component   login   [ui-data]
+(coils/defn-ui-component   login   [ui-data]
     {:absolute-path [:ui :login]}
 ;------------------------------------------------------------
 
@@ -72,15 +70,15 @@
    nil
    (dom/div
     nil
-    (component  login-email-field   ui-data [:login-email] )
+    (coils/component  login-email-field   ui-data [:login-email] )
 
-    (component   from-email-field   ui-data [:from-email] )
+    (coils/component   from-email-field   ui-data [:from-email] )
 
 
     (dom/button #js {:onClick (fn [e]
                                 (do
                                   (js/alert (-> @ui-data :login-email :value ) )
-                                  (write-ui
+                                  (coils/write-ui
                                    ui-data [:submit :message] "Submit not working" )))
                      :style
                      #js {:margin-top "10px"}}
