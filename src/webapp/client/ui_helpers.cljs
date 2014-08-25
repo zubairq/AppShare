@@ -17,7 +17,6 @@
                                                     data-watchers
                                                     data-state
                                                     update-data
-                                                    remove-debug-event
                                                     ]]
    [clojure.string :only [blank?]]
    )

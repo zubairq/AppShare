@@ -10,11 +10,13 @@
    [ankha.core       :as ankha]
    )
   (:use
-   [webapp.framework.client.coreclient      :only  [log remote component-fn]]
+   [webapp.framework.client.coreclient      :only  [log remote component-fn
+                                                    remove-debug-event
+
+                                                    ]]
    [webapp.framework.client.system-globals  :only  [app-state
                                                     reset-app-state ui-watchers
                                                     data-watchers
-                                                    remove-debug-event
                                                     data-state
                                                     update-data
                                                     set-ab-tests

@@ -5,14 +5,14 @@
    [clojure.data     :as data]
    [clojure.string   :as string]
    [ankha.core       :as ankha]
-   [webapp.framework.client.coreclient]
    )
   (:use
-   [webapp.framework.client.system-globals  :only  [touch  remove-debug-event]]
+   [webapp.framework.client.system-globals  :only  [touch]]
+   [webapp.framework.client.coreclient      :only  [component-fn  write-ui-fn remove-debug-event]]
    )
   (:use-macros
    [webapp.framework.client.coreclient
-    :only  [defn-ui-component ns-coils div]]))
+    :only  [defn-ui-component ns-coils div ]]))
 
 (ns-coils 'webapp.client.react.components.company-details)
 

@@ -17,13 +17,14 @@
                                                     get-in-tree
                                                     when-ui-property-equals-in-record
                                                     amend-record
+                                                    remove-debug-event
+
                                                     update-ui]]
    [webapp.framework.client.system-globals  :only  [app-state
                                                     data-state
                                                     update-data
                                                     ui-watchers
                                                     -->data
-                                                    remove-debug-event
                                                     <--data
                                                     ]]
    [clojure.string :only [blank?]]

@@ -13,10 +13,13 @@
    [webapp.client.ui-tree]
    )
   (:use
-   [webapp.framework.client.coreclient      :only  [log remote component-fn]]
+   [webapp.framework.client.coreclient      :only  [log
+                                                    remote
+                                                    component-fn
+                                                    remove-debug-event
+                                                    ]]
    [webapp.framework.client.system-globals  :only  [app-state
                                                     reset-app-state ui-watchers
-                                                    remove-debug-event
                                                     data-watchers
                                                     data-state
                                                     update-data

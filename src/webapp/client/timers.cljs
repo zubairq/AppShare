@@ -11,11 +11,12 @@
    )
   (:use
    [webapp.client.ui-helpers                :only  [validate-email ]]
-   [webapp.framework.client.coreclient      :only  [log remote]]
+   [webapp.framework.client.coreclient      :only  [log remote
+                                                    remove-debug-event
+                                                    ]]
    [webapp.framework.client.system-globals  :only  [app-state
                                                     reset-app-state
                                                     ui-watchers
-                                                    remove-debug-event
                                                     data-watchers
                                                     data-state
                                                     update-data

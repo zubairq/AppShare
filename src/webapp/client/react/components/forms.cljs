@@ -13,8 +13,8 @@
                                                     update-field-value
                                                     basic-input-box ]]
 
-   [webapp.framework.client.coreclient      :only  [log  remote  component-fn  write-ui-fn]]
-   [webapp.framework.client.system-globals  :only  [touch  remove-debug-event]]
+   [webapp.framework.client.coreclient      :only  [log  remote  component-fn  write-ui-fn remove-debug-event]]
+   [webapp.framework.client.system-globals  :only  [touch  ]]
 
    [clojure.string                          :only [blank?]])
 

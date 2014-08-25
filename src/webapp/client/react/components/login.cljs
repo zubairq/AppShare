@@ -7,14 +7,14 @@
 
   (:use
    [webapp.client.ui-helpers                :only  [validate-email]]
-   [webapp.framework.client.coreclient      :only  [log remote component-fn write-ui-fn]]
+   [webapp.framework.client.coreclient      :only  [log remote component-fn write-ui-fn remove-debug-event]]
    [webapp.framework.client.ui-helpers      :only  [blur-field
                                                     update-field-value
                                                     basic-input-box ]]
    [webapp.client.react.components.forms    :only  [from-email-field]]
 
    [clojure.string :only [blank?]]
-   [webapp.framework.client.system-globals  :only [debugger-ui  remove-debug-event]])
+   [webapp.framework.client.system-globals  :only [debugger-ui  ]])
 
   (:use-macros
    [webapp.framework.client.coreclient      :only  [defn-ui-component  ns-coils  component write-ui]]))

@@ -102,7 +102,7 @@
                                      (~'fn [~(first data-paramater-name)]
                                            ~@code))
 
-                       ~'removed-id     (~'remove-debug-event  ~'debug-id)
+                       ~'removed-id     (~'webapp.framework.client.coreclient/remove-debug-event  ~'debug-id)
 
                        ]
 
@@ -197,7 +197,7 @@
               :dispatch clojure.pprint/code-dispatch))
       )
 
-     (~'when-ui-path-equals-fn
+     (~'webapp.framework.client.coreclient/when-ui-path-equals-fn
       ~path
       ~value
       (~'fn [~'ui] (do ~@code)))))
@@ -275,7 +275,7 @@
 (defmacro -->ui
   "Writes to the UI tree"
   [path value]
-  `(~'update-ui ~'ui ~path ~value))
+  `(~'webapp.framework.client.coreclient/update-ui ~'ui ~path ~value))
 
 ;(macroexpand '(-->ui [:ui :request :from-email :error] ""))
 
@@ -286,7 +286,7 @@
 
 
    (go
-    (update-ui  ui  [:ui  :company-details   :skills  ] nil)
+    (webapp.framework.client.coreclient/update-ui  ui  [:ui  :company-details   :skills  ] nil)
      (let [ l (<! (remote "get-company-details"
              {
               :company-url    (get-in @app-state [:ui :company-details :company-url])
@@ -308,7 +308,7 @@
 (defmacro component
   [component-render-fn   state   rel-path]
   `(let [
-         ~'return-value   (~'component-fn ~component-render-fn ~state  ~'path ~rel-path)
+         ~'return-value   (~'webapp.framework.client.coreclient/component-fn ~component-render-fn ~state  ~'path ~rel-path)
          ]
      (do
        ~'return-value)))

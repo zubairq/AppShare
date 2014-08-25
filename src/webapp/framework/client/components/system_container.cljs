@@ -11,7 +11,9 @@
    )
 
   (:use
-   [webapp.framework.client.coreclient           :only  [log remote debug-mode component-fn]]
+   [webapp.framework.client.coreclient           :only  [log remote debug-mode component-fn
+                                                         remove-debug-event
+                                                         ]]
    [webapp.framework.client.system-globals       :only  [app-state
                                                          playbackmode
                                                          ui-watchers
@@ -22,7 +24,6 @@
                                                          init-state-fns
                                                          data-and-ui-events-on?
                                                          add-debug-event
-                                                         remove-debug-event
                                                          ]]
    )
   (:use-macros

@@ -13,7 +13,7 @@
    [clojure.string :only [blank?]]
 
 
-   [webapp.framework.client.system-globals  :only  [touch  remove-debug-event]]
+   [webapp.framework.client.system-globals  :only  [touch ]]
 
 
    )

@@ -147,7 +147,7 @@
                        (if (pos? (count (get @debugger-ui :react-components)))
                          (apply str  (into [] (map (fn[li] (str (get li :fn-name) "   "))
                                                    (get @debugger-ui :react-components))))
-                         "Mouse over components to show code"
+                         "Mouse over and click components to show code"
                          )))
 
      )))

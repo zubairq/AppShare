@@ -720,17 +720,6 @@
 
 
 
-(defn remove-debug-event
-  "
-  "
-  [did]
-  (reset! call-stack
-          (into [] (filter #(not= %1 did) @call-stack))
-          )
-  )
-
-
-
 
 
 
@@ -800,22 +789,6 @@
 
 
 
-;-----------------------------------------------------
-; watch when the data changes
-;
-;
-;-----------------------------------------------------
-(add-watch data-state
-           :change
-           (fn [_ _ old-val new-val]
-             (if @app-watch-on?
-               (let [debug-id (add-debug-event
-                               :event-type  "DATA"
-                               :old         old-val
-                               :new         new-val
-                               :parent-id   (last @call-stack)
-                               )]
-                 (remove-debug-event debug-id)))))
 
 
 

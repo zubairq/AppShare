@@ -16,11 +16,12 @@
                                                     when-data-path-equals-fn
                                                     when-data-value-changes-fn
                                                     update-ui
+                                                    remove-debug-event
                                                     get-in-tree
                                                     ]]
    [webapp.framework.client.system-globals  :only  [app-state
-                                                    reset-app-state ui-watchers
-                                                    remove-debug-event
+                                                    reset-app-state
+                                                    ui-watchers
                                                     data-watchers
                                                     data-state
                                                     update-data

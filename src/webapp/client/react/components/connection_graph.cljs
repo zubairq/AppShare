@@ -7,11 +7,13 @@
    )
 
   (:use-macros
-   [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils div a component write-ui read-ui]])
+   [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils div a component write-ui read-ui
+                                                    ]])
 
   (:use
-   [webapp.framework.client.system-globals  :only  [touch  remove-debug-event]]
-   [webapp.framework.client.coreclient      :only  [log amend-record  component-fn write-ui-fn  read-ui-fn]]
+   [webapp.framework.client.system-globals  :only  [touch  ]]
+   [webapp.framework.client.coreclient      :only  [amend-record  component-fn write-ui-fn  read-ui-fn
+                                                    remove-debug-event]]
    )
   )
 (ns-coils 'webapp.client.react.components.connection-graph)
