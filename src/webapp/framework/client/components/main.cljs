@@ -1,25 +1,12 @@
 (ns webapp.framework.client.components.main
   (:require
-   [om.core          :as om :include-macros true]
-   [om.dom           :as dom ]
-   [clojure.data     :as data]
-   [clojure.string   :as string])
+   [om.core                              :as om :include-macros true]
+   [webapp.framework.client.coreclient   :as c :include-macros true]
+   [om.dom                               :as dom ]
+   [clojure.data                         :as data]
+   [clojure.string                       :as string]))
 
-  (:use
-   [webapp.framework.client.ui-helpers
-    :only  [blur-field
-            update-field-value
-            basic-input-box ]]
-   [clojure.string :only [blank?]]
-
-
-   [webapp.framework.client.system-globals  :only  [touch ]]
-
-
-   )
-  (:use-macros
-   [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils div h2 ]]))
-(ns-coils 'webapp.framework.client.components.main)
+(c/ns-coils 'webapp.framework.client.components.main)
 
 
 
@@ -39,9 +26,9 @@
 
 
 
-(defn-ui-component     main-view   [app]
+(c/defn-ui-component     main-view   [app]
   {:absolute-path []}
 
-  (div nil
-       (h2 nil "Coils")
+  (c/div nil
+       (c/h2 nil "Coils")
        "Build webapps with Neo4j"))

@@ -1,20 +1,13 @@
 (ns webapp.client.react.components.company-details
   (:require
-   [om.core          :as om :include-macros true]
-   [om.dom           :as dom :include-macros true]
-   [clojure.data     :as data]
-   [clojure.string   :as string]
-   [ankha.core       :as ankha]
-   )
-  (:use
-   [webapp.framework.client.system-globals  :only  [touch]]
-   [webapp.framework.client.coreclient      :only  [component-fn  write-ui-fn remove-debug-event]]
-   )
-  (:use-macros
-   [webapp.framework.client.coreclient
-    :only  [defn-ui-component ns-coils div ]]))
+   [om.core                              :as om :include-macros true]
+   [om.dom                               :as dom :include-macros true]
+   [webapp.framework.client.coreclient   :as c :include-macros true]
+   [clojure.data                         :as data]
+   [clojure.string                       :as string]
+   [ankha.core                           :as ankha]))
 
-(ns-coils 'webapp.client.react.components.company-details)
+(c/ns-coils 'webapp.client.react.components.company-details)
 
 
 
@@ -25,30 +18,31 @@
 
 
 ;---------------------------------------------------------
-(defn-ui-component   company-details2    [company-details]
+(c/defn-ui-component   company-details2    [company-details]
   {:absolute-path [:ui :company-details]}
 ;---------------------------------------------------------
-  (div
+  (c/div
    {:style {:height "100%" :width "100%"}}
 
-   (div {:style {:padding-bottom "0px"}}
+   (c/div {:style {:padding-bottom "0px"}}
             (str (-> company-details :company-url)))
    (if (-> company-details :skills )
      (do
-       (div {:style #js {:padding-bottom "20px"}} "Skills2")
+       (c/div {:style #js {:padding-bottom "20px"}} "Skills2")
        (apply dom/div nil
               (map
                (fn[skill]
-                 (div {:style {:padding-left "20px"}}
+                 (c/div {:style {:padding-left "20px"}}
                           (get skill "skill") " - " (get skill "skill_count")
                           ))
                (-> company-details :skills )
                ))
        )
-     (div {:style {:padding-bottom "20px"}} "Loading skills...")
 
-     )
-   (div {:style {:padding-bottom "20px"}} "")
+     ;else
+     (c/div {:style {:padding-bottom "20px"}} "Loading skills..."))
+
+   (c/div {:style {:padding-bottom "20px"}} "")
 
    (dom/pre nil
             (str "<iframe id='widget_" (str (-> company-details :company-url))

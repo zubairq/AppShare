@@ -1,9 +1,10 @@
 (ns webapp.client.react.components.forms
   (:require
-   [om.core          :as om :include-macros true]
-   [om.dom           :as dom :include-macros true]
-   [clojure.data     :as data]
-   [clojure.string   :as string]
+   [om.core                              :as om  :include-macros true]
+   [om.dom                               :as dom :include-macros true]
+   [webapp.framework.client.coreclient   :as c   :include-macros true]
+   [clojure.data                         :as data]
+   [clojure.string                       :as string]
    )
 
   (:use
@@ -13,15 +14,9 @@
                                                     update-field-value
                                                     basic-input-box ]]
 
-   [webapp.framework.client.coreclient      :only  [log  remote  component-fn  write-ui-fn remove-debug-event]]
-   [webapp.framework.client.system-globals  :only  [touch  ]]
+   [clojure.string                          :only [blank?]]))
 
-   [clojure.string                          :only [blank?]])
-
-  (:use-macros
-   [webapp.framework.client.coreclient      :only  [defn-ui-component  ns-coils  div  component  write-ui]]))
-
-(ns-coils 'webapp.client.react.components.forms)
+(c/ns-coils 'webapp.client.react.components.forms)
 
 
 
@@ -31,7 +26,7 @@
 
 
 ;------------------------------------------------------------
-(defn-ui-component    from-email-field  [ui-data]
+(c/defn-ui-component    from-email-field  [ui-data]
     {:absolute-path [:ui :request]}
   ;------------------------------------------------------------
   (dom/div
@@ -51,8 +46,7 @@
                         (dom/a  #js {:href "#"
                                      :className "alert-link"}
                                 "Your email confirmed"
-                                )))
-            ))
+                                )))))
 
 
 
@@ -60,7 +54,7 @@
 
 
 ;------------------------------------------------------------
-(defn-ui-component  to-email-field  [ui-data]
+(c/defn-ui-component  to-email-field  [ui-data]
     {:absolute-path [:ui :request]}
   ;------------------------------------------------------------
 
@@ -89,55 +83,54 @@
 
 
 ;------------------------------------------------------------
-(defn-ui-component    show-connection-confirmation-dialog-box  [dialog-data]
+(c/defn-ui-component    show-connection-confirmation-dialog-box  [dialog-data]
   {}
   ;------------------------------------------------------------
   (if (get-in dialog-data [:show-connection-confirmation])
-    (div {:style {:position          "absolute"           :left    "5%"  :top "5%"
+    (c/div {:style {:position          "absolute"           :left    "5%"  :top "5%"
                   :width   "90%"
                   :height  "90%"
                   :border            "solid 1px black;"   :zIndex  "2000"
                   :background-color  "white"              :opacity "1.0"
                   :text-align        "center"
                   }
-          :onTouchStart #(write-ui  dialog-data [:show-connection-confirmation] false)
-          :onClick      #(write-ui  dialog-data [:show-connection-confirmation] false)
+          :onTouchStart #(c/write-ui  dialog-data [:show-connection-confirmation] false)
+          :onClick      #(c/write-ui  dialog-data [:show-connection-confirmation] false)
           }
 
-         (div {:style { :vertical-align "center" }}
-              (div {:style {:padding "5px" :padding-bottom "30px"}} "Your connection has been made!")
+         (c/div {:style { :vertical-align "center" }}
+              (c/div {:style {:padding "5px" :padding-bottom "30px"}} "Your connection has been made!")
 
-              (div {:style {:padding "5px"}} (str "From "
+              (c/div {:style {:padding "5px"}} (str "From "
                                                   (get-in dialog-data [:from-email :value] ) " to "
-                                                  (get-in dialog-data [:to-email   :value])))
-              ))))
+                                                  (get-in dialog-data [:to-email   :value])))))))
 
 
 
 
 
 ;------------------------------------------------------------
-(defn-ui-component   request-form   [ui-data]
+(c/defn-ui-component   request-form   [ui-data]
     {:absolute-path [:ui :request]}
 ;------------------------------------------------------------
 
-  (div
+  (c/div
    nil
 
    (if [get-in ui-data [:show-connection-confirmation]]
-     (component  show-connection-confirmation-dialog-box  ui-data []))
+     (c/component  show-connection-confirmation-dialog-box  ui-data []))
 
 
 
-   (div
+   (c/div
     nil
-    (component   from-email-field   ui-data [:from-email] )
+    (c/component   from-email-field   ui-data [:from-email] )
 
-    (component  to-email-field      ui-data [:to-email] )
+    (c/component  to-email-field      ui-data [:to-email] )
 
 
     (dom/button #js {:onClick (fn [e]
-                                (write-ui ui-data [:submit :value]  true))
+                                (c/write-ui  ui-data [:submit :value]  true))
                      :style
                      #js {:margin-top "10px"}}
 
@@ -146,7 +139,7 @@
     (if (not (blank?
               (get-in ui-data [:submit :message])))
 
-      (div nil (str "Please check your Inbox for "
+      (c/div nil (str "Please check your Inbox for "
                     (-> ui-data :from-email :value) " to confirm your email address"))
 ))))
 

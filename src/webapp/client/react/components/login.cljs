@@ -1,10 +1,10 @@
 (ns webapp.client.react.components.login
   (:require
-   [om.core          :as om :include-macros true]
-   [om.dom           :as dom :include-macros true]
-   [clojure.data     :as data]
-   [clojure.string   :as string]
-   [webapp.framework.client.coreclient   :as coils :include-macros true]
+   [om.core                              :as om :include-macros true]
+   [om.dom                               :as dom :include-macros true]
+   [clojure.data                         :as data]
+   [clojure.string                       :as string]
+   [webapp.framework.client.coreclient   :as c :include-macros true]
    )
 
   (:use
@@ -17,7 +17,7 @@
    [clojure.string :only [blank?]])
   )
 
-(coils/ns-coils 'webapp.client.react.components.login)
+(c/ns-coils 'webapp.client.react.components.login)
 
 
 
@@ -25,7 +25,7 @@
 
 
 ;------------------------------------------------------------
-(coils/defn-ui-component    login-email-field  [ui-data]
+(c/defn-ui-component    login-email-field  [ui-data]
     {:absolute-path [:ui :login :login-email]}
   ;------------------------------------------------------------
   (dom/div nil (dom/div
@@ -62,7 +62,7 @@
 
 
 ;------------------------------------------------------------
-(coils/defn-ui-component   login   [ui-data]
+(c/defn-ui-component   login   [ui-data]
     {:absolute-path [:ui :login]}
 ;------------------------------------------------------------
 
@@ -70,15 +70,15 @@
    nil
    (dom/div
     nil
-    (coils/component  login-email-field   ui-data [:login-email] )
+    (c/component  login-email-field   ui-data [:login-email] )
 
-    (coils/component   from-email-field   ui-data [:from-email] )
+    (c/component   from-email-field   ui-data [:from-email] )
 
 
     (dom/button #js {:onClick (fn [e]
                                 (do
                                   (js/alert (-> @ui-data :login-email :value ) )
-                                  (coils/write-ui
+                                  (c/write-ui
                                    ui-data [:submit :message] "Submit not working" )))
                      :style
                      #js {:margin-top "10px"}}

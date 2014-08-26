@@ -1,22 +1,12 @@
 (ns webapp.client.react.components.connection-graph
   (:require
-   [om.core          :as om :include-macros true]
-   [om.dom           :as dom]
-   [clojure.data     :as data]
-   [clojure.string   :as string]
-   )
-
-  (:use-macros
-   [webapp.framework.client.coreclient      :only  [defn-ui-component ns-coils div a component write-ui read-ui
-                                                    ]])
-
-  (:use
-   [webapp.framework.client.system-globals  :only  [touch  ]]
-   [webapp.framework.client.coreclient      :only  [amend-record  component-fn write-ui-fn  read-ui-fn
-                                                    remove-debug-event]]
-   )
-  )
-(ns-coils 'webapp.client.react.components.connection-graph)
+   [om.core                              :as om  :include-macros true]
+   [webapp.framework.client.coreclient   :as c   :include-macros true]
+   [om.dom                               :as dom]
+   [clojure.data                         :as data]
+   [clojure.string                       :as string]
+   ))
+(c/ns-coils 'webapp.client.react.components.connection-graph)
 
 
 
@@ -24,26 +14,26 @@
 
 
 ;---------------------------------------------------------
-(defn-ui-component   text-graph    [companies]
+(c/defn-ui-component   text-graph    [companies]
   {:absolute-path [:ui :companies]}
   ;---------------------------------------------------------
-  (div  {:style {:height "100%" :width "100%"}}
+  (c/div  {:style {:height "100%" :width "100%"}}
 
-        (let [all-company-records    (read-ui  companies [:values] )]
+        (let [all-company-records    (c/read-ui  companies [:values] )]
 
           (apply
            dom/div nil
 
            (map
             (fn[company-ui-record]
-              (div  nil
+              (c/div  nil
 
-                    (div  {:style { :width "200px"  :display "inline-block"}}
+                    (c/div  {:style { :width "200px"  :display "inline-block"}}
                           (get company-ui-record "company"))
 
-                    (a {:href "#" :onClick
-                        #(write-ui  companies  [:values]
-                                     (amend-record (into [] (get @companies :values))
+                    (c/a {:href "#" :onClick
+                        #(c/write-ui  companies  [:values]
+                                     (c/amend-record (into [] (get @companies :values))
                                                    "company"
                                                    (get @company-ui-record "company")
                                                    (fn[z] (merge z {:clicked true}))
@@ -63,7 +53,7 @@
 
 
 
-(defn-ui-component   graph    [data]
+(c/defn-ui-component   graph    [data]
   {:absolute-path [:ui :companies]}
 
   (dom/div
@@ -93,11 +83,11 @@
 
 
 ;---------------------------------------------------------
-(defn-ui-component  latest-endorsements    [endorsements]
+(c/defn-ui-component  latest-endorsements    [endorsements]
   {:absolute-path [:ui :latest-endorsements]}
 ;---------------------------------------------------------
 
-     (div
+     (c/div
       {:style #js {:height "100%" :width "100%"}}
 
       (apply
@@ -105,9 +95,9 @@
        nil
        (map
         (fn[x]
-          (div
+          (c/div
            nil
-           (div
+           (c/div
             {
                  :style
                  {
@@ -121,7 +111,7 @@
 
 
                  ))
-           (div
+           (c/div
             {
                  :style
                  {
@@ -129,12 +119,8 @@
                       :display "inline-block"}}
 
             (get x "to")
-            (str " --> " (get x "from")
-                 ))
+            (str " --> " (get x "from")))))
 
-           ))
         (-> endorsements :values ))
-       )
-
-      ))
+       )))
 

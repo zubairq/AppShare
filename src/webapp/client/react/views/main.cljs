@@ -1,7 +1,7 @@
 (ns webapp.client.react.views.main
   (:require
    [om.core                              :as om :include-macros true]
-   [webapp.framework.client.coreclient   :as coils :include-macros true]
+   [webapp.framework.client.coreclient   :as c :include-macros true]
    [om.dom                               :as dom])
 
   (:use
@@ -14,7 +14,7 @@
    [webapp.client.react.components.company-details     :only  [company-details2]]
 ))
 
-(coils/ns-coils 'webapp.client.react.views.main)
+(c/ns-coils 'webapp.client.react.views.main)
 
 
 
@@ -25,43 +25,43 @@
 
 
 ;------------------------------------------------------------
-(coils/defn-ui-component     browser-menu   [app]
+(c/defn-ui-component     browser-menu   [app]
   {:absolute-path []}
   ;------------------------------------------------------------
 
-  (coils/div  {:style {:paddingBottom "10px"}}
+  (c/div  {:style {:paddingBottom "10px"}}
 
 
-            (coils/div
+            (c/div
              (cond
               (= (-> app :ui :tab-browser) "top companies")
               {:style {:display "inline-block"}}
 
               :else
               {:className  ""
-               :onClick        (fn[e] (coils/write-ui  app  [:ui :tab-browser]  "top companies"))
-               :onTouchStart   (fn[e] (coils/write-ui app [:ui :tab-browser]  "top companies"))
+               :onClick        (fn[e] (c/write-ui  app  [:ui :tab-browser]  "top companies"))
+               :onTouchStart   (fn[e] (c/write-ui app [:ui :tab-browser]  "top companies"))
                :style {:textDecoration "underline"
                        :display "inline-block"}
                })
              "Top")
 
 
-           (coils/div
+           (c/div
               {:style {
                                :display "inline-block"
                                :width "20px"}
                    } "")
 
 
-           (coils/div
+           (c/div
             (if  (= (-> app :ui :tab-browser) "latest endorsements")
               {:style  {
                                	:display "inline-block"}
                    }
               {:className  ""
-                   :onClick        (fn[e] (coils/write-ui app [:ui :tab-browser]  "latest endorsements"))
-                   :onTouchStart   (fn[e] (coils/write-ui app [:ui :tab-browser]  "latest endorsements"))
+                   :onClick        (fn[e] (c/write-ui app [:ui :tab-browser]  "latest endorsements"))
+                   :onTouchStart   (fn[e] (c/write-ui app [:ui :tab-browser]  "latest endorsements"))
                    :style {:textDecoration "underline"
                                :display "inline-block"}
                    })
@@ -74,10 +74,10 @@
 
 
 ;------------------------------------------------------------
-(coils/defn-ui-component    letter-a  [data]
+(c/defn-ui-component    letter-a  [data]
   {}
   ;------------------------------------------------------------
-    (coils/div nil "-----------------------------------------------"))
+    (c/div nil "-----------------------------------------------"))
 
 
 
@@ -87,43 +87,43 @@
 
 
 ;------------------------------------------------------------
-(coils/defn-ui-component    splash-screen  [splash-screen-data]
+(c/defn-ui-component    splash-screen  [splash-screen-data]
   {}
   ;------------------------------------------------------------
   (if (get-in splash-screen-data [:show])
-    (coils/div {:style {:position          "relative" :width   "0" :height  "0"
+    (c/div {:style {:position          "relative" :width   "0" :height  "0"
                   }}
-    (coils/div {:style {:position          "absolute"           :left    "5%"  :top "5%"
+    (c/div {:style {:position          "absolute"           :left    "5%"  :top "5%"
                   :width   "400"
                   :height  "400"
                   :border            "solid 1px black;"   :zIndex  "2200"
                   :background-color  "white"              :opacity "1.0"
                   :text-align        "center"
                   }
-          :onTouchStart #(coils/write-ui splash-screen-data [:click] true)
-          :onClick      #(coils/write-ui splash-screen-data [:click] true)
+          :onTouchStart #(c/write-ui splash-screen-data [:click] true)
+          :onClick      #(c/write-ui splash-screen-data [:click] true)
           }
 
-         (coils/div {:style { :vertical-align "center" :width "100%" :height "100%"}}
+         (c/div {:style { :vertical-align "center" :width "100%" :height "100%"}}
 
-              (coils/div {:style {:padding "5px" :padding-bottom "0px" :font-size "40"}} (str "Coils"))
+              (c/div {:style {:padding "5px" :padding-bottom "0px" :font-size "40"}} (str "Coils"))
 
-              (coils/div {:style {:padding "5px" :padding-bottom "20px"  :font-size "25"}}
+              (c/div {:style {:padding "5px" :padding-bottom "20px"  :font-size "25"}}
                    (str "Build Neo4j Web Apps"))
 
-              (coils/a {:href "https://github.com/zubairq/coils"}
+              (c/a {:href "https://github.com/zubairq/coils"}
                  "Follow us on GitHub")
 
-              (coils/component   letter-a   splash-screen-data [])
+              (c/component   letter-a   splash-screen-data [])
 
 
 
-              (coils/div {:style {:padding "5px" :padding-bottom "20px"  :font-size "20"}}
+              (c/div {:style {:padding "5px" :padding-bottom "20px"  :font-size "20"}}
                    (str "This is a basic demo app called ConnectToUs to show the basic capabilities of Coils"))
 
 
 
-                   (coils/div {:style {:padding "5px" :padding-bottom "20px"}} "Click to start...")
+                   (c/div {:style {:padding "5px" :padding-bottom "20px"}} "Click to start...")
               )))))
 
 
@@ -132,30 +132,30 @@
 
 
 
-(coils/==ui  [:ui :splash-screen :click]   true
+(c/==ui  [:ui :splash-screen :click]   true
 
     (do
-      (coils/-->ui [:ui  :splash-screen  :click]  false)
-      (coils/-->ui [:ui  :splash-screen  :show]   false)))
+      (c/-->ui [:ui  :splash-screen  :click]  false)
+      (c/-->ui [:ui  :splash-screen  :show]   false)))
 
 
 
 
 ;------------------------------------------------------------
-(coils/defn-ui-component     main-view   [app]
+(c/defn-ui-component     main-view   [app]
   {:absolute-path []}
 ;------------------------------------------------------------
 
-  (coils/div {:style {
+  (c/div {:style {
                 :height       (- (-> app :view :height) 100)
                 :zIndex       "1"
                 }}
 
        (dom/h2 nil "ConnectToUs.co")
 
-       (coils/component  splash-screen  app  [:ui :splash-screen])
+       (c/component  splash-screen  app  [:ui :splash-screen])
 
-         (coils/component letter-a  app [:ui])
+         (c/component letter-a  app [:ui])
 
 
            (dom/ul
@@ -163,23 +163,23 @@
 
             (dom/li #js {:className  (if (= (-> app :ui :tab) "browser") "active" "")   }
                     (dom/a #js {:className  ""
-                                :onClick        (fn[e] (coils/write-ui app [:ui :tab]  "browser"))
-                                :onTouchStart   (fn[e] (coils/write-ui app [:ui :tab]  "browser"))
+                                :onClick        (fn[e] (c/write-ui app [:ui :tab]  "browser"))
+                                :onTouchStart   (fn[e] (c/write-ui app [:ui :tab]  "browser"))
 
                                 } "Search"))
 
             (dom/li #js {:className  (if (= (-> app :ui :tab) "request") "active" "") }
                     (dom/a #js {:className  ""
-                                :onClick        (fn[e] (coils/write-ui app [:ui :tab]  "request"))
-                                :onTouchStart   (fn[e] (coils/write-ui app [:ui :tab]  "request"))
+                                :onClick        (fn[e] (c/write-ui app [:ui :tab]  "request"))
+                                :onTouchStart   (fn[e] (c/write-ui app [:ui :tab]  "request"))
 
 
                                 } "Connect"))
 
             (dom/li #js {:className  (if (= (-> app :ui :tab) "login") "active" "")   }
                     (dom/a #js {:className  ""
-                                :onClick        (fn[e] (coils/write-ui app [:ui :tab]  "login"))
-                                :onTouchStart   (fn[e] (coils/write-ui app [:ui :tab]  "login"))
+                                :onClick        (fn[e] (c/write-ui app [:ui :tab]  "login"))
+                                :onTouchStart   (fn[e] (c/write-ui app [:ui :tab]  "login"))
 
                                 } "Login"))
 
@@ -188,16 +188,16 @@
 
            (cond
             (= (-> app :ui :tab) "browser")
-            (coils/component  browser-menu  app [])
+            (c/component  browser-menu  app [])
            )
 
            (cond
             (= (-> app :ui :tab) "request")
-            (coils/component  request-form  app [:ui :request] )
+            (c/component  request-form  app [:ui :request] )
 
 
             (= (-> app :ui :tab) "login")
-            (coils/component  login  app    [:ui :login])
+            (c/component  login  app    [:ui :login])
 
             (and
              (= (-> app :ui :tab) "browser")
@@ -206,11 +206,11 @@
 
              ;(= (-> app :ui :graph-ab-test) "text")
              true
-             (coils/component  text-graph    app [:ui :companies])
+             (c/component  text-graph    app [:ui :companies])
 
 
              (= (-> app :ui :graph-ab-test) "SVG")
-             (coils/component  graph app
+             (c/component  graph app
                         [:data  :data ]))
 
 
@@ -221,12 +221,12 @@
 
              ;(= (-> app :ui :graph-ab-test) "text")
              true
-             (coils/component  latest-endorsements
+             (c/component  latest-endorsements
                         app [:ui :latest-endorsements])
 
 
              (= (-> app :ui :graph-ab-test) "SVG")
-             (coils/component  graph app
+             (c/component  graph app
                         [:data  :data ]))
 
 
@@ -234,7 +234,7 @@
              (= (-> app :ui :tab) "browser")
              (= (-> app :ui :tab-browser) "company"))
 
-             (coils/component  company-details2   app [:ui :company-details])
+             (c/component  company-details2   app [:ui :company-details])
 
 
 )))
