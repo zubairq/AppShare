@@ -173,7 +173,7 @@
               :dispatch clojure.pprint/code-dispatch))
       )
 
-     (~'when-ui-value-changes-fn
+     (~'webapp.framework.client.coreclient/when-ui-value-changes-fn
       ~path
       (~'fn [~'ui] (do ~@code)))))
 ;--------------------------------------------------------------------
@@ -262,7 +262,7 @@
 ;--------------------------------------------------------------------
 (defmacro <--ui
   [path]
-  `(~'get-in-tree ~'ui ~path))
+  `(~'webapp.framework.client.coreclient/get-in-tree ~'ui ~path))
 
 (comment macroexpand
  '(==ui  [:ui   :company-details   :clicked]    true
