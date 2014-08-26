@@ -149,11 +149,17 @@
 
 ;--------------------------------------------------------------------
 (defmacro div [attributes & more]
-  `(dom/div  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+  `(om.dom/div  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 (defmacro a [attributes & more]
-  `(dom/a  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+  `(om.dom/a  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 (defmacro h2 [attributes & more]
-  `(dom/h2  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+  `(om.dom/h2  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro ul [attributes & more]
+  `(om.dom/ul  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro li [attributes & more]
+  `(om.dom/li  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro pre [attributes & more]
+  `(om.dom/pre  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 ;--------------------------------------------------------------------
 
 

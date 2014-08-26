@@ -2,7 +2,7 @@
   (:require
    [om.core                              :as om :include-macros true]
    [webapp.framework.client.coreclient   :as c :include-macros true]
-   [om.dom                               :as dom])
+   [om.dom])
 
   (:use
    [webapp.client.react.components.forms               :only  [request-form]]
@@ -151,33 +151,33 @@
                 :zIndex       "1"
                 }}
 
-       (dom/h2 nil "ConnectToUs.co")
+       (c/h2 nil "ConnectToUs.co")
 
        (c/component  splash-screen  app  [:ui :splash-screen])
 
          (c/component letter-a  app [:ui])
 
 
-           (dom/ul
-            #js {:className  "nav nav-tabs"}
+           (c/ul
+            {:className  "nav nav-tabs"}
 
-            (dom/li #js {:className  (if (= (-> app :ui :tab) "browser") "active" "")   }
-                    (dom/a #js {:className  ""
+            (c/li #js {:className  (if (= (-> app :ui :tab) "browser") "active" "")   }
+                    (c/a #js {:className  ""
                                 :onClick        (fn[e] (c/write-ui app [:ui :tab]  "browser"))
                                 :onTouchStart   (fn[e] (c/write-ui app [:ui :tab]  "browser"))
 
                                 } "Search"))
 
-            (dom/li #js {:className  (if (= (-> app :ui :tab) "request") "active" "") }
-                    (dom/a #js {:className  ""
+            (c/li #js {:className  (if (= (-> app :ui :tab) "request") "active" "") }
+                    (c/a #js {:className  ""
                                 :onClick        (fn[e] (c/write-ui app [:ui :tab]  "request"))
                                 :onTouchStart   (fn[e] (c/write-ui app [:ui :tab]  "request"))
 
 
                                 } "Connect"))
 
-            (dom/li #js {:className  (if (= (-> app :ui :tab) "login") "active" "")   }
-                    (dom/a #js {:className  ""
+            (c/li #js {:className  (if (= (-> app :ui :tab) "login") "active" "")   }
+                    (c/a #js {:className  ""
                                 :onClick        (fn[e] (c/write-ui app [:ui :tab]  "login"))
                                 :onTouchStart   (fn[e] (c/write-ui app [:ui :tab]  "login"))
 
