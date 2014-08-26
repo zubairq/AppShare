@@ -1,10 +1,8 @@
 (ns webapp.client.react.components.connection-graph
   (:require
+   [om.dom                               :as dom :include-macros true]
    [om.core                              :as om  :include-macros true]
    [webapp.framework.client.coreclient   :as c   :include-macros true]
-   [om.dom                               :as dom]
-   [clojure.data                         :as data]
-   [clojure.string                       :as string]
    ))
 (c/ns-coils 'webapp.client.react.components.connection-graph)
 
@@ -22,7 +20,7 @@
         (let [all-company-records    (c/read-ui  companies [:values] )]
 
           (apply
-           dom/div nil
+           om.dom/div nil
 
            (map
             (fn[company-ui-record]
@@ -56,13 +54,13 @@
 (c/defn-ui-component   graph    [data]
   {:absolute-path [:ui :companies]}
 
-  (dom/div
-      #js {:style #js {:height "100%" :width "100%"}}
+  (c/div
+      {:style {:height "100%" :width "100%"}}
 
-      (dom/div #js {:style #js {:padding-top "40px"}} "Connections")
+      (c/div {:style {:padding-top "40px"}} "Connections")
 
-      (dom/svg #js {:style #js {:width "200" :height "200"}}
-          (dom/circle #js {:cx "60"
+      (c/svg {:style {:width "200" :height "200"}}
+          (c/circle {:cx "60"
                            :cy "60"
                            :r  (get-in data [:width])
                            :stroke "green"
@@ -88,10 +86,10 @@
 ;---------------------------------------------------------
 
      (c/div
-      {:style #js {:height "100%" :width "100%"}}
+      {:style {:height "100%" :width "100%"}}
 
       (apply
-       dom/div
+       om.dom/div
        nil
        (map
         (fn[x]

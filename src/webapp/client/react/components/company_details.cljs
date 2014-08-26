@@ -1,11 +1,7 @@
 (ns webapp.client.react.components.company-details
   (:require
    [om.core                              :as om :include-macros true]
-   [om.dom                               :as dom :include-macros true]
-   [webapp.framework.client.coreclient   :as c :include-macros true]
-   [clojure.data                         :as data]
-   [clojure.string                       :as string]
-   [ankha.core                           :as ankha]))
+   [webapp.framework.client.coreclient   :as c :include-macros true]))
 
 (c/ns-coils 'webapp.client.react.components.company-details)
 
@@ -28,8 +24,8 @@
             (str (-> company-details :company-url)))
    (if (-> company-details :skills )
      (do
-       (c/div {:style #js {:padding-bottom "20px"}} "Skills2")
-       (apply dom/div nil
+       (c/div {:style {:padding-bottom "20px"}} "Skills2")
+       (apply om.dom/div nil
               (map
                (fn[skill]
                  (c/div {:style {:padding-left "20px"}}
@@ -44,7 +40,7 @@
 
    (c/div {:style {:padding-bottom "20px"}} "")
 
-   (dom/pre nil
+   (c/pre nil
             (str "<iframe id='widget_" (str (-> company-details :company-url))
                  "' width='100%' height='100%' "
                  "src='http://connecttous.co/connecttous/connecttous.html"

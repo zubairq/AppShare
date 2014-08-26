@@ -158,23 +158,23 @@
            (c/ul
             {:className  "nav nav-tabs"}
 
-            (c/li #js {:className  (if (= (-> app :ui :tab) "browser") "active" "")   }
-                    (c/a #js {:className  ""
+            (c/li {:className  (if (= (-> app :ui :tab) "browser") "active" "")   }
+                    (c/a {:className  ""
                                 :onClick        (fn[e] (c/write-ui app [:ui :tab]  "browser"))
                                 :onTouchStart   (fn[e] (c/write-ui app [:ui :tab]  "browser"))
 
                                 } "Search"))
 
-            (c/li #js {:className  (if (= (-> app :ui :tab) "request") "active" "") }
-                    (c/a #js {:className  ""
+            (c/li {:className  (if (= (-> app :ui :tab) "request") "active" "") }
+                    (c/a {:className  ""
                                 :onClick        (fn[e] (c/write-ui app [:ui :tab]  "request"))
                                 :onTouchStart   (fn[e] (c/write-ui app [:ui :tab]  "request"))
 
 
                                 } "Connect"))
 
-            (c/li #js {:className  (if (= (-> app :ui :tab) "login") "active" "")   }
-                    (c/a #js {:className  ""
+            (c/li {:className  (if (= (-> app :ui :tab) "login") "active" "")   }
+                    (c/a {:className  ""
                                 :onClick        (fn[e] (c/write-ui app [:ui :tab]  "login"))
                                 :onTouchStart   (fn[e] (c/write-ui app [:ui :tab]  "login"))
 

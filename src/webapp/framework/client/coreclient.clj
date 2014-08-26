@@ -160,6 +160,12 @@
   `(om.dom/li  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 (defmacro pre [attributes & more]
   `(om.dom/pre  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro svg [attributes & more]
+  `(om.dom/svg  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro circle [attributes & more]
+  `(om.dom/circle  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro button [attributes & more]
+  `(om.dom/button  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 ;--------------------------------------------------------------------
 
 

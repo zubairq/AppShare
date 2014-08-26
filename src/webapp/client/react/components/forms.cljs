@@ -1,20 +1,13 @@
 (ns webapp.client.react.components.forms
   (:require
    [om.core                              :as om  :include-macros true]
-   [om.dom                               :as dom :include-macros true]
    [webapp.framework.client.coreclient   :as c   :include-macros true]
-   [clojure.data                         :as data]
-   [clojure.string                       :as string]
    )
 
   (:use
    [webapp.client.ui-helpers                :only  [validate-email]]
-
-   [webapp.framework.client.ui-helpers      :only  [blur-field
-                                                    update-field-value
-                                                    basic-input-box ]]
-
-   [clojure.string                          :only [blank?]]))
+   [webapp.framework.client.ui-helpers      :only  [basic-input-box]]
+   [clojure.string                          :only  [blank?]]))
 
 (c/ns-coils 'webapp.client.react.components.forms)
 
@@ -29,7 +22,7 @@
 (c/defn-ui-component    from-email-field  [ui-data]
     {:absolute-path [:ui :request]}
   ;------------------------------------------------------------
-  (dom/div
+  (c/div
    nil
    (basic-input-box :path        path
                     :parent-id   parent-id
@@ -42,8 +35,8 @@
 
 
             (if (get-in ui-data [:confirmed])
-              (dom/div  #js {:className "alert  alert-success"}
-                        (dom/a  #js {:href "#"
+              (c/div  {:className "alert  alert-success"}
+                        (c/a  {:href "#"
                                      :className "alert-link"}
                                 "Your email confirmed"
                                 )))))
@@ -58,7 +51,7 @@
     {:absolute-path [:ui :request]}
   ;------------------------------------------------------------
 
-  (dom/div
+  (c/div
    nil
    (basic-input-box :path        path
                     :parent-id   parent-id
@@ -72,8 +65,8 @@
 
             (if (get-in ui-data [:confirmed])
 
-              (dom/div  #js {:className "alert alert-success"}
-                        (dom/a  #js {:href "#"
+              (c/div  {:className "alert alert-success"}
+                        (c/a  {:href "#"
                                      :className "alert-link"}
                                 "Their email confirmed"
                                 )))))
@@ -129,10 +122,10 @@
     (c/component  to-email-field      ui-data [:to-email] )
 
 
-    (dom/button #js {:onClick (fn [e]
+    (c/button {:onClick (fn [e]
                                 (c/write-ui  ui-data [:submit :value]  true))
                      :style
-                     #js {:margin-top "10px"}}
+                     {:margin-top "10px"}}
 
                 "Connect")
 
