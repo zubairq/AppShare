@@ -1,8 +1,7 @@
 (ns webapp.client.react.views.main
   (:require
    [om.core                              :as om :include-macros true]
-   [webapp.framework.client.coreclient   :as c  :include-macros true]
-   [om.dom])
+   [webapp.framework.client.coreclient   :as c  :include-macros true])
 
   (:use
    [webapp.client.react.components.forms               :only  [request-form]]
@@ -152,8 +151,6 @@
                 }}
 
        (c/h2 nil "ConnectToUs.co")
-
-       (c/component  splash-screen  app  [:ui :splash-screen])
 
          (c/component letter-a  app [:ui])
 
