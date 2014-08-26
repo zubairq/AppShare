@@ -14,12 +14,8 @@
    [webapp.client.ui-tree]
    )
   (:use
-   [webapp.framework.client.system-globals  :only  [app-state
-                                                    data-state
-                                                    set-ab-tests
-                                                    set-ab-goals
-                                                    ]]
-   [webapp.client.react.views.main         :only   [main-view]]
+   [webapp.framework.client.system-globals  :only   [app-state  data-state  set-ab-tests]]
+   [webapp.client.react.views.main          :only   [main-view]]
    [clojure.string :only [blank?]]
    )
    (:require-macros
