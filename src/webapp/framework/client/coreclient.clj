@@ -71,12 +71,12 @@
        (defn ~fn-name [~(first data-paramater-name)  ~'owner]
          (~'reify
 
-          ~'om/IInitState
+          ~'om.core/IInitState
           (~'init-state ~'[_]
                       {:debug-highlight false})
 
 
-           ~'om/IRender
+           ~'om.core/IRender
           (~'render
            [~'this]
 
@@ -87,11 +87,11 @@
                                          (~'ns-coils-debug)
                                          ~(str `~fn-name)
                                          ~(first data-paramater-name)
-                                         ~'(om/get-state owner :parent-path)
+                                         ~'(om.core/get-state owner :parent-path)
                                          )
 
 
-                       ~'path       ~'(om/get-state owner :parent-path)
+                       ~'path       ~'(om.core/get-state owner :parent-path)
 
                        ~'parent-id  ~'debug-id
 
@@ -132,7 +132,7 @@
 
 (macroexpand
   '(defn-ui-component abc [data] {:path [:ui :request] }
-     (dom/div  nil  " You asdsddsads")
+     (om.dom/div  nil  " You asdsddsads")
       ))
 ;--------------------------------------------------------------------
 
