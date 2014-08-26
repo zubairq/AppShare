@@ -104,8 +104,8 @@
 
 ;------------------------------------------------------------
 (c/defn-ui-component   request-form   [ui-data]
-    {:absolute-path [:ui :request]}
-;------------------------------------------------------------
+  {:absolute-path [:ui :request]}
+  ;------------------------------------------------------------
 
   (c/div
    nil
@@ -122,19 +122,20 @@
     (c/component  to-email-field      ui-data [:to-email] )
 
 
-    (c/button {:onClick (fn [e]
-                                (c/write-ui  ui-data [:submit :value]  true))
-                     :style
-                     {:margin-top "10px"}}
+    (c/button {:disabled  (if (c/read-ui ui-data [:details-valid]) false true)
+               :onClick   (fn [e] (c/write-ui  ui-data [:submit :value]  true))
+               :style     {:margin-top "10px"}
+               :type      "button"
+               :className "btn btn-default btn-lg btn-disabled"}
 
-                "Connect")
+              "Connect")
 
     (if (not (blank?
               (get-in ui-data [:submit :message])))
 
       (c/div nil (str "Please check your Inbox for "
-                    (-> ui-data :from-email :value) " to confirm your email address"))
-))))
+                      (-> ui-data :from-email :value) " to confirm your email address"))
+      ))))
 
 
 

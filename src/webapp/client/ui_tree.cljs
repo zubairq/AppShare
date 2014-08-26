@@ -176,3 +176,24 @@
                            (c/-->ui [:ui :request :from-email :error] "Invalid email")
                            )))
 
+
+
+(c/watch-ui [:ui :request :from-email :value]
+
+                         (if
+                           (and
+                            (validate-email  (c/<--ui [:ui :request :from-email :value]))
+                            (validate-email  (c/<--ui [:ui :request :to-email :value])))
+
+                           (c/-->ui [:ui :request :details-valid] true)
+                           ))
+
+(c/watch-ui [:ui :request :to-email :value]
+
+                         (if
+                           (and
+                            (validate-email  (c/<--ui [:ui :request :from-email :value]))
+                            (validate-email  (c/<--ui [:ui :request :to-email :value])))
+
+                           (c/-->ui [:ui :request :details-valid] true)
+                           ))

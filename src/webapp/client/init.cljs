@@ -59,7 +59,8 @@
                                          :private        true
                                          }
 
-                  :show-connection-confirmation false
+                  :show-connection-confirmation  false
+                  :details-valid                 false
 
                   :submit               {:value false}
                   }
