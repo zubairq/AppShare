@@ -1,48 +1,21 @@
 (ns webapp.client.data-tree
   (:require
-   [goog.net.cookies :as cookie]
-   [om.core          :as om :include-macros true]
-   [om.dom           :as dom :include-macros true]
-   [cljs.core.async  :refer [put! chan <! pub timeout]]
-   [om-sync.core     :as async]
-   [clojure.data     :as data]
-   [clojure.string   :as string]
-   [ankha.core       :as ankha]
+   [goog.net.cookies                     :as cookie]
+   [om.core                              :as om    :include-macros true]
+   [om.dom                               :as dom   :include-macros true]
+   [webapp.framework.client.coreclient   :as c     :include-macros true]
+   [cljs.core.async                      :refer   [put! chan <! pub timeout]]
+   [om-sync.core                         :as async]
+   [clojure.data                         :as data]
+   [clojure.string                       :as string]
+   [ankha.core                           :as ankha]
    [webapp.client.timers]
    )
-  (:use
-   [webapp.framework.client.coreclient      :only  [log
-                                                    remote
-                                                    when-data-path-equals-fn
-                                                    when-data-value-changes-fn
-                                                    update-ui
-                                                    remove-debug-event
-                                                    get-in-tree
-                                                    ]]
-   [webapp.framework.client.system-globals  :only  [app-state
-                                                    reset-app-state
-                                                    ui-watchers
-                                                    data-watchers
-                                                    data-state
-                                                    update-data
-                                                    <--data
-                                                    -->data
-                                                    ]]
-   [clojure.string :only [blank?]]
-   )
+
    (:require-macros
-    [cljs.core.async.macros :refer [go]])
+    [cljs.core.async.macros :refer [go]]))
 
-  (:use-macros
-   [webapp.framework.client.coreclient :only  [==data
-                                               watch-data
-                                               <--ui
-                                               -->ui
-                                               ns-coils
-                                               ]])
-  )
-
-(ns-coils 'webapp.client.data-tree)
+(c/ns-coils 'webapp.client.data-tree)
 
 
 
@@ -53,8 +26,8 @@
 
 
 
-(==data    [:submit :status]     "ConfirmedSender"
-    (-->ui [:ui :request :from-email :confirmed]  true))
+(c/==data    [:submit :status]     "ConfirmedSender"
+    (c/-->ui [:ui :request :from-email :confirmed]  true))
 
 
 
@@ -62,10 +35,10 @@
 
 
 
-(==data   [:submit :status]   "ConfirmedReceiver"
+(c/==data   [:submit :status]   "ConfirmedReceiver"
    (go
-    (-->ui [:ui :request :to-email :confirmed]  true)
-    (-->ui [:ui :request :show-connection-confirmation]  true)
+    (c/-->ui [:ui :request :to-email :confirmed]  true)
+    (c/-->ui [:ui :request :show-connection-confirmation]  true)
     ))
 
 
@@ -77,32 +50,30 @@
 
 
 
-(==data    [:submit]     "Submitted"
-     (log "sent")
-     )
+(c/==data    [:submit]     "Submitted"
+     (c/log "sent"))
 
 
 
 
 
 
-(watch-data  [:top-companies]
+(c/watch-data  [:top-companies]
 
-   (-->ui [:ui :companies :values]  (<--data [:top-companies]))
+   (c/-->ui [:ui :companies :values]  (c/<--data [:top-companies])))
+
+
+
+
+(c/watch-data  [:latest-endorsements]
+
+   (c/-->ui[:ui :latest-endorsements :values]  (c/<--data [:latest-endorsements]))
    )
 
 
 
 
-(watch-data  [:latest-endorsements]
-
-   (-->ui[:ui :latest-endorsements :values]  (<--data [:latest-endorsements]))
-   )
 
 
-
-
-
-
-(watch-data  [:company-details]
-   (-->ui [:ui :company-details :skills] (<--data [:company-details])))
+(c/watch-data  [:company-details]
+   (c/-->ui [:ui :company-details :skills] (c/<--data [:company-details])))

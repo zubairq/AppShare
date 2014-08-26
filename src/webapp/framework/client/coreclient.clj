@@ -222,7 +222,7 @@
               :dispatch clojure.pprint/code-dispatch))
       )
 
-     (~'when-data-value-changes-fn
+     (~'webapp.framework.client.coreclient/when-data-value-changes-fn
       ~path
       (~'fn [~'ui] (do ~@code)))))
 ;--------------------------------------------------------------------
@@ -247,7 +247,7 @@
               :dispatch clojure.pprint/code-dispatch))
       )
 
-     (~'when-data-path-equals-fn
+     (~'webapp.framework.client.coreclient/when-data-path-equals-fn
       ~path
       ~value
       (~'fn [~'ui] (do ~@code)))))
