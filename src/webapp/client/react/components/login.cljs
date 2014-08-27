@@ -75,7 +75,10 @@
                             (c/write-ui
                              ui-data [:submit :message] "Submit not working" )))
                :style
-               {:margin-top "10px"}}
+               {:margin-top "10px"}
+               :type        "button"
+               :className   (str "btn btn-default btn-lg")
+               }
               "Login")
 
     (if (not (blank?

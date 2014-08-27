@@ -126,7 +126,9 @@
                :onClick   (fn [e] (c/write-ui  ui-data [:submit :value]  true))
                :style     {:margin-top "10px"}
                :type      "button"
-               :className "btn btn-default btn-lg btn-disabled"}
+               :className (str "btn btn-default btn-lg"
+                                (if (not (c/read-ui ui-data [:details-valid]))
+                                  " btn-disabled"))}
 
               "Connect")
 
