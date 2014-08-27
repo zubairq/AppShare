@@ -19,8 +19,7 @@
 
         (let [all-company-records    (c/read-ui  companies [:values] )]
 
-          (apply
-           om.dom/div nil
+          (c/add-many
 
            (map
             (fn[company-ui-record]

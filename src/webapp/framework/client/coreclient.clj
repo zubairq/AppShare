@@ -19,6 +19,8 @@
   `(.log js/console (str
                      ~@ x)))
 
+(defmacro add-many [items]
+  `(add-many-fn      ~ items))
 
 ;(macroexpand '(log "a" "b"))
 ;--------------------------------------------------------------------

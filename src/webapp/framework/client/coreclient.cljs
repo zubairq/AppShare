@@ -966,3 +966,8 @@
      parent-id      (last calls)
      ]
   (write-ui-fn  app  [] path value parent-id)))
+
+
+(defn add-many-fn [items]
+  (apply
+   om.dom/div nil items))
