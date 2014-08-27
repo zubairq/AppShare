@@ -1,6 +1,5 @@
 (ns webapp.client.react.components.company-details
   (:require
-   [om.core                              :as om :include-macros true]
    [webapp.framework.client.coreclient   :as c :include-macros true]))
 
 (c/ns-coils 'webapp.client.react.components.company-details)
@@ -25,7 +24,7 @@
    (if (-> company-details :skills )
      (do
        (c/div {:style {:padding-bottom "20px"}} "Skills2")
-       (apply om.dom/div nil
+       (c/add-many
               (map
                (fn[skill]
                  (c/div {:style {:padding-left "20px"}}

@@ -1,6 +1,5 @@
 (ns webapp.client.react.components.login
   (:require
-   [om.core                              :as om :include-macros true]
    [webapp.framework.client.coreclient   :as c :include-macros true]
    )
 

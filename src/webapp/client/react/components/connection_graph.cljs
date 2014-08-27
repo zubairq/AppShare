@@ -1,7 +1,5 @@
 (ns webapp.client.react.components.connection-graph
   (:require
-   [om.dom                               :as dom :include-macros true]
-   [om.core                              :as om  :include-macros true]
    [webapp.framework.client.coreclient   :as c   :include-macros true]
    ))
 (c/ns-coils 'webapp.client.react.components.connection-graph)
@@ -87,9 +85,7 @@
      (c/div
       {:style {:height "100%" :width "100%"}}
 
-      (apply
-       om.dom/div
-       nil
+      (c/add-many
        (map
         (fn[x]
           (c/div
