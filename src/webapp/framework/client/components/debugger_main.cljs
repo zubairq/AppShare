@@ -363,7 +363,9 @@
 
                             (if (=  debug-id (-> debug-ui-state :pos))
                               (do
-                                (if (= event-type "render")
+                                (if (and
+                                     (= event-type "render")
+                                     (not (= (get debug-ui-state :code-data-show_index2) debug-id)))
                                   (om/root
                                    (fn [ partial-state  partial-owner ]
                                      (reify
