@@ -1,4 +1,4 @@
-(ns webapp.client.react.components.main
+(ns webapp.client.react.views.main
   (:require
    [webapp.framework.client.coreclient   :as c :include-macros true]))
 

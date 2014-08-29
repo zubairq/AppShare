@@ -11,7 +11,7 @@
    [ankha.core                           :as ankha]
    )
   (:use
-   [webapp.client.react.components.main                    :only   [main-view]]
+   [webapp.client.react.views.main                    :only   [main-view]]
    [webapp.framework.client.system-globals                 :only   [app-state  data-state  set-ab-tests]]
    )
    (:require-macros
