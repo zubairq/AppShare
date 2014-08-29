@@ -188,15 +188,15 @@
                         if (webapp.framework.client.main) {
                             if (playback) {
                                 webapp.framework.client.main.load_admin(
-                                    webapp.framework.client.init.setup);
+                                    webapp.client.init.setup);
                             }
                             else if (debug) {
                                 webapp.framework.client.main.load_debug(
-                                    webapp.framework.client.init.setup);
+                                    webapp.client.init.setup);
                             }
                             else {
                                 webapp.framework.client.main.load_main(
-                                    webapp.framework.client.init.setup);
+                                    webapp.client.init.setup);
                             };
                         };
                     }
