@@ -2,13 +2,13 @@
   (:require
    [webapp.framework.client.coreclient   :as c :include-macros true]))
 
-(c/ns-coils 'webapp.client.components.main)
+(c/ns-coils 'webapp.client.react.views.main)
 
 
 
 
 
-(c/defn-ui-component     main-view   [app]
+(c/defn-ui-component     main-yazz-view   [app]
   {:absolute-path []}
 
   (c/div nil

@@ -11,13 +11,13 @@
    [ankha.core                           :as ankha]
    )
   (:use
-   [webapp.client.react.views.main                    :only   [main-view]]
-   [webapp.framework.client.system-globals                 :only   [app-state  data-state  set-ab-tests]]
+   [webapp.client.react.views.main                    :only   [main-yazz-view]]
+   [webapp.framework.client.system-globals            :only   [app-state  data-state  set-ab-tests]]
    )
    (:require-macros
     [cljs.core.async.macros :refer [go]]))
 
-(c/ns-coils 'webapp.framework.client.init)
+(c/ns-coils 'webapp.client.init)
 
 
 
@@ -26,7 +26,7 @@
 (def  ^:export setup
   {
    :start-component
-   main-view
+   main-yazz-view
 
    :setup-fn
    (fn[]

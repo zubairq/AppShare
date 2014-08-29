@@ -272,7 +272,7 @@
                         (let [session (<! clear-replay-sessions)]
                           (log "****CLEAR REPLAY")
 
-                          (let [ret (<! (remote "clear-playback-sessions"
+                          (let [ret (<! (remote "!clear-playback-sessions"
                                       {:password (-> @app :ui :delete-password :value)
                                        }))]
                             (if (ret :success)
