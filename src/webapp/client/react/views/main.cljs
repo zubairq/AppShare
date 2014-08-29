@@ -2,7 +2,7 @@
   (:require
    [webapp.framework.client.coreclient   :as c :include-macros true]))
 
-(c/ns-coils 'webapp.framework.client.components.main)
+(c/ns-coils 'webapp.client.components.main)
 
 
 

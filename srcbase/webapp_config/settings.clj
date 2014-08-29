@@ -28,3 +28,7 @@
 (defonce ^:dynamic *show-code* true)
 
 (defonce ^:dynamic *main-page* "main.html")
+
+(defonce ^:dynamic *neo4j-server* "localhost")
+
+(defonce ^:dynamic *neo4j-port* "7474")
