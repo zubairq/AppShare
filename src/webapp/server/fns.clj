@@ -139,26 +139,6 @@
 
 
 
-(defn clear-playback-sessions
-  [{:keys [password]}]
-  ;----------------------------------------------------------------
-
-  (if (= password "use the source luke")
-    (do
-      (neo4j "MATCH (n:WebSession) OPTIONAL MATCH (n)-[r]-(s) DELETE n,r,s")
-      {:result "done" :success true}
-      )
-    {:success false}
-
-    ))
-
-
-
-
-
-
-
-
 (defn request-endorsement
   [{:keys [from-email
            to-email

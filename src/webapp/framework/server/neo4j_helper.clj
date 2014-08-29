@@ -38,7 +38,7 @@
 ;--------------------------------------------------------------
 (try
   (nr/connect!
-   "http://localhost:7474/db/data/")
+   (str "http://" *neo4j-server* ":" *neo4j-port* "/db/data/"))
   (catch Exception e
     (str "Error connecting to Neo4j: " (.getMessage e))))
 

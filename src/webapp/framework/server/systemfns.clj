@@ -14,7 +14,8 @@
   (:use [clojure.pprint])
   (:import [java.util.UUID])
   [:use [webapp.framework.server.db-helper]]
-)
+  [:use [webapp.framework.server.neo4j-helper]]
+  )
 
 
 (defdb db (postgres {:db *database-name*
@@ -266,6 +267,25 @@
             }
            "n")
     {:value session-id}
+    ))
+
+
+
+
+
+
+
+(defn !clear-playback-sessions
+  [{:keys [password]}]
+  ;----------------------------------------------------------------
+
+  (if (= password "use the source luke")
+    (do
+      (neo4j "MATCH (n:WebSession) OPTIONAL MATCH (n)-[r]-(s) DELETE n,r,s")
+      {:result "done" :success true}
+      )
+    {:success false}
+
     ))
 
 
