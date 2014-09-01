@@ -203,17 +203,20 @@
            [target          (.-target event)
             status          (. target (getStatus))]
            (if (= status 200)
-             (let [response-text   (. target (getResponseText))]
+             (let [
+                   response-text   (. target (getResponseText))
+                   response        (reader/read-string response-text)
+                   ]
                (go
-                (let [debug-id
-                      (add-debug-event
-                       :event-type  "remote"
-                       :action-name (str action)
-                       :input       parameters-in
-                       :result      (reader/read-string response-text)
-                       )]
+                (let [
+                      debug-id (add-debug-event
+                                :event-type  "remote"
+                                :action-name (str action)
+                                :input       parameters-in
+                                :result      response
+                         )]
 
-                  (>! ch (reader/read-string response-text))
+                  (>! ch response)
                   (close! ch)
                   (remove-debug-event  debug-id)
                   )))

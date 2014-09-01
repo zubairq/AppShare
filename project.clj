@@ -6,13 +6,12 @@
                  [org.clojure/clojurescript "0.0-2277"]
                  [om "0.7.1"]
                  [om-sync "0.1.1"]
-                 [org.clojure/core.async "0.1.267.0-0d7780-alpha"]
+                 [org.clojure/core.async "0.1.267.0-0d7780-alpha" :scope "provided"]
+                 [com.facebook/react "0.11.1"]
 
                  [korma "0.3.0-RC5"]
                  [org.postgresql/postgresql "9.2-1002-jdbc4"]
                  [compojure "1.1.5"]
-                 [shoreleave "0.3.0"]
-                 [shoreleave/shoreleave-remote-ring "0.3.0"]
                  [ring "1.2.1"]
                  [ring-middleware-format "0.3.1"]
                  [ring/ring-json "0.2.0"]
@@ -23,7 +22,6 @@
                  [cheshire "4.0.3"]
                  [ankha "0.1.3"]
                  [overtone/at-at "1.2.0"]
-                 [org.clojure/core.logic "0.8.7"]
                  ]
   :repositories {"sonatype-oss-public"
                  "https://oss.sonatype.org/content/groups/public/"}
