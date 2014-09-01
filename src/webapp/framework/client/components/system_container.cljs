@@ -128,7 +128,9 @@
 
 
                       :else
-                      nil )))))))
+                      nil ))
+
+                  )))))
 
 
 
@@ -178,11 +180,22 @@
                                    ui-chan)
 
 
+
+
                    (add-as-watch   data-state
                                    "data"
                                    data-watchers
                                    [app]
                                    data-chan)
+
+
+                    (go (loop []
+                        (let [called-ui (<! ui-chan)]
+                          (recur))))
+
+                    (go (loop []
+                        (let [called-data (<! data-chan)]
+                          (recur))))
 
 
                    ))))
