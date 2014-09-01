@@ -207,7 +207,6 @@
                    response-text   (. target (getResponseText))
                    response        (reader/read-string response-text)
                    ]
-               (go
                 (let [
                       debug-id (add-debug-event
                                 :event-type  "remote"
@@ -216,12 +215,12 @@
                                 :result      response
                          )]
 
+               (go
                   (>! ch response)
-                  (close! ch)
+                  (close! ch))
                   (remove-debug-event  debug-id)
-                  )))
+                  ))
 
-             (go
               (let [debug-id
                     (add-debug-event
                      :event-type  "remote"
@@ -229,10 +228,11 @@
                      :input       parameters-in
                      :result      (str "ERROR IN RESPONSE, HTTP : " status)
                      )]
+             (go
                 (>! ch  {:error "true"})
-                (close! ch)
+                (close! ch))
                 (remove-debug-event  debug-id)
-                ))
+                )
 
 
 
