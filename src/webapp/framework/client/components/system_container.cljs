@@ -69,7 +69,7 @@
 
 
 
-(defn add-as-watch [the-ref  tree-name  watchers   args]
+(defn add-as-watch [the-ref  tree-name  watchers   args  ch]
 
   (add-watch the-ref :events-change
 
@@ -167,19 +167,25 @@
 
                   ; set up the UI and data watchers
                   (go
+                   (let [
+                         ui-chan   (chan)
+                         data-chan (chan)
+                         ]
                    (add-as-watch   app-state
                                    "ui"
                                    ui-watchers
-                                   [app])
+                                   [app]
+                                   ui-chan)
 
 
                    (add-as-watch   data-state
                                    "data"
                                    data-watchers
-                                   [app])
+                                   [app]
+                                   data-chan)
 
 
-                   )))
+                   ))))
 
     ;---------------------------------------------------------
     om/IRenderState
