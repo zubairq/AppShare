@@ -93,7 +93,8 @@
                                   :event-type  "event"
                                   :event-name  (str "==" tree-name " " (:path watch) " " (:value watch))
                                   )]
-                             (apply (:fn watch) args)
+                             ;(apply (:fn watch) args)
+                             (go (>! ch {:watch watch :extra []}))
                              (remove-debug-event  debug-id)
 
                              ))
@@ -108,7 +109,8 @@
                                 :event-name  (str "watch-" tree-name " " (:path watch))
                                 )]
                            ;(js/alert (str "watch-" tree-name " " (:path watch)))
-                           (apply (:fn watch) args)
+                           ;(apply (:fn watch) args)
+                           (go (>! ch {:watch watch :extra []}))
                            (remove-debug-event  debug-id))
 
 
@@ -120,7 +122,10 @@
                                         (get-in new-val (:path watch))
                                         )]
                            (if (pos? (count records))
-                             (apply (:fn watch) (conj args records))))
+                             ;(apply (:fn watch) (conj args records))
+                             (go (>! ch {:watch watch :extra records}))
+                             ;nil
+                             ))
 
 
 
@@ -191,10 +196,12 @@
 
                     (go (loop []
                         (let [called-ui (<! ui-chan)]
+                          (apply (:fn (:watch called-ui)) (conj [app] (:extra called-ui)))
                           (recur))))
 
                     (go (loop []
                         (let [called-data (<! data-chan)]
+                          (apply (:fn (:watch called-data)) (conj [app] (:extra called-data)))
                           (recur))))
 
 
