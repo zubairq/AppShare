@@ -11,8 +11,10 @@
    )
   (:use
    [webapp.client.ui-helpers                :only  [validate-email ]]
-   [webapp.framework.client.coreclient      :only  [log remote
+   [webapp.framework.client.coreclient      :only  [log
+                                                    remote
                                                     remove-debug-event
+                                                    ok
                                                     ]]
    [webapp.framework.client.system-globals  :only  [app-state
                                                     reset-app-state
@@ -38,10 +40,9 @@
   (go
    (log "getting companies")
    (let [top-companies (<! (remote "get-top-companies" {}))]
-
-     (update-data [:top-companies] top-companies)
-     )
-   ))
+     (if (ok top-companies)
+       (update-data [:top-companies] top-companies)
+       ))))
 
 
 
@@ -50,10 +51,9 @@
   (go
    (log "getting latest endorsements")
    (let [latest-endorsements (<! (remote "get-latest-endorsements" {}))]
-
-     (update-data [:latest-endorsements] latest-endorsements)
-     )
-   ))
+     (if (ok latest-endorsements)
+       (update-data [:latest-endorsements] latest-endorsements)
+       ))))
 
 
 

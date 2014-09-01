@@ -182,7 +182,8 @@
   nil)
 
 
-
+(defn ok [response]
+  (not (:error response)))
 
 
 
