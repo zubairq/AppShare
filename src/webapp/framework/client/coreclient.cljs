@@ -186,10 +186,9 @@
 
 
 
-(defn send-request2 [ address   action  parameters-in]
+(defn send-request2 [ address   action  parameters-in  ch]
   (let
     [
-     ch            (chan 1)
      headers       (goog.structs.Map.)
      io-object     (goog.net.XhrIo.)
      ]
@@ -253,8 +252,8 @@
   ([action  parameters-in]
    (let
      [
-      parameters  (if parameters-in
-                    {:params parameters-in :tclock (get-time)})
+      parameters  (if parameters-in {:params parameters-in :tclock (get-time)})
+      ch          (chan 1)
       ]
      (send-request2
       (str
@@ -275,7 +274,7 @@
          (keys parameters))))
       action
       parameters-in
-
+      ch
       ))))
 
 
