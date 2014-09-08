@@ -907,7 +907,7 @@
         current-value      (get @data-accesses  data-access-key)
         ]
     (om/update!
-     (if (om/rendering?) tree @tree)
+     tree
      path  value)
     (let [debug-id       (add-debug-event
                           :event-type  "DATA"
@@ -929,9 +929,7 @@
 (defn read-ui-fn [tree  path  sub-path  parent-id]
   (let [
         full-path          (into [] (flatten (conj path sub-path)))
-        value              (if (om/rendering?)
-                             (get-in  tree  sub-path)
-                             (get-in  @tree  sub-path))
+        value              (get-in  tree  sub-path)
         data-access-key    {:tree  "UI"
                             :path  full-path}
         current-value      (get @ data-accesses  data-access-key)
