@@ -87,10 +87,10 @@
 
 
 
-(defn pad [x]
-  (if (= (count (str x)) 1)
-    (str "0" x)
-    x))
+(defn pad [link-item]
+  (if (= (count (str link-item)) 1)
+    (str "0" link-item)
+    link-item))
 
 
 
@@ -104,9 +104,8 @@
 
       (c/add-many
        (map
-        (fn[x]
-          (c/div
-           nil
+        (fn[link-item]
+          (c/div nil
            (c/div
             {
                  :style
@@ -114,13 +113,10 @@
                       :width "30%"
                       :display "inline-block"}}
             (str
+             (pad (. (js/Date. (get link-item "when")) (getHours) )) ":"
+             (pad (. (js/Date. (get link-item "when")) (getMinutes) )) ":"
+             (pad (. (js/Date. (get link-item "when")) (getSeconds) )) " "))
 
-             (pad (. (js/Date. (get x "when")) (getHours) )) ":"
-             (pad (. (js/Date. (get x "when")) (getMinutes) )) ":"
-             (pad (. (js/Date. (get x "when")) (getSeconds) )) " "
-
-
-                 ))
            (c/div
             {
                  :style
@@ -128,8 +124,8 @@
                       :width "70%"
                       :display "inline-block"}}
 
-            (get x "to")
-            (str " --> " (get x "from")))))
+            (get link-item "to")
+            (str " --> " (get link-item "from")))))
 
         (get endorsements :values ))
        )))
