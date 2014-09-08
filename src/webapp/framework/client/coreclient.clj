@@ -20,7 +20,7 @@
                      ~@ x)))
 
 (defmacro add-many [items]
-  `(add-many-fn      ~ items))
+  `(add-many-fn      ~items))
 
 ;(macroexpand '(log "a" "b"))
 ;--------------------------------------------------------------------

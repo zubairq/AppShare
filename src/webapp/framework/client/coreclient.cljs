@@ -182,61 +182,64 @@
   nil)
 
 
+(defn ok [response]
+  (not (:error response)))
 
 
 
-
-(defn send-request2 [ address   action  parameters-in]
+(defn send-request2 [ address   action  parameters-in  ch]
   (let
     [
-     ch            (chan 1)
      headers       (goog.structs.Map.)
      io-object     (goog.net.XhrIo.)
      ]
-    (goog.events.listen
-     io-object
-     goog.net.EventType.COMPLETE
+      (do
+      (goog.events.listen
+       io-object
+       goog.net.EventType.COMPLETE
 
-     (fn [event]
-       (let
-         [target          (.-target event)
-          status          (. target (getStatus))]
-         (if (= status 200)
-           (let [response-text   (. target (getResponseText))]
-             (go
+       (fn [event]
+         (let
+           [target          (.-target event)
+            status          (. target (getStatus))]
+           (if (= status 200)
+             (let [
+                   response-text   (. target (getResponseText))
+                   response        (reader/read-string response-text)
+                   ]
+                (let [
+                      debug-id (add-debug-event
+                                :event-type  "remote"
+                                :action-name (str action)
+                                :input       parameters-in
+                                :result      response
+                         )]
+
+               (go
+                  (>! ch response)
+                  (close! ch))
+                  (remove-debug-event  debug-id)
+                  ))
+
               (let [debug-id
                     (add-debug-event
                      :event-type  "remote"
                      :action-name (str action)
                      :input       parameters-in
-                     :result      (reader/read-string response-text)
+                     :result      (str "ERROR IN RESPONSE, HTTP : " status)
                      )]
-
-                (>! ch (reader/read-string response-text))
-                (close! ch)
+             (go
+                (>! ch  {:error "true"})
+                (close! ch))
                 (remove-debug-event  debug-id)
-                )))
-
-           (go
-            (let [debug-id
-                  (add-debug-event
-                   :event-type  "remote"
-                   :action-name (str action)
-                   :input       parameters-in
-                   :result      (str "ERROR IN RESPONSE, HTTP : " status)
-                   )]
-              (>! ch  {:error "true"})
-              (close! ch)
-              (remove-debug-event  debug-id)
-              ))
+                )
 
 
 
-           ))))
-    (. headers set "charset" "UTF-8")
-    (. io-object send address "POST" nil headers)
-    ch
-    ))
+             ))))
+      (. headers set "charset" "UTF-8")
+      (. io-object send address "POST" nil headers)
+    ch)))
 
 
 
@@ -253,8 +256,8 @@
   ([action  parameters-in]
    (let
      [
-      parameters  (if parameters-in
-                    {:params parameters-in :tclock (get-time)})
+      parameters  (if parameters-in {:params parameters-in :tclock (get-time)})
+      ch          (chan)
       ]
      (send-request2
       (str
@@ -275,7 +278,7 @@
          (keys parameters))))
       action
       parameters-in
-
+      ch
       ))))
 
 
@@ -903,7 +906,9 @@
                             :path  full-path}
         current-value      (get @data-accesses  data-access-key)
         ]
-    (om/update!  tree  path  value)
+    (om/update!
+     tree
+     path  value)
     (let [debug-id       (add-debug-event
                           :event-type  "DATA"
                           :old         old-val
@@ -952,7 +957,7 @@
      calls          @call-stack
      parent-id      (last calls)
      ]
-  (read-ui-fn   @app   []  path   parent-id)
+  (read-ui-fn   app   []  path   parent-id)
   ))
 
 @ data-accesses

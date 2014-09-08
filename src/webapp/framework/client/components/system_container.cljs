@@ -69,7 +69,18 @@
 
 
 
-(defn add-as-watch [the-ref  tree-name  watchers   args]
+
+
+
+(def ui-events (atom []))
+(def data-events (atom []))
+
+
+
+
+
+
+(defn add-as-watch [the-ref  tree-name  watchers   args  ch]
 
   (add-watch the-ref :events-change
 
@@ -93,10 +104,14 @@
                                   :event-type  "event"
                                   :event-name  (str "==" tree-name " " (:path watch) " " (:value watch))
                                   )]
-                             (apply (:fn watch) args)
-                             (remove-debug-event  debug-id)
+                             (do
+                               ;(apply (:fn watch) args)
+                               ;(go (>! ch {:watch watch :extra []}))
+                               (swap! ch conj {:watch watch :extra []})
+                               (swap! app-state assoc :touch-id (rand-int 99999))
+                               (remove-debug-event  debug-id)
 
-                             ))
+                               )))
 
 
 
@@ -107,9 +122,13 @@
                                 :event-type  "event"
                                 :event-name  (str "watch-" tree-name " " (:path watch))
                                 )]
-                           ;(js/alert (str "watch-" tree-name " " (:path watch)))
-                           (apply (:fn watch) args)
-                           (remove-debug-event  debug-id))
+                             (do
+                               ;(js/alert (str "watch-" tree-name " " (:path watch)))
+                               ;(apply (:fn watch) args)
+                               ;(go (>! ch {:watch watch :extra []}))
+                               (swap! ch conj {:watch watch :extra []})
+                               (swap! app-state assoc :touch-id (rand-int 99999))
+                               (remove-debug-event  debug-id)))
 
 
 
@@ -120,7 +139,13 @@
                                         (get-in new-val (:path watch))
                                         )]
                            (if (pos? (count records))
-                             (apply (:fn watch) (conj args records))))
+                             (do
+                               ;(apply (:fn watch) (conj args records))
+                               ;(go (>! ch {:watch watch :extra records}))
+                               (swap! ch conj {:watch watch :extra records})
+                               (swap! app-state assoc :touch-id (rand-int 99999))
+                               ;nil
+                               )))
 
 
 
@@ -128,7 +153,42 @@
 
 
                       :else
-                      nil )))))))
+                      nil ))
+
+                  )))))
+
+
+
+
+(defn swap*!
+  "Like swap! but returns a vector of [old-value new-value]"
+  [atomic-value f & args]
+  (loop []
+    (let [ov @atomic-value
+          nv (apply f ov args)]
+      (if (compare-and-set! atomic-value ov nv)
+        [ov nv]
+        (recur)))))
+
+(defn remove-first-and-return [atomic-value]
+  (let [x
+        (let [[ov nv] (swap*! atomic-value subvec 1)]
+          (try
+            (first ov)
+            (catch :default error
+              (do nil))))]
+    x))
+
+
+(defn pop-q [a]
+  (try
+  (remove-first-and-return   a)
+  (catch :default e
+    nil)))
+
+
+(def a (atom [123 2]))
+
 
 
 
@@ -166,84 +226,129 @@
 
 
                   ; set up the UI and data watchers
-                  (go
-                   (add-as-watch   app-state
-                                   "ui"
-                                   ui-watchers
-                                   [app])
+                  (let [
+                        ui-chan   (chan)
+                        data-chan (chan)
+                        ]
+                    (add-as-watch   app-state
+                                    "ui"
+                                    ui-watchers
+                                    [app]
+                                    ui-events)
 
 
-                   (add-as-watch   data-state
-                                   "data"
-                                   data-watchers
-                                   [app])
 
 
-                   )))
+                    (add-as-watch   data-state
+                                    "data"
+                                    data-watchers
+                                    [app]
+                                    data-events)
+
+
+
+
+
+                    (comment (go (loop []
+                          (let [called-ui (pop-q  ui-events)]
+                            (if called-ui
+                              (apply (:fn (:watch called-ui)) (conj [app] (:extra called-ui))))
+                            (recur))))
+
+                    (go (loop []
+                          (let [called-data (pop-q  data-events)]
+                            (if data-events
+                              (apply (:fn (:watch called-data)) (conj [app] (:extra called-data))))
+                            (recur)))
+
+
+                        ))
+
+                      )
+
+                  ))
 
     ;---------------------------------------------------------
     om/IRenderState
     (render-state
      [this state]
 
-     (dom/div nil
-     (if @playbackmode
-       (dom/div #js {:style #js {:font-weight "bold"}}
-                (str (-> app :system :platform) ","
-                     (-> app :system :who-am-i))))
-     (dom/div #js {:style
-                   (if @playbackmode #js {
-                                          :position "relative"
-                                          :border "2px black solid"
-                                          :margin "10px"
-                                          :width    (-> app :view :width)
-                                          :height   (-> app :view :height)
-                                   }
+     (do
 
-                     #js {
-                          :position "relative"
-                          })
+       (loop [called-ui (pop-q  ui-events)]
+         (if (nil? called-ui)
+           nil
+           (do
+             (apply (:fn (:watch called-ui)) (conj [app] (:extra called-ui)))
+             (recur (pop-q  ui-events)))))
+
+         (loop [called-data (pop-q  data-events)]
+         (if (nil? called-data)
+           nil
+           (do
+             (apply (:fn (:watch called-data)) (conj [app] (:extra called-data)))
+             (recur (pop-q  data-events)))))
 
 
-                   :id "mainel"  :onMouseMove
-                   (fn[e] (if (not @playbackmode) (on-mouse e app)))}
-              ;(if @playbackmode (on-mouse e app)) (-> app :pointer :mouse-y)) ")"
+
+       (dom/div nil
+                  (if @playbackmode
+                    (dom/div #js {:style #js {:font-weight "bold"}}
+                             (str (-> app :system :platform) ","
+                                  (-> app :system :who-am-i))))
+                  (dom/div #js {:style
+                                (if @playbackmode #js {
+                                                       :position "relative"
+                                                       :border "2px black solid"
+                                                       :margin "10px"
+                                                       :width    (-> app :view :width)
+                                                       :height   (-> app :view :height)
+                                                       }
+
+                                  #js {
+                                       :position "relative"
+                                       })
 
 
-              (do
-                (let [path []]
-                  (component    @start-component app  [])
-                  )
-                )
+                                :id "mainel"  :onMouseMove
+                                (fn[e] (if (not @playbackmode) (on-mouse e app)))}
+                           ;(if @playbackmode (on-mouse e app)) (-> app :pointer :mouse-y)) ")"
 
-              (if @playbackmode
-                (dom/div #js {
-                            :style
-                            #js {
-                                 :position "absolute"
-                                 :left (str (-> app :pointer :mouse-x) "px")
-                                 :top (str (-> app :pointer :mouse-y) "px")
-                                 :z-index 100
-                                 }} "X"))
 
-              (if @debug-mode
-                (dom/div #js {
-                            :style
-                            #js {
-                                 :margin-top "30px"
-                                 }}
-                  (dom/button #js {:onClick (fn [e]
-                     (om/root ankha/inspector app-state
-                      {:target (js/document.getElementById "playback_state")})
-                          nil )} "Show UI state")
+                           (do
+                             (let [path []]
+                               (component    @start-component app  [])
+                               )
+                             )
 
-                  (dom/button #js {:onClick (fn [e]
-                     (om/root ankha/inspector data-state
-                      {:target (js/document.getElementById "data_state")})
-                          nil )} "Show Data state")
-                ))
+                           (if @playbackmode
+                             (dom/div #js {
+                                           :style
+                                           #js {
+                                                :position "absolute"
+                                                :left (str (-> app :pointer :mouse-x) "px")
+                                                :top (str (-> app :pointer :mouse-y) "px")
+                                                :z-index 100
+                                                }} "X"))
 
-              )))
+                           (if @debug-mode
+                             (dom/div #js {
+                                           :style
+                                           #js {
+                                                :margin-top "30px"
+                                                }}
+                                      (dom/button #js {:onClick (fn [e]
+                                                                  (om/root ankha/inspector app-state
+                                                                           {:target (js/document.getElementById "playback_state")})
+                                                                  nil )} "Show UI state")
+
+                                      (dom/button #js {:onClick (fn [e]
+                                                                  (om/root ankha/inspector data-state
+                                                                           {:target (js/document.getElementById "data_state")})
+                                                                  nil )} "Show Data state")
+                                      ))
+
+                           ))))
     ;---------------------------------------------------------
 
 ))
