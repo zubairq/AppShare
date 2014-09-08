@@ -82,8 +82,7 @@
           (~'render
            [~'this]
 
-           ~(if *show-code*
-              `(~'let [
+              (~'let [
 
                        ~'debug-id       (webapp.framework.client.coreclient/record-component-call
                                          (~'ns-coils-debug)
@@ -110,8 +109,6 @@
 
                       ~'return-val)
 
-              ;else
-              (first code))
            )
          ))
 
