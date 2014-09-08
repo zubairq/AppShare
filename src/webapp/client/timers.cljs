@@ -41,8 +41,10 @@
    (log "getting companies")
    (let [top-companies (<! (remote "get-top-companies" {}))]
      (if (ok top-companies)
-       (update-data [:top-companies] top-companies)
-       ))))
+       (do
+         (update-data [:top-companies] top-companies)
+         ;(set! (.-innerHTML (.getElementById js/document "playback_state")) (pr-str top-companies))
+         )))))
 
 
 
@@ -52,8 +54,10 @@
    (log "getting latest endorsements")
    (let [latest-endorsements (<! (remote "get-latest-endorsements" {}))]
      (if (ok latest-endorsements)
-       (update-data [:latest-endorsements] latest-endorsements)
-       ))))
+       (do
+         (update-data [:latest-endorsements] latest-endorsements)
+         ;(set! (.-innerHTML (.getElementById js/document "playback_state")) (pr-str latest-endorsements))
+         )))))
 
 
 
