@@ -82,14 +82,15 @@
 
 (c/==ui [:ui :request :submit :value]     true
 
-   (go
+    (do
      (c/-->ui [:ui :request :submit :message] "Submitted")
 
      (c/-->data [:submit :request :from-email]  (c/<--ui [:ui :request :from-email :value]))
      (c/-->data [:submit :request :to-email]    (c/<--ui [:ui :request :to-email :value]))
      (c/-->data [:submit :status]               "Submitted")
 
-     (let [ resp (<! (c/remote "request-endorsement"
+     (go
+      (let [ resp (<! (c/remote "request-endorsement"
              {
               :from-email     (c/<--data [:submit :request :from-email])
               :to-email       (c/<--data [:submit :request :to-email])
@@ -101,7 +102,7 @@
 
           :else
            (c/-->data [:submit :request :endorsement-id]  (-> resp :value :endorsement_id))
-       ))))
+       )))))
 
 
 
