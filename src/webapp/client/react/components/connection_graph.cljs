@@ -27,7 +27,10 @@
               (c/div  nil
 
                     (c/div  {:style { :width "200px"  :display "inline-block"}}
-                          (get company-ui-record "company"))
+                            (str (get
+                                     company-ui-record
+                                     "company"))
+                            )
 
                     (c/a {:href "#" :onClick
                         #(c/write-ui  companies  [:values]
@@ -39,10 +42,18 @@
 
 
                         }
-                       (get  company-ui-record "inbound"))))
+                       (pr-str (get
+                         company-ui-record
+                        "inbound"))
+
+                         )))
 
             all-company-records)
-           )))))
+           )
+          )
+            (c/div {} "--------------------------------")
+
+            )))
 
 
 
@@ -76,7 +87,10 @@
 
 
 
-(defn pad [x] (if (= (count (str x)) 1) (str "0" x) x))
+(defn pad [x]
+  (if (= (count (str x)) 1)
+    (str "0" x)
+    x))
 
 
 
@@ -101,9 +115,9 @@
                       :display "inline-block"}}
             (str
 
-             (pad (. (js/Date. (get x "when")) getHours)) ":"
-             (pad (. (js/Date. (get x "when")) getMinutes)) ":"
-             (pad (. (js/Date. (get x "when")) getSeconds)) " "
+             (pad (. (js/Date. (get x "when")) (getHours) )) ":"
+             (pad (. (js/Date. (get x "when")) (getMinutes) )) ":"
+             (pad (. (js/Date. (get x "when")) (getSeconds) )) " "
 
 
                  ))
@@ -117,6 +131,6 @@
             (get x "to")
             (str " --> " (get x "from")))))
 
-        (-> endorsements :values ))
+        (get endorsements :values ))
        )))
 
