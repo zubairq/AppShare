@@ -15,7 +15,7 @@
   ;---------------------------------------------------------
 
   (do
-    (set! (.-innerHTML (.getElementById js/document "playback_state")) (pr-str (c/read-ui  companies [:values] )))
+    ;(set! (.-innerHTML (.getElementById js/document "playback_state")) (pr-str (c/read-ui  companies [:values] )))
     (c/div  {:style {:height "100%" :width "100%"}}
 
         (let [all-company-records    (c/read-ui  companies [:values] )]
