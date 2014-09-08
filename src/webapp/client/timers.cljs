@@ -66,7 +66,6 @@
 (def tt (atom 1))
 
 (defn my-timer []
-  (go
     (swap! tt inc)
     (log (str "Called timer: " @tt))
     (cond
@@ -79,7 +78,7 @@
       (= (get-in @data-state [:submit :status])  "Submitted")
       (get-in @data-state [:submit :request :endorsement-id]))
 
-     (do
+     (go
        (let [res
              (<!
               (remote
@@ -100,7 +99,7 @@
       (= (get-in @data-state [:submit :status])  "ConfirmedSender")
       (get-in @data-state [:submit :request :endorsement-id]))
 
-     (do
+     (go
         (let [res (<! (remote "receiver-confirmed" {
                 :endorsement-id (get-in @data-state
                                         [:submit :request :endorsement-id])}))
@@ -132,7 +131,7 @@
      (get-latest-endorsements-from-database)
 
 
- )))
+ ))
 
 
 (add-init-state-fn "timer function" #(js/setInterval my-timer 15000))
