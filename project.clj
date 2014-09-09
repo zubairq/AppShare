@@ -2,7 +2,7 @@
   :dependencies [
                  [org.clojure/clojure "1.6.0"]
                  [org.clojure/google-closure-library-third-party "0.0-2029"]
-                 [org.clojure/tools.reader "0.7.10"]
+                 [org.clojure/tools.reader "0.8.8"]
                  [org.clojure/clojurescript "0.0-2322"]
                  [om "0.7.1"]
                  [om-sync "0.1.1"]
