@@ -2,7 +2,7 @@
   (:require
    [goog.net.XhrIo          :as xhr]
    [clojure.browser.repl    :as repl]
-   [cljs.reader             :as reader]
+   [webapp.reader             :as reader]
    [goog.dom]
    [om.core                 :as om :include-macros true]
    [clojure.data            :as data]
