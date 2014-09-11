@@ -33,6 +33,7 @@
                                                     gui-calls
                                                     app-watch-on?
                                                     data-accesses
+                                                    paths-for-refresh
                                                     ]]))
 
 
@@ -461,18 +462,26 @@
 
 
 
-(defn process-ui-component [
-                            {absolute-path :absolute-path}
-                            ]
-  (if absolute-path
-    (do
-      (touch  absolute-path))))
+(defn process-ui-component [fn-name]
+  ;(js/alert @paths-for-refresh)
+  (let [paths (get @paths-for-refresh (str fn-name))]
+    (if paths
+      (do
+        (map
+         (fn [path]
+           (if (get-in @app-state path) (touch  path)))
+         paths
+         )
+        ))))
 
 
 
 
 
+@paths-for-refresh
 
+
+(get @paths-for-refresh "main-yazz-header")
 
 
 (defn  ^:export loadDebugger []
@@ -615,12 +624,14 @@
 
 
 
-(defn debug-react [str-nm owner data react-fn]
+(defn debug-react [str-nm owner data react-fn path parent-id]
   (let
     [
      react-fn-name    (str str-nm)
      ]
-      (dom/div
+      (do
+
+        (dom/div
        #js {
             :onMouseEnter #(if js/debug_live (om/set-state! owner :debug-highlight true))
 
@@ -645,11 +656,8 @@
                             )
                           })
             }
-
        (react-fn data)
-       "")))
-
-
+       ""))))
 
 
 
@@ -831,6 +839,20 @@
 
 
 
+(defn add-refresh-path  [str-nm  path]
+  (if (get @paths-for-refresh (str str-nm))
+
+    (reset! paths-for-refresh
+            (assoc @paths-for-refresh (str str-nm)
+                      (conj (get @paths-for-refresh (str str-nm))
+                            path)))
+
+    (reset! paths-for-refresh
+            (assoc @paths-for-refresh (str str-nm) #{path}))
+    )
+)
+
+@paths-for-refresh
 
 
 
@@ -840,24 +862,25 @@
                              full-path]
 
   (let [
-        entry-name    (str called-fn-name ": " full-path)
+        entry-name    (str caller-namespace-name ": " full-path)
         is-diff?      (not (= (pr-str state) (last (get @gui-calls  entry-name) )))
-        debug-id      (add-debug-event :event-type      "render"
+        debug-id      (add-debug-event   :event-type      "render"
                                          :component-name  called-fn-name
                                          :component-path  full-path
                                          :component-data  state)
         ]
     (do
-    (reset! gui-calls (assoc @gui-calls entry-name
+      (add-refresh-path  called-fn-name  full-path)
+      (reset! gui-calls (assoc @gui-calls entry-name
 
 
-                        (if is-diff?
-                          (conj
-                           (if (get @gui-calls entry-name) (get @gui-calls  entry-name) [])   (pr-str state))
-                          (get @gui-calls  entry-name))))
-    (log (str "DEBUG ID: "debug-id))
-    debug-id
-    )))
+                          (if is-diff?
+                            (conj
+                             (if (get @gui-calls entry-name) (get @gui-calls  entry-name) [])   (pr-str state))
+                            (get @gui-calls  entry-name))))
+      (log (str "DEBUG ID: "debug-id))
+      debug-id
+      )))
 
 
 

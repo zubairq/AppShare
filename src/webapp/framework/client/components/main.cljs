@@ -9,7 +9,7 @@
 
 
 (c/defn-ui-component     main-view   [app]
-  {:absolute-path []}
+  {}
 
   (c/div nil
        (c/h2 nil "Coils")

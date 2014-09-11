@@ -37,7 +37,8 @@
       (assoc-in
        @app-state [:ui]
        {
-
+        :value "first"
+        :extra {:value "second"}
 
         }))
 
