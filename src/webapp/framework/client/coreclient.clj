@@ -66,7 +66,11 @@
 
 
 ;--------------------------------------------------------------------
-(defmacro defn-ui-component [fn-name data-paramater-name opts code ]
+(defmacro defn-ui-component
+  ([fn-name  data-paramater-name  code ]
+   `(defn-ui-component  ~fn-name  ~data-paramater-name  {}  ~code)
+   )
+  ([fn-name data-paramater-name opts code ]
 
     `(do
 
@@ -129,7 +133,7 @@
 
        (webapp.framework.client.coreclient/process-ui-component  ~(str `~fn-name))
 
-       ))
+       )))
 
 
 (macroexpand
