@@ -101,7 +101,10 @@
                                      ~'owner
                                      ~(first data-paramater-name)
                                      (~'fn [~(first data-paramater-name)]
-                                           ~@code))
+                                           ~@code)
+                                     ~'path
+                                     ~'parent-id
+                                     )
 
                        ~'removed-id     (~'webapp.framework.client.coreclient/remove-debug-event  ~'debug-id)
 
@@ -124,7 +127,7 @@
 
 
 
-       (~'webapp.framework.client.coreclient/process-ui-component  ~opts)
+       (webapp.framework.client.coreclient/process-ui-component  ~(str `~fn-name))
 
        ))
 
@@ -165,6 +168,8 @@
   `(om.dom/circle  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 (defmacro button [attributes & more]
   `(om.dom/button  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro input [attributes & more]
+  `(om.dom/input  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 ;--------------------------------------------------------------------
 
 

@@ -473,12 +473,11 @@
   "
   "
   [path]
-    (reset! app-state (assoc-in @app-state path
-                                (assoc
-                                  (get-in @app-state path)
-                                  :touch-id
+    (reset! app-state (assoc-in @app-state
+                                (conj path
+                                  :touch-id)
                                   (swap! touch-id inc)
-                                  ))))
+                                  )))
 
 
 
@@ -805,6 +804,6 @@
 
 
 
-
+(def paths-for-refresh (atom {}))
 
 
