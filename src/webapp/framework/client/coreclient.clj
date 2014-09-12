@@ -66,7 +66,7 @@
 
 
 ;--------------------------------------------------------------------
-(defmacro defn-ui-component [fn-name data-paramater-name opts & code ]
+(defmacro defn-ui-component [fn-name data-paramater-name opts code ]
 
     `(do
 
@@ -101,7 +101,7 @@
                                      ~'owner
                                      ~(first data-paramater-name)
                                      (~'fn [~(first data-paramater-name)]
-                                           ~@code)
+                                           ~code)
                                      ~'path
                                      ~'parent-id
                                      )
@@ -121,7 +121,7 @@
              ~fn-name
              ~(str `~fn-name) ~(str `~data-paramater-name)
 
-          (str ~(with-out-str   (write (first `~code))
+          (str ~(with-out-str   (write `~code)
                                         :dispatch clojure.pprint/code-dispatch)))
 
 
