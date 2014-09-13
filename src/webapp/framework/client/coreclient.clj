@@ -180,6 +180,8 @@
   `(om.dom/tr  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 (defmacro td [attributes & more]
   `(om.dom/td  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro th [attributes & more]
+  `(om.dom/th  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 ;--------------------------------------------------------------------
 
 

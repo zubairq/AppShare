@@ -1,3 +1,6 @@
+@-moz-document url-prefix() {
+  fieldset { display: table-cell; }
+}
 @media screen and (min-width : 0px) and (max-width: 750px) {
   #left-navigation {
     display: none;
