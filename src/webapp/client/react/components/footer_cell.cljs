@@ -9,10 +9,14 @@
 
 (c/defn-ui-component     empty-footer-cell   [no-data]
   (c/div nil
-        (c/input {:className  "form-control"
+         (c/input {:className  "form-control"
                    :value      "+ Data"
-                   :style {:width "100px"}} "")
-        )
+                   :style      {:width "100px"}
+                   :onClick    #(c/write-ui  no-data [:add-row] true)
+
+                   } ""
+                  )
+         )
   )
 
 
