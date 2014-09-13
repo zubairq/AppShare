@@ -174,6 +174,12 @@
   `(om.dom/button  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 (defmacro input [attributes & more]
   `(om.dom/input  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro table [attributes & more]
+  `(om.dom/table  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro tr [attributes & more]
+  `(om.dom/tr  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro td [attributes & more]
+  `(om.dom/td  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 ;--------------------------------------------------------------------
 
 
