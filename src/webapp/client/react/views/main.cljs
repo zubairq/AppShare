@@ -14,7 +14,7 @@
 
 
 (c/defn-ui-component     main-yazz-view   [app]
-  {}
+
   (c/div nil
          (c/component  main-yazz-header app [:ui])
          (c/component  main-yazz-layout app [:ui])

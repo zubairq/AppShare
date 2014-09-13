@@ -13,5 +13,5 @@
 (c/defn-ui-component     main-yazz-header   [header-ui]
 
   (c/div nil
-         (c/h2 nil "Yazz.com")
+         (c/h3  nil "Yazz.com")
          ))
