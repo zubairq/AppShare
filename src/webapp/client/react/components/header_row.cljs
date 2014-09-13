@@ -2,7 +2,7 @@
   (:require
    [webapp.framework.client.coreclient   :as  c  :include-macros true])
   (:use
-   [webapp.client.react.components.header-cell  :only   [header-cell]]
+   [webapp.client.react.components.header-cell  :only   [header-cell empty-header-cell]]
    )
 )
 
@@ -12,6 +12,8 @@
 
 (c/defn-ui-component     header-row   [t]
   (c/tr {}
-         (c/component  header-cell t [])
-         (c/component  header-cell t [])
-         ))
+        (c/div {:style {:display "inline-block"}}
+               (c/component  header-cell t []))
+        (c/div {:style {:display "inline-block"}}
+               (c/component  empty-header-cell t []))
+        ))

@@ -2,7 +2,7 @@
   (:require
    [webapp.framework.client.coreclient   :as  c  :include-macros true])
   (:use
-   [webapp.client.react.components.cell  :only   [cell]]
+   [webapp.client.react.components.cell  :only   [cell  empty-cell]]
    )
 )
 
@@ -11,7 +11,9 @@
 
 
 (c/defn-ui-component     row   [t]
-  (c/tr {}
-         (c/component  cell t [])
-         (c/component  cell t [])
+  (c/div {}
+         (c/div {:style {:display "inline-block"}}
+                (c/component  cell       t []))
+         (c/div {:style {:display "inline-block"}}
+                (c/component  empty-cell t []))
          ))

@@ -7,8 +7,14 @@
 
 
 
+(c/defn-ui-component     empty-header-cell   [t]
+  (c/div {:style {:display "inline-block"}}
+        (c/div nil "+"))
+  )
+
+
 (c/defn-ui-component     header-cell   [t]
-  (c/th nil
-  (c/input {:className  "form-control"
-            :value      (c/read-ui  t  [:value])} ""))
+  (c/div {:style {:display "inline-block"}}
+         (c/input {:className  "form-control"
+                   :value      (c/read-ui  t  [:value])} ""))
   )

@@ -186,6 +186,8 @@
   `(om.dom/td  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 (defmacro th [attributes & more]
   `(om.dom/th  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro form [attributes & more]
+  `(om.dom/form  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 ;--------------------------------------------------------------------
 
 
