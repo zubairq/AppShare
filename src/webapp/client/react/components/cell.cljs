@@ -8,15 +8,18 @@
 
 
 (c/defn-ui-component     empty-cell   [no-data]
-  (c/div {:style {:display "inline-block"}}
-        (c/div nil "+")
+  (c/div nil
+        (c/input {:className  "form-control"
+                   :value      ""
+                   :style {:width "100px"}} "")
         )
   )
 
 
 
 (c/defn-ui-component     cell   [t]
-  (c/div {:style {:display "inline-block"}}
+  (c/div nil
          (c/input {:className  "form-control"
-                   :value      (c/read-ui  t  [:value])} ""))
+                   :value      (c/read-ui  t  [:value])
+                   :style {:width "100px"}} ""))
   )

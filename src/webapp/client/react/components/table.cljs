@@ -5,6 +5,7 @@
    [webapp.client.react.components.cell         :only   [cell]]
    [webapp.client.react.components.row          :only   [row]]
    [webapp.client.react.components.header-row   :only   [header-row]]
+   [webapp.client.react.components.footer-row   :only   [footer-row]]
    )
 )
 
@@ -17,8 +18,14 @@
 
 (c/defn-ui-component     table   [table-ui] {}
          (c/div {}
-                  (c/component  header-row  table-ui [:extra])
-                  (c/component  row         table-ui [:extra])
-                  (c/component  row         table-ui [])
+                ;(c/component  header-row  table-ui [:extra])
+                (c/add-many
+                  (map
+                   (fn [input]
+                    (c/component  row         table-ui [:extra]))
+                   []
+
+                 ))
+                (c/component  footer-row  table-ui [:extra])
                   "")
          )

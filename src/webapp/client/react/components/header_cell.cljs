@@ -8,13 +8,18 @@
 
 
 (c/defn-ui-component     empty-header-cell   [t]
-  (c/div {:style {:display "inline-block"}}
-        (c/div nil "+"))
+  (c/div nil
+         (c/input {:className  "form-control"
+                   :value      "+"
+                   :style {:width "100px"}} "")         )
   )
 
 
 (c/defn-ui-component     header-cell   [t]
-  (c/div {:style {:display "inline-block"}}
+  (c/div nil
          (c/input {:className  "form-control"
-                   :value      (c/read-ui  t  [:value])} ""))
+;                   :value      (c/read-ui  t  [:value])
+                   :value      "Title"
+                   :style {:width "100px"}
+                   } ""))
   )
