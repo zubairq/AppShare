@@ -421,6 +421,10 @@ nil if the end of stream has been reached")
    (identical? s "_") read-discard
    :else nil))
 
+
+
+
+
 (defn read
   "Reads the first object from a PushbackReader. Returns the object read.
    If EOF, throws if eof-is-error is true. Otherwise returns sentinel."
@@ -440,13 +444,21 @@ nil if the end of stream has been reached")
        (recur reader eof-is-error sentinel is-recursive)
        res)))))
 
+
+
+
+
 (defn read-string
   "Reads one object from the string s"
   [s]
   (let [r (push-back-reader s)]
     (read r false nil false)))
 
-(read-string "{:a 1}")
+(read (push-back-reader "2") false nil false)
+
+
+
+
 
 
 ;; read instances
