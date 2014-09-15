@@ -9,6 +9,7 @@
    [clojure.data                         :as data]
    [clojure.string                       :as string]
    [ankha.core                           :as ankha]
+   [webapp.client.actions]
    )
   (:use
    [webapp.client.react.views.main                    :only   [main-yazz-view]]
@@ -38,7 +39,8 @@
        @app-state [:ui]
        {
         :value "first"
-        :extra {:value "second"}
+        :actions {}
+        :table {:value "second"}
 
         }))
 
@@ -53,3 +55,8 @@
   ))})
 
 
+(go
+ (do
+   (<! (c/remote "setup-schema"))
+   )
+ )

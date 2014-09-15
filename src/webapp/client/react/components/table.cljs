@@ -22,10 +22,11 @@
                 (c/add-many
                   (map
                    (fn [input]
-                    (c/component  row         table-ui [:extra]))
+                    (c/component  row   table-ui [:table]))
                    []
 
                  ))
-                (c/component  footer-row  table-ui [:extra])
+                (c/component  footer-row  table-ui [:actions])
                   "")
          )
+

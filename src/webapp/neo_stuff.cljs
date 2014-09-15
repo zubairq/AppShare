@@ -81,7 +81,26 @@
     (log (<! (count-all-neo4j-records-with-field :type)))
 )
 
-;(delete-all-neo-4j-nodes :are-you-sure? "yes")
+
+
+
+
+
+(defn delete-all-neo-4j-nodes
+  []
+  ;----------------------------------------------------------------
+
+    (do
+      (neo4j "MATCH n OPTIONAL MATCH (n)-[r]-(s) DELETE n,r,s")
+      {:result "done" :success true}
+      )
+    {:success true}
+
+    )
+
+
+
+;(delete-all-neo-4j-nodes)
 
 (comment go
     (log (<! (count-all-neo4j-records)))

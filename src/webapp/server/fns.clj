@@ -37,3 +37,15 @@
 (defn main-init []
   {:value "do nothing"}
   )
+
+
+
+
+(defn setup-schema
+  []
+  ;----------------------------------------------------------------
+  (do
+    (println "Setting up schema")
+    {:value "Return this to the client"}
+    ))
+

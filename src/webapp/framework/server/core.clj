@@ -23,21 +23,24 @@
 
 
 (defn parse-params [params]
+  (do
+  (println (str "Action:" (:action params) (:systemaction params)
+                "  ,Count params:" (count (keys (load-string (:params params))))))
   (let
     [
-       code (str
-             "("
-             (if (:action params) "webapp.server.fns/" "webapp.framework.server.systemfns/")
-             (if (:action params) (:action params) (:systemaction params))
-             " "
+     code (str
+           "("
+           (if (:action params) "webapp.server.fns/" "webapp.framework.server.systemfns/")
+           (if (:action params) (:action params) (:systemaction params))
+           " "
 
-               (str
-                (:params params))
-             ")")
-      ]
-      ;(println ":" code)
-      (pr-str (load-string code))
-     ))
+           (if (> (count (keys (load-string (:params params)))) 0) (str
+                                            (:params params)))
+           ")")
+     ]
+    ;(println ":" code)
+    (pr-str (load-string code))
+    )))
 
 
 

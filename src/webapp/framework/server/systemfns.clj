@@ -147,7 +147,7 @@
 
 
 
-(defn !get-record-pointer-locally [params]
+(defn !get-record-pointer-locally []
   {:value *record-pointer-locally*})
 
 
@@ -155,14 +155,14 @@
 
 
 
-(defn !get-environment [params]
+(defn !get-environment []
   {:value *environment*})
 
 
 
 
 
-(defn !get-show-debug [params]
+(defn !get-show-debug []
   {:value *show-code*})
 
 

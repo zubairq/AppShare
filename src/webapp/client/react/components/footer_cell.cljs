@@ -7,16 +7,29 @@
 
 
 
-(c/defn-ui-component     empty-footer-cell   [no-data]
+(c/defn-ui-component     empty-footer-cell   [actions]
   (c/div nil
          (c/input {:className  "form-control"
                    :value      "+ Data"
                    :style      {:width "100px"}
-                   :onClick    #(c/write-ui  no-data [:add-row] true)
+                   :onClick    #(c/write-ui  actions [:add-row] true)
 
                    } ""
                   )
          )
   )
+
+
+
+
+(c/==ui  [:ui  :actions  :add-row]   true
+
+         (do
+
+           (c/-->ui   [:ui  :actions  :add-row] false)
+           (c/-->data [:actions :add-row] true)
+
+           ))
+
 
 
