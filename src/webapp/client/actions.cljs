@@ -19,5 +19,8 @@
 
 
 (c/==data  [:actions :add-row] true
-   (js/alert "alert")
+           (go
+            ;(<! remote "add-row")
+            nil
+            )
            )

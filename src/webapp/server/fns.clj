@@ -41,11 +41,17 @@
 
 
 
+
 (defn setup-schema
   []
   ;----------------------------------------------------------------
   (do
     (println "Setting up schema")
+    (if (= 0 (count (neo4j "MATCH (n:Table) RETURN n" {} "n")))
+
+      (neo4j "CREATE (new_record:Table) RETURN new_record;"))
+
     {:value "Return this to the client"}
     ))
+
 
