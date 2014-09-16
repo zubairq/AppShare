@@ -132,7 +132,8 @@ nil if the end of stream has been reached")
           (let [parsed (js/parseInt n radix)]
             (if (identical? "-" (aget groups 1))
               (- parsed)
-              parsed)))))))
+              s)))))))
+              ;parsed)))))))
 
 (defn- match-ratio
   [s]
@@ -281,8 +282,11 @@ nil if the end of stream has been reached")
       (reader-error rdr "Map literal must contain an even number of forms"))
     (apply hash-map l)))
 
+
+
+
 (defn read-number
-  [reader initch]
+  [reader  initch]
   (loop [buffer (gstring/StringBuffer. initch)
          ch (read-char reader)]
     (if (or (nil? ch) (whitespace? ch) (macros ch))
@@ -292,6 +296,9 @@ nil if the end of stream has been reached")
           (or (match-number s)
               (reader-error reader "Invalid number format [" s "]"))))
       (recur (do (.append buffer ch) buffer) (read-char reader)))))
+
+
+
 
 (defn read-string*
   [reader _]
