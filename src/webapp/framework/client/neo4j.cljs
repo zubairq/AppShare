@@ -5,14 +5,14 @@
         [clojure.string]
     )
     (:use
-        [webapp.framework.client.coreclient :only  [remote]]
+        [webapp.framework.client.coreclient :only  [remote-fn]]
         [webapp.framework.client.records    :only  [NeoNode map->NeoNode]]
     )
     (:require-macros
       [cljs.core.async.macros :refer                 [go alt!]]
      )
     (:use-macros
-        [webapp.framework.client.coreclient :only  [ns-coils log]]
+        [webapp.framework.client.coreclient :only  [ns-coils log remote]]
         [webapp.framework.client.neo4j :only       [neo4j]]
      )
 )
@@ -28,29 +28,29 @@
   ([cypher-str]
   ;----------------------------------------------------------
   (go
-   (<! (remote
+   (remote
         "!neo4j"
         {
          :cypher    cypher-str
-         :params    {}}))))
+         :params    {}})))
   ([cypher-str params]
   ;----------------------------------------------------------
   (go
-   (<! (remote
+   (remote
         "!neo4j"
         {
          :cypher    cypher-str
-         :params    params}))))
+         :params    params})))
 
 ([cypher-str   params   return]
   ;----------------------------------------------------------
   (go
-   (<! (remote
+   (remote
         "!neo4j_nodes"
         {
          :cypher    cypher-str
          :params    params
-         :return    return})))))
+         :return    return}))))
 
 
 
@@ -65,10 +65,10 @@
   [item  layer-name]
 ;----------------------------------------------------------
     (go
-        (<! (remote
+        (remote
              "!add-to-simple-point-layer"
              {:node         item
-              :layer-name   layer-name}))))
+              :layer-name   layer-name})))
 
 
 
@@ -80,12 +80,12 @@
   [layer-name  x  y  km]
   ;----------------------------------------------------------
     (go
-        (<! (remote
+        (remote
              "!find-names-within-distance"
              {:layer-name layer-name
               :x          x
               :y          y
-              :dist-km    km}))))
+              :dist-km    km})))
 
 
 
@@ -95,10 +95,10 @@
   [layer-name  min-x  min-y  max-x  max-y]
   ;----------------------------------------------------------
   (go
-   (<! (remote "!find-names-within-bounds"   {:layer-name layer-name
+   (remote "!find-names-within-bounds"   {:layer-name layer-name
                                               :min-x min-x
                                               :min-y min-y
                                               :max-x max-x
                                               :max-y max-y
-                                              }))))
+                                              })))
 

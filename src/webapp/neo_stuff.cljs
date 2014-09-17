@@ -9,11 +9,11 @@
     [cljs.core.async.macros :refer [go alt!]])
 
   (:use
-        [webapp.framework.client.coreclient  :only [remote]]
+        [webapp.framework.client.coreclient  :only [remote-fn]]
         [webapp.framework.client.neo4j       :only [neo4j-fn]]
     )
     (:use-macros
-        [webapp.framework.client.coreclient  :only [ns-coils sql log neo4j]]
+        [webapp.framework.client.coreclient  :only [ns-coils sql log neo4j remote]]
         [webapp.framework.client.neo4j       :only [neo4j]]
      )
 )

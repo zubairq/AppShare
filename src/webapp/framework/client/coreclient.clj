@@ -15,6 +15,22 @@
 
 
 
+(defmacro remote
+
+  ([action]
+  `(~'<! (webapp.framework.client.coreclient/remote-fn ~action)))
+
+  ([action params]
+  `(~'<! (webapp.framework.client.coreclient/remote-fn ~action ~params)))
+  )
+
+
+
+(defmacro server-call [& x]
+  `(cljs.core.async.macros/go ~@ x))
+
+(macroexpand '(remote "a" {}))
+
 (defmacro log [& x]
   `(.log js/console (str
                      ~@ x)))
@@ -55,7 +71,6 @@
 
 ;(macroexpand '(ns-coils dfd))
 ;--------------------------------------------------------------------
-
 
 
 
@@ -321,10 +336,10 @@
 
    (go
     (webapp.framework.client.coreclient/update-ui  ui  [:ui  :company-details   :skills  ] nil)
-     (let [ l (<! (remote "get-company-details"
+     (let [ l (remote "get-company-details"
              {
               :company-url    (get-in @app-state [:ui :company-details :company-url])
-              }))]
+              })]
 
        ;(log (pr-str l))
        (update-data [:company-details]  l)

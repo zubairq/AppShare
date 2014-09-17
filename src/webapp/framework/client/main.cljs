@@ -11,7 +11,7 @@
   )
 
   (:use
-   [webapp.framework.client.coreclient      :only  [log remote]]
+   [webapp.framework.client.coreclient      :only  [log remote-fn]]
    [webapp.framework.client.system-globals  :only  [app-state
                                                     playback-controls-state
                                                     reset-app-state
@@ -24,7 +24,7 @@
    [webapp.framework.client.components.playback  :only  [playback-controls-view ]]
    )
   (:use-macros
-   [webapp.framework.client.coreclient :only  [ns-coils]]
+   [webapp.framework.client.coreclient :only  [ns-coils remote]]
    [webapp.framework.client.neo4j      :only  [neo4j]]
    )
   (:require-macros
@@ -74,12 +74,12 @@
    (reset-app-state)
    (@init-fn)
    (detect-browser)
-   (let [session (:value (<! (remote "!create-session"
+   (let [session (:value (remote "!create-session"
                                      {
                                       :init-state (with-out-str (prn @app-state))
                                       :browser    (str (-> @app-state :system :platform) ","
                                                        (-> @app-state :system :who-am-i))
-                                      })  ))]
+                                      })  )]
      (log session)
      (reset! session-id session))
 
@@ -107,7 +107,7 @@
                      (put! tx-chan [tx-data root-cursor])
 
                      (let [ts   (- (.getTime (js/Date.)) start-time)]
-                     (<! (remote "!add-history"
+                     (remote "!add-history"
                                  {
                                   :session-id    @session-id
                                   :history-order (swap! history-order inc)
@@ -115,7 +115,7 @@
                                   :new-value     (with-out-str (prn
                                                                 (:new-value tx-data)))
                                   :timestamp     ts
-                                  }))
+                                  })
                      (<! (neo4j "match (w:WebSession) where
                                 w.session_id={session_id}
                                 set w.time = {timestamp}

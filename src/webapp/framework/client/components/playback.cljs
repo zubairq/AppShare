@@ -11,7 +11,7 @@
    )
 
   (:use
-   [webapp.framework.client.coreclient     :only  [log remote]]
+   [webapp.framework.client.coreclient     :only  [log remote-fn]]
    [webapp.framework.client.system-globals :only  [app-state   playback-app-state
                                                    playback-controls-state
                                                    reset-app-state
@@ -19,7 +19,8 @@
    [webapp.framework.client.components.system-container :only  [main-view]]
    )
   (:use-macros
-   [webapp.framework.client.neo4j      :only  [neo4j]]
+   [webapp.framework.client.neo4j           :only  [neo4j]]
+   [webapp.framework.client.coreclient      :only  [remote]]
    )
   (:require-macros
    [cljs.core.async.macros :refer [go]]))
@@ -272,9 +273,9 @@
                         (let [session (<! clear-replay-sessions)]
                           (log "****CLEAR REPLAY")
 
-                          (let [ret (<! (remote "!clear-playback-sessions"
+                          (let [ret (remote "!clear-playback-sessions"
                                       {:password (-> @app :ui :delete-password :value)
-                                       }))]
+                                       })]
                             (if (ret :success)
                               (om/transact!
                                app

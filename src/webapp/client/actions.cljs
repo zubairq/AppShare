@@ -19,8 +19,10 @@
 
 
 (c/==data  [:actions :add-row] true
-           (go
-            ;(<! remote "add-row")
-            nil
-            )
+           (do
+             (c/server-call
+              (c/remote "add-row")
+              nil
+              )
+             )
            )

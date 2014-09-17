@@ -248,9 +248,9 @@
 
 
 
-(defn remote
+(defn remote-fn
   ([action]
-   (remote action {}))
+   (remote-fn action {}))
 
 
 
@@ -293,7 +293,7 @@
 
 (defn sql-fn [sql-str params]
   (go
-    (<! (remote
+    (<! (remote-fn
                 "!sql" {:sql sql-str :params params}))))
 
 
@@ -301,21 +301,22 @@
 
 (defn neo4j-fn [cypher-str params]
   (go
-    (<! (remote
+    (<! (remote-fn
                 "!neo4j" {:cypher cypher-str :params params}))))
 
 
 
 
 (go
- (let [env (:value (<! (remote "!get-environment" {})))]
+ (let [env (:value (<! (remote-fn "!get-environment" {})))]
    (if (= env "dev")
      (reset! debug-mode true))))
 
 
 
 (go
- (let [record-pointer-locally-value (:value (<! (remote "!get-record-pointer-locally" {})))]
+ (let [record-pointer-locally-value (:value
+                                     (<! (remote-fn "!get-record-pointer-locally" {})))]
      (reset! record-pointer-locally
              record-pointer-locally-value)))
 

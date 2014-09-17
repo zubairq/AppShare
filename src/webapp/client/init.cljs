@@ -57,6 +57,6 @@
 
 (go
  (do
-   (<! (c/remote "setup-schema"))
+   (c/remote "setup-schema")
    )
  )
