@@ -117,6 +117,13 @@ nil if the end of stream has been reached")
   [s]
   (let [groups (re-matches* int-pattern s)
         zero (aget groups 2)]
+    groups))
+
+
+(defn- match-int2
+  [s]
+  (let [groups (re-matches* int-pattern s)
+        zero (aget groups 2)]
     (if-not (nil? zero)
       0
       (let [a (cond
@@ -132,8 +139,7 @@ nil if the end of stream has been reached")
           (let [parsed (js/parseInt n radix)]
             (if (identical? "-" (aget groups 1))
               (- parsed)
-              s)))))))
-              ;parsed)))))))
+              parsed)))))))
 
 (defn- match-ratio
   [s]
