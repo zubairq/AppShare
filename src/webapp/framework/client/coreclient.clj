@@ -18,11 +18,12 @@
 (defmacro remote
 
   ([action]
-  `(~'<! (webapp.framework.client.coreclient/remote-fn ~action)))
+  `(~'<! (webapp.framework.client.coreclient/remote-fn  ~(str `~action))))
 
   ([action params]
-  `(~'<! (webapp.framework.client.coreclient/remote-fn ~action ~params)))
+  `(~'<! (webapp.framework.client.coreclient/remote-fn  ~(str `~action)  ~params)))
   )
+
 
 
 
@@ -78,6 +79,11 @@
 
 
 
+
+(defmacro aa [x]
+  `(str ~(str `~x)))
+
+(macroexpand '(aa "a1"))
 
 
 ;--------------------------------------------------------------------

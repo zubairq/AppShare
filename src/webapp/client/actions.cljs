@@ -12,17 +12,15 @@
    )
 
    (:require-macros
-    [cljs.core.async.macros :refer [go]]))
+    [cljs.core.async.macros :refer [go]]
+    [webapp.framework.client.coreclient :refer [ns-coils  ==data  server-call  remote]]
+    ))
 
-(c/ns-coils 'webapp.client.actions)
+(ns-coils 'webapp.client.actions)
 
 
 
-(c/==data  [:actions :add-row] true
-           (do
-             (c/server-call
-              (c/remote "add-row")
-              nil
-              )
-             )
-           )
+(==data  [:actions :add-row] true
+             (server-call
+              (remote  add-row)
+              ))
