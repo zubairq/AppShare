@@ -7,7 +7,9 @@
 ;   You must not remove this notice, or any other, from this software.
 
 (ns webapp.reader
-  (:require [goog.string :as gstring])
+  (:require
+   [goog.string :as gstring]
+   [clojure.zip])
   (:import goog.string.StringBuffer))
 
 (defprotocol PushbackReader
@@ -113,17 +115,12 @@ nil if the end of stream has been reached")
         (aget matches 0)
         matches))))
 
+
 (defn- match-int
   [s]
   (let [groups (re-matches* int-pattern s)
-        zero (aget groups 2)]
-    groups))
-
-
-(defn- match-int2
-  [s]
-  (let [groups (re-matches* int-pattern s)
-        zero (aget groups 2)]
+        ie8-fix  (aget groups 2)
+        zero     (if (= ie8-fix "") nil ie8-fix)]
     (if-not (nil? zero)
       0
       (let [a (cond
