@@ -11,7 +11,7 @@
   )
 
   (:use
-   [webapp.framework.client.coreclient      :only  [log remote-fn]]
+   [webapp.framework.client.coreclient      :only  [log remote-fn neo4j-fn]]
    [webapp.framework.client.system-globals  :only  [app-state
                                                     playback-controls-state
                                                     reset-app-state
@@ -115,27 +115,28 @@
                                                                 (:new-value tx-data)))
                                   :timestamp     ts
                                   })
-                     (<! (neo4j "match (w:WebSession) where
+                     (neo4j "match (w:WebSession) where
                                 w.session_id={session_id}
                                 set w.time = {timestamp}
                                 return w
                                 "
                                 {:session_id    @session-id
                                  :timestamp     ts}
-                                "w"))))))}))))
+                                "w")))))}))))
 
 
 
 
 (defn get-web-sessions []
-  (neo4j "match (n:WebSession) return
-         n.session_id as session_id,
-         n.time as time,
-         n.browser as browser,
-         n.start_time as start_time
-            order by n.start_time desc"
-                      {}
-         ["session_id" "start_time" "browser" "time"]))
+  (go
+   (neo4j "match (n:WebSession) return
+          n.session_id as session_id,
+          n.time as time,
+          n.browser as browser,
+          n.start_time as start_time
+          order by n.start_time desc"
+          {}
+          ["session_id" "start_time" "browser" "time"])))
 
 
 

@@ -20,7 +20,7 @@
 
 ; return the raw data for a neo4j node
 (comment go
-    (.log js/console (str (<! (neo4j "START x = node(*) RETURN count(x) LIMIT 1" {} ))))
+    (.log js/console (str (neo4j "START x = node(*) RETURN count(x) LIMIT 1" {} )))
 )
 
 
