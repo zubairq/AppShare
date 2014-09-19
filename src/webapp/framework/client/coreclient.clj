@@ -49,17 +49,6 @@
 
 
 
-;--------------------------------------------------------------------
-(defmacro sql [sql-str params]
-  `(webapp.framework.client.coreclient.sql-fn
-       ~(encrypt sql-str)
-       ~params))
-
-;( macroexpand '(sql "SELECT * FROM test_table where name = ?" ["shopping"] ))
-;--------------------------------------------------------------------
-
-
-
 
 
 
@@ -422,3 +411,33 @@
     ~params
     ~return
     ))))
+
+
+(defmacro neo4j-1
+  ([cypher-str]
+  `(~'first (~'neo4j  ~cypher-str)))
+
+  ([cypher-str  params]
+  `(~'first (~'neo4j  ~cypher-str ~params)))
+
+  ([cypher-str  params  return]
+  `(~'first (~'neo4j  ~cypher-str ~params ~return)))
+  )
+
+
+
+;--------------------------------------------------------------------
+(defmacro sql [sql-str params]
+  `(~'<! (webapp.framework.client.coreclient/sql-fn
+       ~(encrypt sql-str)
+       ~params)))
+
+;( macroexpand '(sql "SELECT * FROM test_table where name = ?" ["shopping"] ))
+;--------------------------------------------------------------------
+
+(defmacro sql-1 [sql-str params]
+  `(~'first (~'sql  ~sql-str ~params)))
+
+
+
+

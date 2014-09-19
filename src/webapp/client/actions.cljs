@@ -14,7 +14,7 @@
    (:require-macros
     [cljs.core.async.macros :refer [go]]
     [webapp.framework.client.coreclient :refer [ns-coils  ==data  server-call
-                                                remote neo4j]]
+                                                remote neo4j sql sql-1 neo4j-1]]
     ))
 
 (ns-coils 'webapp.client.actions)
@@ -28,4 +28,7 @@
 
 
 (comment go (.log js/console
-      (neo4j "match (n:Table) return n;" {} "n")))
+      (pr-str (neo4j "match (n:Table) return n;" {} "n"))))
+
+(comment go (.log js/console
+       (pr-str (sql "select count(*) from ojobs_users;" {}))))
