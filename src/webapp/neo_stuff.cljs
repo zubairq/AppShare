@@ -26,16 +26,16 @@
 
 
 
-(comment go (log (str (<!
+(comment go (log (str
   (neo4j
    "create (u:User { email : { email2 }, title : 'Developer' }) return u"
-   {:email2 "dfsfdsf@gmail.com"} "u")))))
+   {:email2 "dfsfdsf@gmail.com"} "u"))))
 
 
-(comment go (log (str (<!
+(comment go (log (str
   (neo4j
    "create (u:User { email : { email2 }, title : 'Developer' }) return u"
-   {:email2 "dffds@gmail.com"} "u")))))
+   {:email2 "dffds@gmail.com"} "u"))))
 
 
 
@@ -48,19 +48,19 @@
  (.log js/console
        (str
         (neo-result
-         (<! (neo4j "START x = node(17109) RETURN x" {} ))
-         "x"))))
+         (neo4j "START x = node(17109) RETURN x" {} ))
+         "x")))
 
 
 
 
 (comment
    go
-   (.log js/console (str (neo-outgoing (<! (neo4j "START x = node(17109) RETURN x" {} )) "x")))
+   (.log js/console (str (neo-outgoing (neo4j "START x = node(17109) RETURN x" {} )) "x"))
 )
 
 (comment go
-   (.log js/console (str (neo-incoming (<! (neo4j "START x = node(0) RETURN x" {} )) "x")))
+   (.log js/console (str (neo-incoming (neo4j "START x = node(0) RETURN x" {} )) "x"))
 )
 
 (comment go
@@ -71,16 +71,6 @@
      (log (<! (find-names-within-distance   "ore2"  0   0  1000))) )
 
 
-(comment go
-    (log (<! (get-all-neo4j-records-with-field :type)))
-)
-
-(comment go
-    (log (<! (count-all-neo4j-records-with-field :type)))
-)
-
-
-
 
 
 
@@ -88,7 +78,7 @@
   []
   ;----------------------------------------------------------------
 
-    (do
+    (go
       (neo4j "MATCH n OPTIONAL MATCH (n)-[r]-(s) DELETE n,r,s")
       {:result "done" :success true}
       )
@@ -99,15 +89,5 @@
 
 
 ;(delete-all-neo-4j-nodes)
-
-(comment go
-    (log (<! (count-all-neo4j-records)))
-)
-
-
-
-(comment log "hey" 2)
-
-
 
 

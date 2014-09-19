@@ -27,6 +27,5 @@
               ))
 
 
-(go (.log js/console
-     (pr-str
-      (<! (neo4j "match (n:Table) return count(n);" {} "count(n)")))))
+(comment go (.log js/console
+      (neo4j "match (n:Table) return n;" {} "n")))

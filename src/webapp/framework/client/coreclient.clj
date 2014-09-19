@@ -406,19 +406,19 @@
 
 (defmacro neo4j
   ([cypher-str]
-  `(webapp.framework.client.coreclient.neo4j-fn
+  `(~'<! (webapp.framework.client.coreclient/neo4j-fn
     ~(encrypt cypher-str)
-    ))
+    )))
 
   ([cypher-str params]
-  `(webapp.framework.client.coreclient.neo4j-fn
+  `(~'<! (webapp.framework.client.coreclient/neo4j-fn
     ~(encrypt cypher-str)
     ~params
-    ))
+    )))
 
 ( [cypher-str params return]
-  `(webapp.framework.client.coreclient.neo4j-fn
+  `(~'<! (webapp.framework.client.coreclient/neo4j-fn
     ~(encrypt cypher-str)
     ~params
     ~return
-    )))
+    ))))
