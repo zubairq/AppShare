@@ -27,7 +27,6 @@
                                                          ]]
    )
   (:use-macros
-   [webapp.framework.client.neo4j      :only  [neo4j]]
    [webapp.framework.client.coreclient :only  [defn-ui-component ns-coils div component remote]]
    )
   (:require-macros

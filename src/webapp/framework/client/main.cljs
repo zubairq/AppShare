@@ -24,8 +24,7 @@
    [webapp.framework.client.components.playback  :only  [playback-controls-view ]]
    )
   (:use-macros
-   [webapp.framework.client.coreclient :only  [ns-coils remote]]
-   [webapp.framework.client.neo4j      :only  [neo4j]]
+   [webapp.framework.client.coreclient :only  [ns-coils remote neo4j]]
    )
   (:require-macros
    [cljs.core.async.macros :refer [go]]))

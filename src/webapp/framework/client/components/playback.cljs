@@ -19,8 +19,7 @@
    [webapp.framework.client.components.system-container :only  [main-view]]
    )
   (:use-macros
-   [webapp.framework.client.neo4j           :only  [neo4j]]
-   [webapp.framework.client.coreclient      :only  [remote]]
+   [webapp.framework.client.coreclient      :only  [remote neo4j]]
    )
   (:require-macros
    [cljs.core.async.macros :refer [go]]))

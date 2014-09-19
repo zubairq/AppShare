@@ -13,7 +13,8 @@
 
    (:require-macros
     [cljs.core.async.macros :refer [go]]
-    [webapp.framework.client.coreclient :refer [ns-coils  ==data  server-call  remote]]
+    [webapp.framework.client.coreclient :refer [ns-coils  ==data  server-call
+                                                remote neo4j]]
     ))
 
 (ns-coils 'webapp.client.actions)
@@ -24,3 +25,8 @@
              (server-call
               (remote  add-row)
               ))
+
+
+(go (.log js/console
+     (pr-str
+      (<! (neo4j "match (n:Table) return count(n);" {} "count(n)")))))

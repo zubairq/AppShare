@@ -19,7 +19,6 @@
                                                    data-accesses]]
    )
   (:use-macros
-   [webapp.framework.client.neo4j         :only  [neo4j]]
    [webapp.framework.client.coreclient    :only  [component remote]]
    )
   (:require-macros
