@@ -1,4 +1,4 @@
-(ns webapp
+(ns webapp.neo-stuff
  (:refer-clojure :exclude [val empty remove find next parents])
     (:require
         [cljs.reader                     :as reader]
@@ -17,7 +17,7 @@
         [webapp.framework.client.neo4j       :only [neo4j]]
      )
 )
-(ns-coils 'webapp)
+(ns-coils 'webapp.neo-stuff)
 
 
 ; return the raw data for a neo4j node
