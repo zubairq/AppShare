@@ -47,9 +47,9 @@
   ;----------------------------------------------------------------
   (do
     (println "Setting up schema")
-    (if (= 0 (count (neo4j "MATCH (n:Table) RETURN n" {} "n")))
 
-      (neo4j "CREATE (new_record:Table) RETURN new_record;"))
+    (if (= 0 (count (neo4j "MATCH (n:Table) RETURN n" {} "n")))
+      (neo4j "CREATE (new_table:Table),(new_rows:Rows),new_table-[:REL]->new_rows RETURN new_table;"))
 
     {:value "Return this to the client"}
     ))
