@@ -72,4 +72,3 @@
     ))
 
 
-(neo4j "match (r:Rows) set r.row_count = r.row_count + 1 return r")
