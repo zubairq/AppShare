@@ -67,8 +67,19 @@
   ;----------------------------------------------------------------
   (do
     (neo4j "match (r:Rows) set r.row_count = r.row_count + 1 return r")
+    (neo4j "match (r:Rows) create (r)-[:ROW]->(row:Row {id: r.row_count}) return r")
     (println "row added")
     {:value "row added"}
     ))
+
+
+(defn get-rows
+  []
+  ;----------------------------------------------------------------
+  (let [rows  (neo4j "match (r:Rows)-[:ROW]->(rows:Row) return rows" {} "rows")]
+    (println "row added")
+    {:rows rows}
+    ))
+
 
 

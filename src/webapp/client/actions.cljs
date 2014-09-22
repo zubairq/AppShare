@@ -27,6 +27,8 @@
              (server-call
               (remote  add-row)
               (-->data[:actions :add-row] false)
+              (-->data [:rows]
+                       (remote  get-rows))
               )
            ))
 
