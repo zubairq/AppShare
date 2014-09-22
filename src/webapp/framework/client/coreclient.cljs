@@ -77,7 +77,7 @@
 
 
 
-(defn  -->data
+(defn  -->data-fn
   "
   "
   [path value]
@@ -90,7 +90,7 @@
 
 
 
-(defn  <--data
+(defn  <--data-fn
   "
   "
   [path]

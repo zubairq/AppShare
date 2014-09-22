@@ -14,7 +14,8 @@
    (:require-macros
     [cljs.core.async.macros :refer [go]]
     [webapp.framework.client.coreclient :refer [ns-coils  ==data  server-call
-                                                remote neo4j sql sql-1 neo4j-1]]
+                                                remote neo4j sql sql-1 neo4j-1
+                                                -->data]]
     ))
 
 (ns-coils 'webapp.client.actions)
@@ -22,9 +23,12 @@
 
 
 (==data  [:actions :add-row] true
+         (do
              (server-call
               (remote  add-row)
-              ))
+              (-->data[:actions :add-row] false)
+              )
+           ))
 
 
 (comment go (.log js/console

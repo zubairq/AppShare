@@ -326,6 +326,30 @@
 
 
 
+
+
+(defmacro  -->data
+  "Writes to the data tree"
+  [path value]
+   `(~'webapp.framework.client.coreclient/-->data-fn ~path ~value))
+
+
+
+(defmacro  <--data
+  "Reads from the data tree"
+  [path]
+   `(~'webapp.framework.client.coreclient/<--data-fn ~path))
+
+
+
+
+
+
+
+
+
+
+
 (comment macroexpand '(when-ui-value-changes [:ui :company-details :company-url]
 
 

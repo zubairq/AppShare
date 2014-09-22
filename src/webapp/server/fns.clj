@@ -49,7 +49,12 @@
     (println "Setting up schema")
 
     (if (= 0 (count (neo4j "MATCH (n:Table) RETURN n" {} "n")))
-      (neo4j "CREATE (new_table:Table),(new_rows:Rows),new_table-[:REL]->new_rows RETURN new_table;"))
+      (neo4j "CREATE
+                 (new_table:Table),
+                 (new_rows:Rows {row_count: 0}),
+                 new_table-[:REL]->new_rows
+             RETURN
+                 new_table;"))
 
     {:value "Return this to the client"}
     ))
@@ -61,6 +66,10 @@
   []
   ;----------------------------------------------------------------
   (do
+    (neo4j "match (r:Rows) set r.row_count = r.row_count + 1 return r")
     (println "row added")
     {:value "row added"}
     ))
+
+
+(neo4j "match (r:Rows) set r.row_count = r.row_count + 1 return r")
