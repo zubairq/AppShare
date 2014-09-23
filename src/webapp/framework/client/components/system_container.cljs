@@ -200,10 +200,11 @@
     (will-mount [_]
                 (do
                   ; set up the initial state
-                  (dorun (for [init-state-fn  @init-state-fns]
-                           (do
-                             (init-state-fn)
-                             )))
+                  (if (not @playbackmode)
+                           (dorun (for [init-state-fn  @init-state-fns]
+                                    (do
+                                      (init-state-fn)
+                                      ))))
 
                   ; set up the AB tests
                   (log (str "AB TESTS: " (keys @ab-tests)))
