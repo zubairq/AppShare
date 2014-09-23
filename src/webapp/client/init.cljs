@@ -74,7 +74,5 @@
 
       (assoc-in
        @data-state [:rows]
-       (c/remote  get-rows)))
-
-      )
-    )))
+       (:rows (c/remote  get-rows))))
+))))

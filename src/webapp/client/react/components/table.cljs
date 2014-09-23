@@ -19,11 +19,12 @@
 (c/defn-ui-component     table   [table-ui] {}
          (c/div {}
                 ;(c/component  header-row  table-ui [:extra])
+                (c/div nil (str (count (c/read-ui  table-ui [:table :rows])) " rows"))
                 (c/add-many
                   (map
                    (fn [input]
                     (c/component  row   table-ui [:table]))
-                   []
+                   (c/read-ui  table-ui [:table :rows])
 
                  ))
                 (c/component  footer-row  table-ui [:actions])
