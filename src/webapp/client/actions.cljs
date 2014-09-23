@@ -26,8 +26,11 @@
 
              (go
               (remote  add-row)
-              (-->data  [:actions :add-row] false)
-              (-->data  [:rows]             (:rows (remote  get-rows)))))
+              (-->data  [:actions :add-row]
+                        false)
+
+              (-->data  [:rows]
+                        (:rows (remote  get-rows)))))
 
 (watch-data [:rows]
                            (-->ui [:ui :table :rows] (<--data [:rows])))

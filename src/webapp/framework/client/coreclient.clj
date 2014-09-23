@@ -30,7 +30,7 @@
 (defmacro server-call [& x]
   `(cljs.core.async.macros/go ~@ x))
 
-(macroexpand '(remote "a" {}))
+(macroexpand '(remote  a  {}))
 
 (defmacro log [& x]
   `(.log js/console (str
@@ -355,7 +355,7 @@
 
    (go
     (webapp.framework.client.coreclient/update-ui  ui  [:ui  :company-details   :skills  ] nil)
-     (let [ l (remote "get-company-details"
+     (let [ l (remote  get-company-details
              {
               :company-url    (get-in @app-state [:ui :company-details :company-url])
               })]

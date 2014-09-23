@@ -40,7 +40,8 @@
        {
         :value "first"
         :actions {}
-        :table {:value "second"}
+        :table {:value "second"
+                :actions {}}
 
         }))
 

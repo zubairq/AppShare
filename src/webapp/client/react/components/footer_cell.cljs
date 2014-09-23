@@ -22,11 +22,11 @@
 
 
 
-(c/==ui  [:ui  :actions  :add-row]   true
+(c/==ui  [:ui  :table :actions  :add-row]   true
 
          (do
 
-           (c/-->ui   [:ui  :actions  :add-row] false)
+           (c/-->ui   [:ui  :table :actions  :add-row] false)
            (c/-->data [:actions :add-row] true)
 
            ))

@@ -19,5 +19,5 @@
 (c/defn-ui-component     main-yazz-layout   [header-ui] {}
 
   (c/div nil
-         (c/component  table header-ui [])
+         (c/component  table header-ui [:table])
          ))
