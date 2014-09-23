@@ -60,6 +60,21 @@
  (fn []
    (go
     (do
-      (c/remote "setup-schema")
+      (c/remote  setup-schema)
+      )
+    )))
+
+(add-init-state-fn
+ "Load rows"
+ (fn []
+   (go
+    (do
+      (reset!
+      data-state
+
+      (assoc-in
+       @data-state [:rows]
+       (c/remote  get-rows)))
+
       )
     )))
