@@ -13,7 +13,7 @@
    )
   (:use
    [webapp.client.react.views.main                    :only   [main-yazz-view]]
-   [webapp.framework.client.system-globals            :only   [app-state  data-state  set-ab-tests]]
+   [webapp.framework.client.system-globals            :only   [app-state  data-state  set-ab-tests  add-init-state-fn]]
    )
    (:require-macros
     [cljs.core.async.macros :refer [go]]))
@@ -55,8 +55,11 @@
   ))})
 
 
-(go
- (do
-   (c/remote "setup-schema")
-   )
- )
+(add-init-state-fn
+ "Set up database schema"
+ (fn []
+   (go
+    (do
+      (c/remote "setup-schema")
+      )
+    )))

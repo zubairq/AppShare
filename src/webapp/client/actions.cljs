@@ -15,7 +15,7 @@
     [cljs.core.async.macros :refer [go]]
     [webapp.framework.client.coreclient :refer [ns-coils  ==data  server-call
                                                 remote neo4j sql sql-1 neo4j-1
-                                                -->data]]
+                                                -->data log]]
     ))
 
 (ns-coils 'webapp.client.actions)
@@ -23,14 +23,13 @@
 
 
 (==data  [:actions :add-row] true
-         (do
-             (server-call
+
+             (go
               (remote  add-row)
-              (-->data[:actions :add-row] false)
-              (-->data [:rows]
-                       (remote  get-rows))
-              )
-           ))
+              (-->data  [:actions :add-row] false)
+              (-->data  [:rows]             (remote  get-rows))))
+
+
 
 
 (comment go (.log js/console
@@ -38,3 +37,4 @@
 
 (comment go (.log js/console
        (pr-str (sql "select count(*) from ojobs_users;" {}))))
+
