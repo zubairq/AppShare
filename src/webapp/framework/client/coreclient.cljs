@@ -41,6 +41,8 @@
 
 
 
+(reader/register-tag-parser! "webapp.framework.server.records.NeoNode" map->NeoNode)
+(reader/register-tag-parser! "webapp.framework.client.records.NeoNode" map->NeoNode)
 
 
 (def debug-mode (atom false))
@@ -1011,7 +1013,6 @@
 
 
 
-(cljs.reader/register-tag-parser! "webapp.framework.server.records.NeoNode" map->NeoNode)
 
 
 ;----------------------------------------------------------

@@ -8,9 +8,11 @@
    [clojure.data     :as data]
    [clojure.string   :as string]
    [ankha.core       :as ankha]
+   [cljs.reader      :as reader]
    )
 
   (:use
+   [webapp.framework.client.records        :only  [NeoNode map->NeoNode]]
    [webapp.framework.client.coreclient     :only  [log remote-fn component-fn]]
    [webapp.framework.client.system-globals :only  [debugger-ui
                                                    debug-event-timeline
@@ -23,7 +25,6 @@
    )
   (:require-macros
    [cljs.core.async.macros :refer [go]]))
-
 
 
 

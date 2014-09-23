@@ -12,7 +12,8 @@
         [webapp.framework.client.coreclient  :only [neo4j-fn remote-fn]]
     )
     (:use-macros
-        [webapp.framework.client.coreclient  :only [ns-coils sql log neo4j remote neo4j]]
+        [webapp.framework.client.coreclient  :only [ns-coils sql log
+                                                    neo4j remote neo4j-1]]
      )
 )
 (ns-coils 'webapp.neo-stuff)
@@ -22,7 +23,7 @@
   (go (neo4j "MATCH n OPTIONAL MATCH (n)-[r]-(s) DELETE n,r,s"))
   {:success true})
 
-;(go (log (neo4j "match n return count(n);" {} "count(n)")))
+;(go (log (pr-str (neo4j-1 "match n return n;" {} "n"))))
 
 ;(delete-all-neo-4j-nodes)
 

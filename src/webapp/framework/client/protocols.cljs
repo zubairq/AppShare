@@ -5,14 +5,12 @@
   )
 
 
-
 (defprotocol INeoNode
-  (id [this] :id))
+  (setProp [this property value] nil)
+)
 
 
-
-(defprotocol TypeInfo
-  (gettype [this] nil))
-
-
-
+(extend-type NeoNode
+  INeoNode
+  (setProp [this property value] (assoc this property value))
+)
