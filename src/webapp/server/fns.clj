@@ -42,26 +42,6 @@
 
 
 
-(defn setup-schema
-  []
-  ;----------------------------------------------------------------
-  (do
-    (println "Setting up schema")
-
-    (if (= 0 (count (neo4j "MATCH (n:Table) RETURN n" {} "n")))
-      (neo4j "CREATE
-                 (new_table:Table),
-                 (new_rows:Rows {row_count: 0}),
-                 new_table-[:REL]->new_rows
-             RETURN
-                 new_table;"))
-
-    {:value "Return this to the client"}
-    ))
-
-
-
-
 (defn add-row
   []
   ;----------------------------------------------------------------
@@ -77,9 +57,27 @@
   []
   ;----------------------------------------------------------------
   (let [rows  (neo4j "match (r:Rows)-[:ROW]->(rows:Row) return rows" {} "rows")]
-    (println "row added")
     {:rows rows}
     ))
 
 
+(defn setup-schema
+  []
+  ;----------------------------------------------------------------
+  (do
+    (println "Setting up schema")
 
+    (if (= 0 (count (neo4j "MATCH (n:Table) RETURN n" {} "n")))
+
+      (do
+        (println "Creating schema")
+        (let [rows (neo4j "CREATE
+                          (new_table:Table),
+                          (new_rows:Rows {row_count: 1}),
+                          (new_table)-[:REL]->(new_rows),
+                          (new_rows)-[:ROW]->(row:Row {id: new_rows.row_count})
+                          RETURN
+                          row;")]
+          (get-rows)))
+
+      (get-rows))))

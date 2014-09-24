@@ -27,7 +27,7 @@
                    (c/read-ui  table-ui [:rows])
 
                  ))
-                (c/component  footer-row  table-ui [:actions])
+                ;(c/component  footer-row  table-ui [:actions])
                   "")
          )
 
