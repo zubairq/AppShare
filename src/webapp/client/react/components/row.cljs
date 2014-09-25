@@ -14,6 +14,4 @@
   (c/div {}
          (c/div {:style {:display "inline-block"}}
                 (c/component  cell       t []))
-         (c/div {:style {:display "inline-block"}}
-                (c/component  empty-cell t []))
          ))

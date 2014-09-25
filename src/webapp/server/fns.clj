@@ -71,13 +71,17 @@
 
       (do
         (println "Creating schema")
-        (let [rows (neo4j "CREATE
-                          (new_table:Table),
-                          (new_rows:Rows {row_count: 1}),
-                          (new_table)-[:REL]->(new_rows),
-                          (new_rows)-[:ROW]->(row:Row {id: new_rows.row_count})
-                          RETURN
-                          row;")]
+        (let [rows
+              (neo4j "CREATE
+                     (new_table:Table),
+                     (new_rows:Rows {row_count: 1}),
+                     (row:Row {id: 1}),
+                     (column:Column {id: 1, value: ''}),
+                     (new_table)-[:REL]->(new_rows),
+                     (new_rows)-[:ROW]->(row),
+                     (row)-[:COLUMN]->(column)
+                     RETURN
+                     row;")]
           (get-rows)))
 
       (get-rows))))
