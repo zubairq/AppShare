@@ -5,7 +5,6 @@
    [webapp.client.react.components.cell         :only   [cell]]
    [webapp.client.react.components.row          :only   [row]]
    [webapp.client.react.components.header-row   :only   [header-row]]
-   [webapp.client.react.components.footer-row   :only   [footer-row]]
    )
 )
 
@@ -27,7 +26,6 @@
                    (c/read-ui  table-ui [:rows])
 
                  ))
-                ;(c/component  footer-row  table-ui [:actions])
                   "")
          )
 
