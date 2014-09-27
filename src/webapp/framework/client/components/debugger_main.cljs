@@ -663,3 +663,29 @@
 
 ;(reverse (get @data-accesses {:tree "UI" :path (get @debugger-ui :events-filter-path)}))
 ;(keys @debug-event-timeline )
+
+
+
+
+(defn  ^:export loadDebugger []
+  (do
+   (reset! app-watch-on? false)
+
+    (om/root
+     main-debug-comp
+     debugger-ui
+     {:target (js/document.getElementById "right_of_main")})
+
+
+    (om/root
+     details-debug-comp
+     debugger-ui
+     {:target (js/document.getElementById "debugger_details")})
+
+    (om/root
+     main-debug-slider-comp
+     debugger-ui
+     {:target (js/document.getElementById "main_playback_slider")})))
+
+
+

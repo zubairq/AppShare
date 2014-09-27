@@ -490,28 +490,6 @@
 (get @paths-for-refresh "main-yazz-header")
 
 
-(defn  ^:export loadDebugger []
-  (do
-   (reset! app-watch-on? false)
-
-    (om/root
-     webapp.framework.client.components.debugger-main/main-debug-comp
-     debugger-ui
-     {:target (js/document.getElementById "right_of_main")})
-
-
-    (om/root
-     webapp.framework.client.components.debugger-main/details-debug-comp
-     debugger-ui
-     {:target (js/document.getElementById "debugger_details")})
-
-    (om/root
-     webapp.framework.client.components.debugger-main/main-debug-slider-comp
-     debugger-ui
-     {:target (js/document.getElementById "main_playback_slider")})))
-
-
-
 
 
 

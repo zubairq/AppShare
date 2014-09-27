@@ -2,11 +2,11 @@
   :dependencies [
                  [org.clojure/clojure "1.6.0"]
                  [org.clojure/google-closure-library-third-party "0.0-2029"]
-                 [org.clojure/tools.reader "0.8.8"]
-                 [org.clojure/clojurescript "0.0-2322"]
+                 [org.clojure/tools.reader "0.8.9"]
+                 [org.clojure/clojurescript "0.0-2356"]
                  [om "0.7.3"]
                  [om-sync "0.1.1"]
-                 [org.clojure/core.async "0.1.338.0-5c5012-alpha" :scope "provided"]
+                 [org.clojure/core.async "0.1.346.0-17112a-alpha" :scope "provided"]
                  [com.facebook/react "0.11.1"]
 
                  [korma "0.3.0-RC5"]
