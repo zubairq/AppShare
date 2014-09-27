@@ -90,11 +90,11 @@
      (c/-->data [:submit :status]               "Submitted")
 
      (go
-      (let [ resp (<! (c/remote "request-endorsement"
+      (let [ resp (c/remote "request-endorsement"
              {
               :from-email     (c/<--data [:submit :request :from-email])
               :to-email       (c/<--data [:submit :request :to-email])
-              }))]
+              })]
 
          (cond
           (resp :error)
@@ -145,10 +145,10 @@
 
    (go
     (c/-->ui  [:ui  :company-details   :skills  ] nil)
-     (let [ company-name (<! (c/remote "get-company-details"
+     (let [ company-name (c/remote "get-company-details"
              {
               :company-url    (c/<--data [:ui :company-details :company-url])
-              }))]
+              })]
 
        (c/-->data [:company-details]  company-name)
        )))
