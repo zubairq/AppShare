@@ -82,16 +82,16 @@
 
     (c/div nil "Parsing {:s \"string\", :l 42, :k :keyword, :d 1.337}")
     (c/div nil (let [result (-> "{:s \"string\", :l 42, :k :keyword, :d 1.337}"
-      (webapp.reader/read-string))] (pr-str result)))
+      (cljs.reader/read-string))] (pr-str result)))
 
 
     (c/div nil "Parsing {:l 42}")
     (c/div nil (let [result (-> "{:l 42}"
-      (webapp.reader/read-string))] (pr-str result)))
+      (cljs.reader/read-string))] (pr-str result)))
 
     (c/div nil "Parsing 42")
     (c/div nil (let [result (-> "42"
-      (webapp.reader/read-string))] (pr-str result)))
+      (cljs.reader/read-string))] (pr-str result)))
 
     (if (not (blank?
               (get-in ui-data [:submit :message])))

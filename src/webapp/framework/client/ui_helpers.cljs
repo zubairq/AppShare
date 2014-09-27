@@ -10,13 +10,14 @@
    [ankha.core       :as ankha]
    )
   (:use
-   [webapp.framework.client.coreclient      :only  [log remote write-ui-fn read-ui-fn]]
+   [webapp.framework.client.coreclient      :only  [log remote-fn write-ui-fn read-ui-fn]]
    [webapp.framework.client.system-globals  :only  [app-state
                                                     reset-app-state ui-watchers
                                                     playbackmode
                                                     data-watchers
                                                     data-state
                                                     update-data
+
                                                     ]]
    [clojure.string :only [blank?]]
    )
@@ -25,7 +26,7 @@
 
   (:use-macros
    [webapp.framework.client.coreclient
-    :only  [defn-ui-component ns-coils div write-ui read-ui]]))
+    :only  [defn-ui-component ns-coils div write-ui read-ui remote]]))
 
 (ns-coils 'webapp.framework.client.ui-helpers)
 

@@ -3,6 +3,7 @@
    [goog.net.cookies :as cookie]
    [om.core          :as om :include-macros true]
    [om.dom           :as dom :include-macros true]
+   [webapp.framework.client.coreclient   :as  c  :include-macros true]
    [cljs.core.async  :refer [put! chan <! pub timeout]]
    [om-sync.core     :as async]
    [clojure.data     :as data]
@@ -11,18 +12,13 @@
    )
   (:use
    [webapp.client.ui-helpers                :only  [validate-email ]]
-   [webapp.framework.client.coreclient      :only  [log
-                                                    remote
-                                                    remove-debug-event
-                                                    ok
-                                                    ]]
    [webapp.framework.client.system-globals  :only  [app-state
                                                     reset-app-state
                                                     ui-watchers
                                                     data-watchers
                                                     data-state
-                                                    update-data
                                                     add-init-state-fn
+                                                    update-data
                                                     ]]
    [clojure.string :only [blank?]]
    )
@@ -38,9 +34,9 @@
 (defn get-top-companies-from-database []
 
   (go
-   (log "getting companies")
-   (let [top-companies (<! (remote "get-top-companies" {}))]
-     (if (ok top-companies)
+   (c/log "getting companies")
+   (let [top-companies (c/remote "get-top-companies" {})]
+     (if (c/ok top-companies)
        (do
          (update-data [:top-companies] top-companies)
          ;(set! (.-innerHTML (.getElementById js/document "playback_state")) (pr-str top-companies))
@@ -51,9 +47,9 @@
 (defn get-latest-endorsements-from-database []
 
   (go
-   (log "getting latest endorsements")
-   (let [latest-endorsements (<! (remote "get-latest-endorsements" {}))]
-     (if (ok latest-endorsements)
+   (c/log "getting latest endorsements")
+   (let [latest-endorsements (c/remote "get-latest-endorsements" {})]
+     (if (c/ok latest-endorsements)
        (do
          (update-data [:latest-endorsements] latest-endorsements)
          ;(set! (.-innerHTML (.getElementById js/document "playback_state")) (pr-str latest-endorsements))
@@ -71,7 +67,7 @@
 
 (defn my-timer []
     (swap! tt inc)
-    (log (str "Called timer: " @tt))
+    (c/log (str "Called timer: " @tt))
     (cond
 
 
@@ -84,14 +80,14 @@
 
      (go
        (let [res
-             (<!
-              (remote
+
+              (c/remote
                "sender-confirmed"
                {
                 :endorsement-id
-                (get-in @data-state [:submit :request :endorsement-id])}))
+                (get-in @data-state [:submit :request :endorsement-id])})
              ]
-         (log (str "Checking sender " @tt " " res))
+         (c/log (str "Checking sender " @tt " " res))
          (if (res :value)
            (do
              (update-data [:submit :status]  "ConfirmedSender")))))
@@ -104,11 +100,11 @@
       (get-in @data-state [:submit :request :endorsement-id]))
 
      (go
-        (let [res (<! (remote "receiver-confirmed" {
+        (let [res (c/remote "receiver-confirmed" {
                 :endorsement-id (get-in @data-state
-                                        [:submit :request :endorsement-id])}))
+                                        [:submit :request :endorsement-id])})
               ]
-         (log (str "Checking receiver " @tt " " res))
+         (c/log (str "Checking receiver " @tt " " res))
           (if (res :value)
             (do
               (update-data [:submit :status]  "ConfirmedReceiver")))))

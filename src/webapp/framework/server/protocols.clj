@@ -6,29 +6,11 @@
 )
 
 (defprotocol INeoNode
-  (id [this] 1)
   (setProp [this property value] nil)
 )
 
 
 (extend-type NeoNode
   INeoNode
-  (id [this]  "Html")
-  (setProp [this property value] (assoc this property value))
-)
+  (setProp [this property value] (assoc this property value)))
 
-
-;(def a (NeoNode. nil {:name "Zubair2"}))
-
-;a
-
-
-
-
-
-
-
-;(id a)
-;(setProp a :fdfd 4)
-
-;a

@@ -15,6 +15,23 @@
 
 
 
+(defmacro remote
+
+  ([action]
+  `(~'<! (webapp.framework.client.coreclient/remote-fn  ~(str `~action))))
+
+  ([action params]
+  `(~'<! (webapp.framework.client.coreclient/remote-fn  ~(str `~action)  ~params)))
+  )
+
+
+
+
+(defmacro server-call [& x]
+  `(cljs.core.async.macros/go ~@ x))
+
+(macroexpand '(remote  a  {}))
+
 (defmacro log [& x]
   `(.log js/console (str
                      ~@ x)))
@@ -29,17 +46,6 @@
 
 
 
-
-
-
-;--------------------------------------------------------------------
-(defmacro sql [sql-str params]
-  `(webapp.framework.client.coreclient.sql-fn
-       ~(encrypt sql-str)
-       ~params))
-
-;( macroexpand '(sql "SELECT * FROM test_table where name = ?" ["shopping"] ))
-;--------------------------------------------------------------------
 
 
 
@@ -63,10 +69,18 @@
 
 
 
+(defmacro aa [x]
+  `(str ~(str `~x)))
+
+(macroexpand '(aa "a1"))
 
 
 ;--------------------------------------------------------------------
-(defmacro defn-ui-component [fn-name data-paramater-name opts & code ]
+(defmacro defn-ui-component
+  ([fn-name  data-paramater-name  code ]
+   `(defn-ui-component  ~fn-name  ~data-paramater-name  {}  ~code)
+   )
+  ([fn-name data-paramater-name opts code ]
 
     `(do
 
@@ -101,7 +115,7 @@
                                      ~'owner
                                      ~(first data-paramater-name)
                                      (~'fn [~(first data-paramater-name)]
-                                           ~@code)
+                                           ~code)
                                      ~'path
                                      ~'parent-id
                                      )
@@ -121,7 +135,7 @@
              ~fn-name
              ~(str `~fn-name) ~(str `~data-paramater-name)
 
-          (str ~(with-out-str   (write (first `~code))
+          (str ~(with-out-str   (write `~code)
                                         :dispatch clojure.pprint/code-dispatch)))
 
 
@@ -129,7 +143,7 @@
 
        (webapp.framework.client.coreclient/process-ui-component  ~(str `~fn-name))
 
-       ))
+       )))
 
 
 (macroexpand
@@ -154,8 +168,12 @@
   `(om.dom/div  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 (defmacro a [attributes & more]
   `(om.dom/a  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro h1 [attributes & more]
+  `(om.dom/h1  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 (defmacro h2 [attributes & more]
   `(om.dom/h2  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro h3 [attributes & more]
+  `(om.dom/h3  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 (defmacro ul [attributes & more]
   `(om.dom/ul  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 (defmacro li [attributes & more]
@@ -170,6 +188,16 @@
   `(om.dom/button  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 (defmacro input [attributes & more]
   `(om.dom/input  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro table [attributes & more]
+  `(om.dom/table  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro tr [attributes & more]
+  `(om.dom/tr  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro td [attributes & more]
+  `(om.dom/td  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro th [attributes & more]
+  `(om.dom/th  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro form [attributes & more]
+  `(om.dom/form  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 ;--------------------------------------------------------------------
 
 
@@ -298,15 +326,39 @@
 
 
 
+
+
+(defmacro  -->data
+  "Writes to the data tree"
+  [path value]
+   `(~'webapp.framework.client.coreclient/-->data-fn ~path ~value))
+
+
+
+(defmacro  <--data
+  "Reads from the data tree"
+  [path]
+   `(~'webapp.framework.client.coreclient/<--data-fn ~path))
+
+
+
+
+
+
+
+
+
+
+
 (comment macroexpand '(when-ui-value-changes [:ui :company-details :company-url]
 
 
    (go
     (webapp.framework.client.coreclient/update-ui  ui  [:ui  :company-details   :skills  ] nil)
-     (let [ l (<! (remote "get-company-details"
+     (let [ l (remote  get-company-details
              {
               :company-url    (get-in @app-state [:ui :company-details :company-url])
-              }))]
+              })]
 
        ;(log (pr-str l))
        (update-data [:company-details]  l)
@@ -362,3 +414,54 @@
 ;(macroexpand '(read-ui app [:ui :tab-browser]))
 
 ;(macroexpand '(write-ui app [:ui :tab-browser]  "top companies"))
+
+
+
+(defmacro neo4j
+  ([cypher-str]
+  `(~'<! (webapp.framework.client.coreclient/neo4j-fn
+    ~(encrypt cypher-str)
+    )))
+
+  ([cypher-str params]
+  `(~'<! (webapp.framework.client.coreclient/neo4j-fn
+    ~(encrypt cypher-str)
+    ~params
+    )))
+
+( [cypher-str params return]
+  `(~'<! (webapp.framework.client.coreclient/neo4j-fn
+    ~(encrypt cypher-str)
+    ~params
+    ~return
+    ))))
+
+
+(defmacro neo4j-1
+  ([cypher-str]
+  `(~'first (~'neo4j  ~cypher-str)))
+
+  ([cypher-str  params]
+  `(~'first (~'neo4j  ~cypher-str ~params)))
+
+  ([cypher-str  params  return]
+  `(~'first (~'neo4j  ~cypher-str ~params ~return)))
+  )
+
+
+
+;--------------------------------------------------------------------
+(defmacro sql [sql-str params]
+  `(~'<! (webapp.framework.client.coreclient/sql-fn
+       ~(encrypt sql-str)
+       ~params)))
+
+;( macroexpand '(sql "SELECT * FROM test_table where name = ?" ["shopping"] ))
+;--------------------------------------------------------------------
+
+(defmacro sql-1 [sql-str params]
+  `(~'first (~'sql  ~sql-str ~params)))
+
+
+
+

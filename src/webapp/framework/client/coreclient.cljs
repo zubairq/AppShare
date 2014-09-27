@@ -1,5 +1,7 @@
 (ns webapp.framework.client.coreclient
+  (:refer-clojure :exclude [val empty remove find next parents])
   (:require
+   [clojure.string]
    [goog.net.XhrIo          :as xhr]
    [clojure.browser.repl    :as repl]
    [cljs.reader             :as reader]
@@ -17,6 +19,7 @@
    [cljs.core.async.macros :refer [go alt!]])
 
   (:use
+   [webapp.framework.client.records    :only  [NeoNode map->NeoNode]]
    [clojure.browser.event :only [listen]]
    [webapp.framework.client.system-globals  :only  [touch
                                                     debugger-ui
@@ -38,6 +41,8 @@
 
 
 
+(reader/register-tag-parser! "webapp.framework.server.records.NeoNode" map->NeoNode)
+(reader/register-tag-parser! "webapp.framework.client.records.NeoNode" map->NeoNode)
 
 
 (def debug-mode (atom false))
@@ -74,7 +79,7 @@
 
 
 
-(defn  -->data
+(defn  -->data-fn
   "
   "
   [path value]
@@ -87,7 +92,7 @@
 
 
 
-(defn  <--data
+(defn  <--data-fn
   "
   "
   [path]
@@ -248,9 +253,9 @@
 
 
 
-(defn remote
+(defn remote-fn
   ([action]
-   (remote action {}))
+   (remote-fn action {}))
 
 
 
@@ -293,7 +298,7 @@
 
 (defn sql-fn [sql-str params]
   (go
-    (<! (remote
+    (<! (remote-fn
                 "!sql" {:sql sql-str :params params}))))
 
 
@@ -301,21 +306,22 @@
 
 (defn neo4j-fn [cypher-str params]
   (go
-    (<! (remote
+    (<! (remote-fn
                 "!neo4j" {:cypher cypher-str :params params}))))
 
 
 
 
 (go
- (let [env (:value (<! (remote "!get-environment" {})))]
+ (let [env (:value (<! (remote-fn "!get-environment" {})))]
    (if (= env "dev")
      (reset! debug-mode true))))
 
 
 
 (go
- (let [record-pointer-locally-value (:value (<! (remote "!get-record-pointer-locally" {})))]
+ (let [record-pointer-locally-value (:value
+                                     (<! (remote-fn "!get-record-pointer-locally" {})))]
      (reset! record-pointer-locally
              record-pointer-locally-value)))
 
@@ -482,28 +488,6 @@
 
 
 (get @paths-for-refresh "main-yazz-header")
-
-
-(defn  ^:export loadDebugger []
-  (do
-   (reset! app-watch-on? false)
-
-    (om/root
-     webapp.framework.client.components.debugger-main/main-debug-comp
-     debugger-ui
-     {:target (js/document.getElementById "right_of_main")})
-
-
-    (om/root
-     webapp.framework.client.components.debugger-main/details-debug-comp
-     debugger-ui
-     {:target (js/document.getElementById "debugger_details")})
-
-    (om/root
-     webapp.framework.client.components.debugger-main/main-debug-slider-comp
-     debugger-ui
-     {:target (js/document.getElementById "main_playback_slider")})))
-
 
 
 
@@ -999,3 +983,94 @@
 (defn add-many-fn [items]
   (apply
    om.dom/div nil items))
+
+
+
+
+
+
+
+
+
+
+;----------------------------------------------------------
+(defn neo4j-fn
+  "Call the server side neo4j function"
+  ([cypher-str]
+  ;----------------------------------------------------------
+  (go
+   (<! (remote-fn
+        "!neo4j"
+        {
+         :cypher    cypher-str
+         :params    {}}))))
+  ([cypher-str params]
+  ;----------------------------------------------------------
+  (go
+   (<! (remote-fn
+        "!neo4j"
+        {
+         :cypher    cypher-str
+         :params    params}))))
+
+([cypher-str   params   return]
+  ;----------------------------------------------------------
+  (go
+   (<! (remote-fn
+        "!neo4j_nodes"
+        {
+         :cypher    cypher-str
+         :params    params
+         :return    return})))))
+
+
+
+
+
+
+
+
+
+;----------------------------------------------------------
+(defn add-to-simple-point-layer
+  [item  layer-name]
+;----------------------------------------------------------
+    (go
+        (<! (remote-fn
+             "!add-to-simple-point-layer"
+             {:node         item
+              :layer-name   layer-name}))))
+
+
+
+
+
+
+;----------------------------------------------------------
+(defn find-names-within-distance
+  [layer-name  x  y  km]
+  ;----------------------------------------------------------
+    (go
+        (<! (remote-fn
+             "!find-names-within-distance"
+             {:layer-name layer-name
+              :x          x
+              :y          y
+              :dist-km    km}))))
+
+
+
+
+;----------------------------------------------------------
+(defn find-names-within-bounds
+  [layer-name  min-x  min-y  max-x  max-y]
+  ;----------------------------------------------------------
+  (go
+   (<! (remote-fn "!find-names-within-bounds"   {:layer-name layer-name
+                                              :min-x min-x
+                                              :min-y min-y
+                                              :max-x max-x
+                                              :max-y max-y
+                                              }))))
+
+

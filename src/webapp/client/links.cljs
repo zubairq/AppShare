@@ -3,6 +3,7 @@
    [goog.net.cookies :as cookie]
    [om.core          :as om :include-macros true]
    [om.dom           :as dom :include-macros true]
+   [webapp.framework.client.coreclient   :as  c  :include-macros true]
    [cljs.core.async  :refer [put! chan <! pub timeout]]
    [om-sync.core     :as async]
    [clojure.data     :as data]
@@ -10,10 +11,6 @@
    [ankha.core       :as ankha]
    )
   (:use
-   [webapp.framework.client.coreclient      :only  [log
-                                                    remote
-                                                    remove-debug-event
-                                                    ]]
    [webapp.framework.client.system-globals  :only  [app-state
                                                     reset-app-state
                                                     ui-watchers
@@ -32,16 +29,16 @@
 
 (defn  ^:export confirmLink [uuid-code]
   (go
-   (let [ confirm-sender-code-result (<! (remote "confirm-sender-code"
+   (let [ confirm-sender-code-result (c/remote "confirm-sender-code"
                                                  {
                                                   :sender-code   uuid-code
-                                                  }))]
+                                                  })]
      (cond
       (:error confirm-sender-code-result)
-      (let [ confirm-receiver-code-result (<! (remote "confirm-receiver-code"
+      (let [ confirm-receiver-code-result (c/remote "confirm-receiver-code"
                            {
                             :receiver-code   uuid-code
-                            }))]
+                            })]
         (cond
          (:error confirm-receiver-code-result)
          (.write js/document (:error confirm-receiver-code-result))

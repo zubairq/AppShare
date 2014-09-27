@@ -11,7 +11,7 @@
    )
 
   (:use
-   [webapp.framework.client.coreclient           :only  [log remote debug-mode component-fn
+   [webapp.framework.client.coreclient           :only  [log remote-fn debug-mode component-fn
                                                          remove-debug-event
                                                          ]]
    [webapp.framework.client.system-globals       :only  [app-state
@@ -27,8 +27,7 @@
                                                          ]]
    )
   (:use-macros
-   [webapp.framework.client.neo4j      :only  [neo4j]]
-   [webapp.framework.client.coreclient :only  [defn-ui-component ns-coils div component]]
+   [webapp.framework.client.coreclient :only  [defn-ui-component ns-coils div component remote]]
    )
   (:require-macros
    [cljs.core.async.macros :refer [go]])
@@ -201,10 +200,11 @@
     (will-mount [_]
                 (do
                   ; set up the initial state
-                  (dorun (for [init-state-fn  @init-state-fns]
-                           (do
-                             (init-state-fn)
-                             )))
+                  (if (not @playbackmode)
+                           (dorun (for [init-state-fn  @init-state-fns]
+                                    (do
+                                      (init-state-fn)
+                                      ))))
 
                   ; set up the AB tests
                   (log (str "AB TESTS: " (keys @ab-tests)))

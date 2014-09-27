@@ -1,42 +1,16 @@
 (ns webapp.framework.client.protocols
   (:use
-   [webapp.framework.client.records :only  [Html Tree NeoNode]]
+   [webapp.framework.client.records :only  [NeoNode]]
    )
   )
 
 
-
 (defprotocol INeoNode
-  (id [this] :id)
+  (setProp [this property value] nil)
 )
 
 
-
-(defprotocol TypeInfo
-  (gettype [this] nil)
+(extend-type NeoNode
+  INeoNode
+  (setProp [this property value] (assoc this property value))
 )
-
-
-(extend-type Html
-  TypeInfo
-  (gettype [this]  "Html")
-
-)
-
-(extend-type Tree
-  TypeInfo
-  (gettype [this]  "Tree")
-
-)
-
-(def a (Html.))
-
-
-(gettype a)
-
-(def b (Tree.))
-
-
-(gettype b)
-
-

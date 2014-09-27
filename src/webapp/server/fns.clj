@@ -275,9 +275,7 @@
 
 
 ;----------------------------------------------------------------
-(defn get-top-companies
-
-  [{}]
+(defn get-top-companies []
   ;----------------------------------------------------------------
   (neo4j "match
          (n:Company)-[:WORKS_FOR]-(w:Person)-[:CONNECT]-someone
@@ -296,9 +294,7 @@
 
 
 ;----------------------------------------------------------------
-(defn get-latest-endorsements
-
-  [{}]
+(defn get-latest-endorsements []
   ;----------------------------------------------------------------
   (neo4j "match
            (c)-[:WORKS_FOR]-(x)-[r:CONNECT]->(y)-[:WORKS_FOR]-(c2)

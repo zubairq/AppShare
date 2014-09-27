@@ -8,10 +8,12 @@
    [clojure.data     :as data]
    [clojure.string   :as string]
    [ankha.core       :as ankha]
+   [cljs.reader      :as reader]
    )
 
   (:use
-   [webapp.framework.client.coreclient     :only  [log remote component-fn]]
+   [webapp.framework.client.records        :only  [NeoNode map->NeoNode]]
+   [webapp.framework.client.coreclient     :only  [log remote-fn component-fn]]
    [webapp.framework.client.system-globals :only  [debugger-ui
                                                    debug-event-timeline
                                                    app-state
@@ -19,12 +21,10 @@
                                                    data-accesses]]
    )
   (:use-macros
-   [webapp.framework.client.neo4j         :only  [neo4j]]
-   [webapp.framework.client.coreclient    :only  [component]]
+   [webapp.framework.client.coreclient    :only  [component remote]]
    )
   (:require-macros
    [cljs.core.async.macros :refer [go]]))
-
 
 
 
@@ -663,3 +663,29 @@
 
 ;(reverse (get @data-accesses {:tree "UI" :path (get @debugger-ui :events-filter-path)}))
 ;(keys @debug-event-timeline )
+
+
+
+
+(defn  ^:export loadDebugger []
+  (do
+   (reset! app-watch-on? false)
+
+    (om/root
+     main-debug-comp
+     debugger-ui
+     {:target (js/document.getElementById "right_of_main")})
+
+
+    (om/root
+     details-debug-comp
+     debugger-ui
+     {:target (js/document.getElementById "debugger_details")})
+
+    (om/root
+     main-debug-slider-comp
+     debugger-ui
+     {:target (js/document.getElementById "main_playback_slider")})))
+
+
+

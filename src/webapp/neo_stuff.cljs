@@ -8,13 +8,8 @@
   (:require-macros
     [cljs.core.async.macros :refer [go alt!]])
 
-  (:use
-        [webapp.framework.client.coreclient  :only [remote]]
-        [webapp.framework.client.neo4j       :only [neo4j-fn]]
-    )
     (:use-macros
         [webapp.framework.client.coreclient  :only [ns-coils sql log neo4j]]
-        [webapp.framework.client.neo4j       :only [neo4j]]
      )
 )
 (ns-coils 'webapp.neo-stuff)
@@ -28,16 +23,16 @@
 
 
 
-(comment go (log (str (<!
-  (neo4j
+(comment go (log (str
+  (c/neo4j
    "create (u:User { email : { email2 }, title : 'Developer' }) return u"
-   {:email2 "dfsfdsf@gmail.com"} "u")))))
+   {:email2 "dfsfdsf@gmail.com"} "u"))))
 
 
-(comment go (log (str (<!
-  (neo4j
+(comment go (log (str
+  (c/neo4j
    "create (u:User { email : { email2 }, title : 'Developer' }) return u"
-   {:email2 "dffds@gmail.com"} "u")))))
+   {:email2 "dffds@gmail.com"} "u"))))
 
 
 
@@ -50,8 +45,8 @@
  (.log js/console
        (str
         (neo-result
-         (<! (neo4j "START x = node(17109) RETURN x" {} ))
-         "x"))))
+         (c/neo4j "START x = node(17109) RETURN x" {} ))
+         "x")))
 
 
 

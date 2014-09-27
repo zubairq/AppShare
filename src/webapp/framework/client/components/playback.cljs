@@ -11,15 +11,17 @@
    )
 
   (:use
-   [webapp.framework.client.coreclient     :only  [log remote]]
-   [webapp.framework.client.system-globals :only  [app-state   playback-app-state
+   [webapp.framework.client.coreclient     :only  [log remote-fn
+                                                   neo4j-fn]]
+   [webapp.framework.client.system-globals :only  [app-state
+                                                   playback-app-state
                                                    playback-controls-state
                                                    reset-app-state
                                                    reset-playback-app-state]]
    [webapp.framework.client.components.system-container :only  [main-view]]
    )
   (:use-macros
-   [webapp.framework.client.neo4j      :only  [neo4j]]
+   [webapp.framework.client.coreclient      :only  [remote neo4j]]
    )
   (:require-macros
    [cljs.core.async.macros :refer [go]]))
@@ -40,19 +42,19 @@
                       [:ui :current-session]
                       (fn[_] session-id)))
    (let [
-            init-state  (<! (neo4j "match (n:WebSession) where
+            init-state  (neo4j "match (n:WebSession) where
                                    n.session_id={session_id}
                                    return n.init_state"
-                                   {:session_id    session-id}))
+                                   {:session_id    session-id})
 
 
-            ll          (<! (neo4j "
+            ll          (neo4j "
                                    match (r:WebRecord) where
                                    r.session_id={session_id}
                                    return r order by r.seq_ord
                                    "
                                    {:session_id    session-id}
-                                   "r"))]
+                                   "r")]
 
         (om/root
          main-view
@@ -95,8 +97,8 @@
 (defn replay-session [session-id]
   (go
    (let [
-         ll          (<! (neo4j "match (n:WebSession) return n.session_id"
-                        {} "n.session_id"))
+         ll          (neo4j "match (n:WebSession) return n.session_id"
+                        {} "n.session_id")
         ]
 
      (reset! playback-controls-state (assoc-in
@@ -272,9 +274,9 @@
                         (let [session (<! clear-replay-sessions)]
                           (log "****CLEAR REPLAY")
 
-                          (let [ret (<! (remote "!clear-playback-sessions"
+                          (let [ret (remote  !clear-playback-sessions
                                       {:password (-> @app :ui :delete-password :value)
-                                       }))]
+                                       })]
                             (if (ret :success)
                               (om/transact!
                                app

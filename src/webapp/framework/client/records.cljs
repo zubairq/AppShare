@@ -1,9 +1,9 @@
-(ns webapp.framework.client.records)
-
-(defrecord Html [])
-(defrecord Tree [])
-
-
+(ns webapp.framework.client.records
+  (:require
+   [cljs.reader             :as reader]
+   ))
 
 
 (defrecord NeoNode [])
+
+
