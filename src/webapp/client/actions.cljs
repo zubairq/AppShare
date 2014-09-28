@@ -32,8 +32,17 @@
               (-->data  [:rows]
                         (:rows (remote  get-rows)))))
 
+
+
+
 (watch-data [:rows]
-                           (-->ui [:ui :table :rows] (<--data [:rows])))
+
+            (-->ui [:ui :table :rows]
+                   (<--data [:rows])))
+
+
+
+
 
 
 
