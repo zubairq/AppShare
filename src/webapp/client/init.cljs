@@ -65,7 +65,7 @@
       data-state
 
       (assoc-in
-       @data-state [:rows]
-       (:rows (c/remote  setup-schema))))
+       @data-state [:table]
+       (c/remote  setup-schema)))
       )
     )))

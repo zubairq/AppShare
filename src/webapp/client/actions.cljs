@@ -35,10 +35,10 @@
 
 
 
-(watch-data [:rows]
+(watch-data [:table]
 
             (-->ui [:ui :table :rows]
-                   (<--data [:rows])))
+                   (<--data [:table :row-data])))
 
 
 
