@@ -44,6 +44,26 @@
 
 
 
+(def abc
+  {
+   :rows
+   [
+    {
+     :id        1
+     :neo-id    51899
+     }
+    ]
+   }
+  )
+
+
+(defn convert [structure]
+  structure)
+
+abc
+
+(convert abc)
+
 
 
 (comment go (.log js/console

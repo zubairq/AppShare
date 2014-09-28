@@ -56,8 +56,16 @@
 (defn get-rows
   []
   ;----------------------------------------------------------------
-  (let [rows  (neo4j "match (r:Rows)-[:ROW]->(rows:Row) return rows" {} "rows")]
-    {:rows rows}
+  (let [
+        row-data    (neo4j   "match (r:Rows)-[:ROW]->(rows:Row) return rows"  {} "rows")
+        rows        (neo4j-1 "match (row:Rows)                  return row"   {} "row")
+        table       (neo4j-1 "match (table:Table)               return table" {} "table")
+        ]
+    {
+     :table      table
+     :rows       rows
+     :row-data   row-data
+     }
     ))
 
 
@@ -73,7 +81,7 @@
         (println "Creating schema")
         (let [rows
               (neo4j "CREATE
-                     (new_table:Table),
+                     (new_table:Table {col_count: 1}),
                      (new_rows:Rows {row_count: 1}),
                      (row:Row {id: 1}),
                      (column:Column {id: 1, value: ''}),

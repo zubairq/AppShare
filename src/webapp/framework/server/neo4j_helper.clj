@@ -373,6 +373,23 @@
              ))))
 
 
+(defn neo4j-1
+  ([cypher]
+   (first (neo4j
+           cypher  {})))
+
+
+
+  ([cypher params]
+   (first (neo4j
+           cypher  params)))
+
+
+
+  ([cypher   params  return-field]
+   (first (neo4j
+           cypher  params  return-field)))
+)
 
 
 
