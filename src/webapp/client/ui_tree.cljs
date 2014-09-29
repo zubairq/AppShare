@@ -12,10 +12,26 @@
   (:use
    [webapp.client.ui-helpers                :only  [validate-email]])
 
-   (:require-macros
-    [cljs.core.async.macros :refer [go]]))
+  (:require-macros
+   [cljs.core.async.macros :refer [go]])
 
-(c/ns-coils 'webapp.client.ui-tree)
+  (:use-macros
+   [webapp.framework.client.coreclient  :only [ns-coils
+                                               sql
+                                               log
+                                               neo4j
+                                               defn-ui-component
+                                               a
+                                               div
+                                               write-ui  ==ui  -->ui  watch-ui <--ui
+                                               <--data -->data
+                                               remote
+                                               ]]
+   )
+
+  )
+
+(ns-coils 'webapp.client.ui-tree)
 
 
 
@@ -32,15 +48,15 @@
 
 
 
-(c/==ui  [:ui  :request  :from-email  :mode]   "validate"
+(==ui  [:ui  :request  :from-email  :mode]   "validate"
 
     (cond
 
-      (validate-email (c/<--ui [:ui :request :from-email :value]))
-        (c/-->ui [:ui :request :from-email :error] "")
+      (validate-email (<--ui [:ui :request :from-email :value]))
+        (-->ui [:ui :request :from-email :error] "")
 
       :else
-        (c/-->ui [:ui :request :from-email :error] "Invalid email")
+        (-->ui [:ui :request :from-email :error] "Invalid email")
     ))
 
 
@@ -52,11 +68,11 @@
 
 
 
-(c/==ui  [:ui :request :to-email :mode] "validate"
+(==ui  [:ui :request :to-email :mode] "validate"
 
-   (if (validate-email (c/<--ui [:ui :request :to-email :value]))
-     (c/-->ui [:ui :request :to-email :error] "")
-     (c/-->ui [:ui :request :to-email :error] "Invalid email")
+   (if (validate-email (<--ui [:ui :request :to-email :value]))
+     (-->ui [:ui :request :to-email :error] "")
+     (-->ui [:ui :request :to-email :error] "Invalid email")
      ))
 
 
@@ -65,12 +81,12 @@
 
 
 
-(c/watch-ui [:ui :request :to-email :value]
+(watch-ui [:ui :request :to-email :value]
 
-                       (if (= (c/<--ui [:ui :request :to-email :mode]) "validate")
-                         (if (validate-email (c/<--ui [:ui :request :to-email :value]))
-                           (c/-->ui [:ui :request :to-email :error] "")
-                           (c/-->ui [:ui :request :to-email :error] "Invalid email")
+                       (if (= (<--ui [:ui :request :to-email :mode]) "validate")
+                         (if (validate-email (<--ui [:ui :request :to-email :value]))
+                           (-->ui [:ui :request :to-email :error] "")
+                           (-->ui [:ui :request :to-email :error] "Invalid email")
                            )))
 
 
@@ -80,28 +96,28 @@
 
 
 
-(c/==ui [:ui :request :submit :value]     true
+(==ui [:ui :request :submit :value]     true
 
     (do
-     (c/-->ui [:ui :request :submit :message] "Submitted")
+     (-->ui [:ui :request :submit :message] "Submitted")
 
-     (c/-->data [:submit :request :from-email]  (c/<--ui [:ui :request :from-email :value]))
-     (c/-->data [:submit :request :to-email]    (c/<--ui [:ui :request :to-email :value]))
-     (c/-->data [:submit :status]               "Submitted")
+     (-->data [:submit :request :from-email]  (<--ui [:ui :request :from-email :value]))
+     (-->data [:submit :request :to-email]    (<--ui [:ui :request :to-email :value]))
+     (-->data [:submit :status]               "Submitted")
 
      (go
-      (let [ resp (c/remote "request-endorsement"
+      (let [ resp (remote "request-endorsement"
              {
-              :from-email     (c/<--data [:submit :request :from-email])
-              :to-email       (c/<--data [:submit :request :to-email])
+              :from-email     (<--data [:submit :request :from-email])
+              :to-email       (<--data [:submit :request :to-email])
               })]
 
          (cond
           (resp :error)
-            (c/-->data [:submit :response]  (pr-str resp))
+            (-->data [:submit :response]  (pr-str resp))
 
           :else
-           (c/-->data [:submit :request :endorsement-id]  (-> resp :value :endorsement_id))
+           (-->data [:submit :request :endorsement-id]  (-> resp :value :endorsement_id))
        )))))
 
 
@@ -141,60 +157,60 @@
 
 
 
-(c/watch-ui [:ui :company-details :company-url]
+(watch-ui [:ui :company-details :company-url]
 
    (go
-    (c/-->ui  [:ui  :company-details   :skills  ] nil)
-     (let [ company-name (c/remote "get-company-details"
+    (-->ui  [:ui  :company-details   :skills  ] nil)
+     (let [ company-name (remote "get-company-details"
              {
-              :company-url    (c/<--data [:ui :company-details :company-url])
+              :company-url    (<--data [:ui :company-details :company-url])
               })]
 
-       (c/-->data [:company-details]  company-name)
+       (-->data [:company-details]  company-name)
        )))
 
 
 
-(c/==ui  [:ui   :company-details   :clicked]    true
+(==ui  [:ui   :company-details   :clicked]    true
 
-      (c/-->ui  [:ui  :company-details   :clicked  ] false)
-      (c/-->ui  [:ui  :tab-browser    ] "top companies"))
-
-
+      (-->ui  [:ui  :company-details   :clicked  ] false)
+      (-->ui  [:ui  :tab-browser    ] "top companies"))
 
 
 
 
 
 
-(c/watch-ui [:ui :request :from-email :value]
 
-                       (if (= (c/<--ui [:ui :request :from-email :mode]) "validate")
 
-                         (if (validate-email  (c/<--ui [:ui :request :from-email :value]))
+(watch-ui [:ui :request :from-email :value]
 
-                           (c/-->ui [:ui :request :from-email :error] "")
-                           (c/-->ui [:ui :request :from-email :error] "Invalid email")
+                       (if (= (<--ui [:ui :request :from-email :mode]) "validate")
+
+                         (if (validate-email  (<--ui [:ui :request :from-email :value]))
+
+                           (-->ui [:ui :request :from-email :error] "")
+                           (-->ui [:ui :request :from-email :error] "Invalid email")
                            )))
 
 
 
-(c/watch-ui [:ui :request :from-email :value]
+(watch-ui [:ui :request :from-email :value]
 
                          (if
                            (and
-                            (validate-email  (c/<--ui [:ui :request :from-email :value]))
-                            (validate-email  (c/<--ui [:ui :request :to-email :value])))
+                            (validate-email  (<--ui [:ui :request :from-email :value]))
+                            (validate-email  (<--ui [:ui :request :to-email :value])))
 
-                           (c/-->ui [:ui :request :details-valid] true)
+                           (-->ui [:ui :request :details-valid] true)
                            ))
 
-(c/watch-ui [:ui :request :to-email :value]
+(watch-ui [:ui :request :to-email :value]
 
                          (if
                            (and
-                            (validate-email  (c/<--ui [:ui :request :from-email :value]))
-                            (validate-email  (c/<--ui [:ui :request :to-email :value])))
+                            (validate-email  (<--ui [:ui :request :from-email :value]))
+                            (validate-email  (<--ui [:ui :request :to-email :value])))
 
-                           (c/-->ui [:ui :request :details-valid] true)
+                           (-->ui [:ui :request :details-valid] true)
                            ))

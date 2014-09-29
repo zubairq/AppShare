@@ -10,9 +10,22 @@
                                                                latest-endorsements]]
 
    [webapp.client.react.components.company-details     :only  [company-details2]]
-))
+   )
+  (:use-macros
+   [webapp.framework.client.coreclient  :only [ns-coils
+                                               sql
+                                               log
+                                               neo4j
+                                               defn-ui-component
+                                               a
+                                               div
+                                               write-ui
+                                               ]]
+   )
 
-(c/ns-coils 'webapp.client.react.views.main)
+  )
+
+(ns-coils 'webapp.client.react.views.main)
 
 
 
@@ -23,22 +36,21 @@
 
 
 ;------------------------------------------------------------
-(c/defn-ui-component     browser-menu   [app]
-  {:absolute-path []}
+(defn-ui-component     browser-menu   [app]
   ;------------------------------------------------------------
 
-  (c/div  {:style {:paddingBottom "10px"}}
+  (div  {:style {:paddingBottom "10px"}}
 
 
-            (c/div
+            (div
              (cond
               (= (-> app :ui :tab-browser) "top companies")
               {:style {:display "inline-block"}}
 
               :else
               {:className  ""
-               :onClick        (fn[e] (c/write-ui  app  [:ui :tab-browser]  "top companies"))
-               :onTouchStart   (fn[e] (c/write-ui app [:ui :tab-browser]  "top companies"))
+               :onClick        (fn[e] (write-ui  app  [:ui :tab-browser]  "top companies"))
+               :onTouchStart   (fn[e] (write-ui app [:ui :tab-browser]  "top companies"))
                :style {:textDecoration "underline"
                        :display "inline-block"}
                })
@@ -141,7 +153,6 @@
 
 ;------------------------------------------------------------
 (c/defn-ui-component     main-view   [app]
-  {:absolute-path []}
 ;------------------------------------------------------------
 
   (c/div {:style {
@@ -162,7 +173,7 @@
                                 :onClick        (fn[e] (c/write-ui app [:ui :tab]  "browser"))
                                 :onTouchStart   (fn[e] (c/write-ui app [:ui :tab]  "browser"))
 
-                                } "Search"))
+                                } "Browse"))
 
             (c/li {:className  (if (= (-> app :ui :tab) "request") "active" "") }
                     (c/a {:className  ""
@@ -170,7 +181,7 @@
                                 :onTouchStart   (fn[e] (c/write-ui app [:ui :tab]  "request"))
 
 
-                                } "Connect"))
+                                } "Join"))
 
             (c/li {:className  (if (= (-> app :ui :tab) "login") "active" "")   }
                     (c/a {:className  ""
