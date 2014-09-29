@@ -74,12 +74,13 @@
            person.email={email} and
            company.web_address={web_address}
            create
-           (person)-[:WORKS_FOR]->(company)
+           (person)-[:WORKS_FOR {accepted_timestamp: {accepted_timestamp}}]->(company)
            return
            person"
            {
             :email          email
             :web_address    web-address
+            :accepted_timestamp (. (java.util.Date.) getTime)
             }
            ["person"])))
 
@@ -108,48 +109,17 @@
 
 
 
-(defn endorse [& {:keys [from to]}]
-  (do
-    (neo4j "match
-           (from:Person),(to:Person)
-           where
-           from.email={from} and
-           to.email={to}
-           create unique
-             (from)-[:CONNECT {
-                              accepted_timestamp: {accepted_timestamp}
-                              }
-                                ]->(to)
-           return
-             from, to"
-           {
-            :from  from
-            :to    to
-            :accepted_timestamp (. (java.util.Date.) getTime)
-            }
-           ["from","to"])))
 
 
 
-(defn endorse2 [& {:keys [from-email to-email]}]
+(defn endorse2 [& {:keys [from-email]}]
   (let
     [
      from-company      (get-company-url-from-email from-email)
-     to-company        (get-company-url-from-email to-email)
      ]
-    (if (not (= from-company to-company))
       (do
         (create-person   :email           from-email
-                         :web-address     from-company)
-
-        (create-person   :email           to-email
-                         :web-address     to-company)
+                         :web-address     from-company))))
 
 
-        (endorse :from   from-email
-                 :to     to-email
-                 )
-
-        ))))
-
-
+;(endorse2 :from-email "zubairq@gmail")

@@ -12,10 +12,28 @@
    [webapp.client.timers]
    )
 
-   (:require-macros
-    [cljs.core.async.macros :refer [go]]))
+  (:require-macros
+   [cljs.core.async.macros :refer [go]])
+  (:use-macros
+   [webapp.framework.client.coreclient  :only [ns-coils
+                                               sql
+                                               log
+                                               neo4j
+                                               defn-ui-component
+                                               a
+                                               div
+                                               write-ui
+                                               ==data
+                                               -->ui
+                                               <--ui
+                                               -->data
+                                               <--data
+                                               watch-data
+                                               ]]
+   )
+  )
 
-(c/ns-coils 'webapp.client.data-tree)
+(ns-coils 'webapp.client.data-tree)
 
 
 
@@ -26,8 +44,8 @@
 
 
 
-(c/==data    [:submit :status]     "ConfirmedSender"
-    (c/-->ui [:ui :request :from-email :confirmed]  true))
+(==data    [:submit :status]     "ConfirmedSender"
+    (-->ui [:ui :request :from-email :confirmed]  true))
 
 
 
@@ -35,10 +53,10 @@
 
 
 
-(c/==data   [:submit :status]   "ConfirmedReceiver"
+(==data   [:submit :status]   "ConfirmedReceiver"
    (go
-    (c/-->ui [:ui :request :to-email :confirmed]  true)
-    (c/-->ui [:ui :request :show-connection-confirmation]  true)
+    (-->ui [:ui :request :to-email :confirmed]  true)
+    (-->ui [:ui :request :show-connection-confirmation]  true)
     ))
 
 
@@ -50,24 +68,24 @@
 
 
 
-(c/==data    [:submit]     "Submitted"
-     (c/log "sent"))
+(==data    [:submit]     "Submitted"
+     (log "sent"))
 
 
 
 
 
 
-(c/watch-data  [:top-companies]
+(watch-data  [:top-companies]
 
-   (c/-->ui [:ui :companies :values]  (c/<--data [:top-companies])))
-
-
+   (-->ui [:ui :companies :values]  (<--data [:top-companies])))
 
 
-(c/watch-data  [:latest-endorsements]
 
-   (c/-->ui[:ui :latest-endorsements :values]  (c/<--data [:latest-endorsements]))
+
+(watch-data  [:latest-endorsements]
+
+   (-->ui[:ui :latest-endorsements :values]  (<--data [:latest-endorsements]))
    )
 
 
@@ -75,5 +93,5 @@
 
 
 
-(c/watch-data  [:company-details]
-   (c/-->ui [:ui :company-details :skills] (c/<--data [:company-details])))
+(watch-data  [:company-details]
+   (-->ui [:ui :company-details :skills] (<--data [:company-details])))
