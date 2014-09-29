@@ -689,3 +689,31 @@
 
 
 
+(defn  ^:export unloadDebugger []
+  (do
+    (reset! debugger-ui
+
+            (assoc-in
+             @debugger-ui
+             [:react-components] []))
+
+
+    (reset! debugger-ui
+            (assoc-in
+             @debugger-ui
+             [:current-component] nil))
+
+
+    (reset! debugger-ui
+            (assoc-in
+             @debugger-ui
+             [:mode] "show-event"))
+
+
+    (om/root
+     (fn [app owner] (om/component (dom/div nil "")))
+     debugger-ui
+     {:target (js/document.getElementById "right_of_main")})))
+
+;(unloadDebugger)
+
