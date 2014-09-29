@@ -71,7 +71,7 @@
 
 
 
-  (defn process-ask-for-endorsement-ask-receiver
+  (defn sender-confirmed
   [send-endorsement-neo4j-node]
   ;----------------------------------------------------------------
 
@@ -112,26 +112,6 @@
     ))
 
 
-
-
-
-
-
-(defn check-messages
-  []
-  ;----------------------------------------------------------------
-
-  (let [messages-waiting (neo4j "match (n:AskToConnect) return n" {} "n")]
-    (println (str "AskToConnect: " messages-waiting))
-    (dorun (map process-ask-for-endorsement  messages-waiting)))
-
-  (let [messages-waiting (neo4j "match (n:AskToConnectContactReceiver) return n" {} "n")]
-    (println (str "AskToConnectContactReceiver: " messages-waiting))
-    (dorun (map process-ask-for-endorsement-ask-receiver  messages-waiting)))
-
-
-  {:value "Return this to the client"}
-  )
 
 
 
@@ -198,15 +178,19 @@
       {:error "Session doesn't exist"}
 
       (do
-        (neo4j "match n where
+        (let [request (first (neo4j "match n where
                n.confirm_sender_code = {sender_code}
 
                remove n:AskToConnectConfirmSender
-               set n:AskToConnectContactReceiver
+               set n:EmailConfirmed
                return n"
                {
                 :sender_code  sender-code
-                } "n")
+                } "n"))]
+        (webapp.server.person-helper/endorse2
+         :from-email   (get request :from_email)
+         ))
+
         {:value "Session exists"}
         ))))
 
@@ -215,7 +199,7 @@
 
 
 
-(defn sender-confirmed
+(defn email-confirmed
   [{:keys [endorsement-id]}]
   ;----------------------------------------------------------------
 
@@ -225,7 +209,7 @@
                      n.endorsement_id = {endorsement_id}
                    and
                      (
-                       n:AskToConnectContactReceiver
+                       n:EmailConfirmed
                          OR
                        n:AskToConnectWaitingOnReceiver)
                    return
@@ -241,30 +225,6 @@
 ;(sender-confirmed {:endorsement-id
 ;       "4a64e240-e7ec-44db-a322-5245e35e0492"})
 
-
-
-
-
-
-
-
-
-
-
-(defn receiver-confirmed
-  [{:keys [endorsement-id]}]
-  ;----------------------------------------------------------------
-
-  (let [n   (neo4j "match (n:ConnectionCompleted)
-                   where n.endorsement_id = {endorsement_id}
-                   return n"
-                   {
-                    :endorsement_id  endorsement-id
-                    } "n")]
-    (if (= (count n) 0)
-      {:value false}
-      {:value true}
-      )))
 
 
 
@@ -336,6 +296,27 @@
 ; does core.logic work in clojurescript?
 
 
+
+(defn check-messages
+  []
+  ;----------------------------------------------------------------
+
+  (let [messages-waiting (neo4j "match (n:AskToConnect) return n" {} "n")]
+    (println (str "AskToConnect: " messages-waiting))
+    (dorun (map process-ask-for-endorsement  messages-waiting)))
+
+  (let [messages-waiting (neo4j "match (n:EmailConfirmed) return n" {} "n")]
+    (println (str "EmailConfirmed: " messages-waiting))
+    (dorun (map email-confirmed  messages-waiting)))
+
+
+  {:value "Return this to the client"}
+  )
+
+
+
+
+
 (def my-pool (mk-pool))
 (stop-and-reset-pool! my-pool)
 (def a (atom 0))
@@ -371,36 +352,3 @@
 
 
 
-
-(defn confirm-receiver-code
-  [{:keys [receiver-code]}]
-  ;----------------------------------------------------------------
-
-  (let [n   (neo4j "match (n:AskToConnectWaitingOnReceiver)
-                   where n.confirm_receiver_code = {confirm_receiver_code}
-                   return n"
-                   {
-                    :confirm_receiver_code  receiver-code
-                    } "n")]
-    (if (= (count n) 0)
-      {:error "Session doesn't exist"}
-
-      (do
-        (let [request (first (neo4j "match n where
-               n.confirm_receiver_code = {receiver_code}
-
-               remove n:AskToConnectWaitingOnReceiver
-               set n:ConnectionCompleted
-               return n"
-                                    {
-                                     :receiver_code  receiver-code
-                                     } "n"))]
-          (do
-            (webapp.server.person-helper/endorse2
-             :from-email   (get request :to_email)
-             :to-email     (get request :from_email))
-
-            (println request)
-
-            {:value "Session exists"}
-            ))))))

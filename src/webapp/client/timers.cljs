@@ -81,8 +81,7 @@
      (go
        (let [res
 
-              (c/remote
-               "sender-confirmed"
+              (c/remote    email-confirmed
                {
                 :endorsement-id
                 (get-in @data-state [:submit :request :endorsement-id])})
@@ -94,20 +93,6 @@
 
 
 
-
-     (and
-      (= (get-in @data-state [:submit :status])  "ConfirmedSender")
-      (get-in @data-state [:submit :request :endorsement-id]))
-
-     (go
-        (let [res (c/remote "receiver-confirmed" {
-                :endorsement-id (get-in @data-state
-                                        [:submit :request :endorsement-id])})
-              ]
-         (c/log (str "Checking receiver " @tt " " res))
-          (if (res :value)
-            (do
-              (update-data [:submit :status]  "ConfirmedReceiver")))))
 
 
 
