@@ -71,46 +71,6 @@
 
 
 
-  (defn sender-confirmed
-  [send-endorsement-neo4j-node]
-  ;----------------------------------------------------------------
-
-  (if send-endorsement-neo4j-node
-    (let
-      [
-       confirm-receiver-code    (uuid-str)
-       ]
-
-      (send-email
-       :message      (str (:from_email  send-endorsement-neo4j-node)
-                          " has asked to connect with you"
-                          " on ConnectToUs. To agree"
-                          " please click the following link: \r\n\r\n"
-                          "http://" *web-server* "/*" confirm-receiver-code)
-
-       :subject      (str (:from_email  send-endorsement-neo4j-node)
-                          " has asked to connect with you "
-                          )
-
-       :from-email   (:from_email  send-endorsement-neo4j-node)
-       :from-name    (:from_email  send-endorsement-neo4j-node)
-       :to-email     (:to_email send-endorsement-neo4j-node)
-       :to-name      (:to_email  send-endorsement-neo4j-node)
-       )
-
-      (neo4j "match n where id(n)={id}
-             remove n:AskToConnectContactReceiver
-             set n:AskToConnectWaitingOnReceiver,
-             n.confirm_receiver_code = {confirm_receiver_code}
-             return n"
-             {
-              :id                   (:neo-id send-endorsement-neo4j-node)
-              :confirm_receiver_code  confirm-receiver-code
-              } "n")
-      )
-
-    ))
-
 
 
 
@@ -178,7 +138,7 @@
       {:error "Session doesn't exist"}
 
       (do
-        (let [request (first (neo4j "match n where
+        (let [request (neo4j-1 "match n where
                n.confirm_sender_code = {sender_code}
 
                remove n:AskToConnectConfirmSender
@@ -186,13 +146,14 @@
                return n"
                {
                 :sender_code  sender-code
-                } "n"))]
-        (webapp.server.person-helper/endorse2
-         :from-email   (get request :from_email)
-         ))
+                } "n")]
+          (do
+            (webapp.server.person-helper/endorse2
+             :from-email   (get request :from_email)
+             ))
 
         {:value "Session exists"}
-        ))))
+        )))))
 
 
 
@@ -221,9 +182,6 @@
       {:value false}
       {:value true}
       )))
-
-;(sender-confirmed {:endorsement-id
-;       "4a64e240-e7ec-44db-a322-5245e35e0492"})
 
 
 
