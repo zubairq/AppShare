@@ -54,7 +54,7 @@
                :style {:textDecoration "underline"
                        :display "inline-block"}
                })
-             "Top")
+             "")
 
 
            (c/div
@@ -75,7 +75,7 @@
                    :style {:textDecoration "underline"
                                :display "inline-block"}
                    })
-            "latest")
+            "")
 
 ))
 
@@ -183,12 +183,7 @@
 
                                 } "Join"))
 
-            (c/li {:className  (if (= (-> app :ui :tab) "login") "active" "")   }
-                    (c/a {:className  ""
-                                :onClick        (fn[e] (c/write-ui app [:ui :tab]  "login"))
-                                :onTouchStart   (fn[e] (c/write-ui app [:ui :tab]  "login"))
 
-                                } "Login"))
 
             )
 

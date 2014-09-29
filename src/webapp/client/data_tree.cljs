@@ -45,20 +45,9 @@
 
 
 (==data    [:submit :status]     "ConfirmedSender"
-    (-->ui [:ui :request :from-email :confirmed]  true))
-
-
-
-
-
-
-
-(==data   [:submit :status]   "ConfirmedReceiver"
-   (go
-    (-->ui [:ui :request :to-email :confirmed]  true)
-    (-->ui [:ui :request :show-connection-confirmation]  true)
-    ))
-
+           (do
+             (-->ui [:ui :request :from-email :confirmed]  true)
+             (-->ui [:ui :request :show-connection-confirmation]  true)))
 
 
 

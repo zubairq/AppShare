@@ -193,17 +193,17 @@
 (defn get-top-companies []
   ;----------------------------------------------------------------
   (neo4j "match
-         (n:Company)-[:WORKS_FOR]-(w:Person)-[:CONNECT]-someone
+         (n:Company)-[:WORKS_FOR]-(w:Person)
          return
          n.web_address as company,
-         count(someone) as inbound
+         count(w) as inbound
          order by inbound desc
          limit 10"
          {}
          ["company" "inbound"]))
 
 
-;(get-top-companies {})
+;(get-top-companies )
 
 
 

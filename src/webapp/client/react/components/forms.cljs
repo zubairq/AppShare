@@ -65,11 +65,11 @@
           }
 
          (c/div {:style { :vertical-align "center" }}
-              (c/div {:style {:padding "5px" :padding-bottom "30px"}} "Your connection has been made!")
+              (c/div {:style {:padding "5px" :padding-bottom "30px"}} "You have now joined connectToUs!")
 
-              (c/div {:style {:padding "5px"}} (str "From "
-                                                  (get-in dialog-data [:from-email :value] ) " to "
-                                                  (get-in dialog-data [:to-email   :value])))))))
+              (c/div {:style {:padding "5px"}} (str " "
+                                                  (get-in dialog-data [:from-email :value] )
+                                                  ))))))
 
 
 
@@ -105,8 +105,9 @@
     (if (not (blank?
               (get-in ui-data [:submit :message])))
 
-      (c/div nil (str "Please check your Inbox for "
-                      (-> ui-data :from-email :value) " to confirm your email address"))
+      (if (not (get-in ui-data [:confirmed]))
+        (c/div nil (str "Please check your Inbox for "
+                        (-> ui-data :from-email :value) " to confirm your email address")))
       ))))
 
 
