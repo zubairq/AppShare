@@ -59,7 +59,15 @@
      (log (<! (find-names-within-distance   "ore2"  0   0  1000))) )
 
 
-;(delete-all-neo-4j-nodes :are-you-sure? "yes")
+
+(defn delete-all-neo-4j-nodes []
+  (go (neo4j "MATCH n OPTIONAL MATCH (n)-[r]-(s) DELETE n,r,s"))
+  {:success true})
+
+;(go (log (pr-str (neo4j-1 "match n return n;" {} "n"))))
+
+;(delete-all-neo-4j-nodes)
+
 
 
 ;match n where length(n.from_email) > 0 return n.from_email;

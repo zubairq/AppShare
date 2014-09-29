@@ -45,32 +45,6 @@
 
 
 
-;------------------------------------------------------------
-(c/defn-ui-component  to-email-field  [ui-data]
-    {:absolute-path [:ui :request]}
-  ;------------------------------------------------------------
-
-  (c/div
-   nil
-   (basic-input-box :path        path
-                    :parent-id   parent-id
-                    :field       ui-data
-                    :text        "Their company email"
-                    :placeholder "pete@ibm.com"
-                    :error       "Email validation error"
-                    )
-
-
-
-            (if (get-in ui-data [:confirmed])
-
-              (c/div  {:className "alert alert-success"}
-                        (c/a  {:href "#"
-                                     :className "alert-link"}
-                                "Their email confirmed"
-                                )))))
-
-
 
 
 
@@ -103,7 +77,6 @@
 
 ;------------------------------------------------------------
 (c/defn-ui-component   request-form   [ui-data]
-  {:absolute-path [:ui :request]}
   ;------------------------------------------------------------
 
   (c/div
@@ -118,8 +91,6 @@
     nil
     (c/component   from-email-field   ui-data [:from-email] )
 
-    (c/component  to-email-field      ui-data [:to-email] )
-
 
     (c/button {:disabled  (if (c/read-ui ui-data [:details-valid]) false true)
                :onClick   (fn [e] (c/write-ui  ui-data [:submit :value]  true))
@@ -129,7 +100,7 @@
                                 (if (not (c/read-ui ui-data [:details-valid]))
                                   " btn-disabled"))}
 
-              "Connect")
+              "Join")
 
     (if (not (blank?
               (get-in ui-data [:submit :message])))

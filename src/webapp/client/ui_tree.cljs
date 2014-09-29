@@ -198,19 +198,8 @@
 (watch-ui [:ui :request :from-email :value]
 
                          (if
-                           (and
                             (validate-email  (<--ui [:ui :request :from-email :value]))
-                            (validate-email  (<--ui [:ui :request :to-email :value])))
 
                            (-->ui [:ui :request :details-valid] true)
                            ))
 
-(watch-ui [:ui :request :to-email :value]
-
-                         (if
-                           (and
-                            (validate-email  (<--ui [:ui :request :from-email :value]))
-                            (validate-email  (<--ui [:ui :request :to-email :value])))
-
-                           (-->ui [:ui :request :details-valid] true)
-                           ))
