@@ -37,7 +37,7 @@
               (c/div  {:className "alert  alert-success"}
                         (c/a  {:href "#"
                                      :className "alert-link"}
-                                "Your email confirmed"
+                                "Your email confirmed. Your company is now listed in connectToUs.co"
                                 )))))
 
 

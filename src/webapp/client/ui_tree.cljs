@@ -68,33 +68,6 @@
 
 
 
-(==ui  [:ui :request :to-email :mode] "validate"
-
-   (if (validate-email (<--ui [:ui :request :to-email :value]))
-     (-->ui [:ui :request :to-email :error] "")
-     (-->ui [:ui :request :to-email :error] "Invalid email")
-     ))
-
-
-
-
-
-
-
-(watch-ui [:ui :request :to-email :value]
-
-                       (if (= (<--ui [:ui :request :to-email :mode]) "validate")
-                         (if (validate-email (<--ui [:ui :request :to-email :value]))
-                           (-->ui [:ui :request :to-email :error] "")
-                           (-->ui [:ui :request :to-email :error] "Invalid email")
-                           )))
-
-
-
-
-
-
-
 
 (==ui [:ui :request :submit :value]     true
 
@@ -102,14 +75,12 @@
      (-->ui [:ui :request :submit :message] "Submitted")
 
      (-->data [:submit :request :from-email]  (<--ui [:ui :request :from-email :value]))
-     (-->data [:submit :request :to-email]    (<--ui [:ui :request :to-email :value]))
      (-->data [:submit :status]               "Submitted")
 
      (go
-      (let [ resp (remote "request-endorsement"
+      (let [ resp (remote    submit-email
              {
               :from-email     (<--data [:submit :request :from-email])
-              :to-email       (<--data [:submit :request :to-email])
               })]
 
          (cond

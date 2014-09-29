@@ -139,7 +139,7 @@
 
 
 
-(defn request-endorsement
+(defn submit-email
   [{:keys [from-email
            to-email
            ]}]
@@ -151,19 +151,17 @@
                                         {
                                         endorsement_id:       {endorsement_id},
                                         from_email:           {from_email},
-                                        to_email:             {to_email},
                                         timestamp:            {timestamp}
                                         }) return n"
                                         {
                                          :endorsement_id  endorsement-id
                                          :from_email      from-email
-                                         :to_email        to-email
                                          :timestamp       "timestamp"
                                          }
                                         "n"))
         ]
     (do
-      (println (str "request-endorsement called: " web-record))
+      (println (str "submit-email called: " web-record))
       {:value web-record}  )))
 
 
@@ -175,10 +173,9 @@
 
 
 
-(comment println (request-endorsement
+(comment println (submit-email
                   {
                    :from-email        "1"
-                   :to-email          "1"
                    }))
 
 
