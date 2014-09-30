@@ -165,10 +165,7 @@
                    where
                      n.endorsement_id = {endorsement_id}
                    and
-                     (
-                       n:EmailConfirmed
-                         OR
-                       n:AskToConnectWaitingOnReceiver)
+                     n:EmailConfirmed
                    return
                      n"
                    {
@@ -258,10 +255,6 @@
   (let [messages-waiting (neo4j "match (n:AskToConfirmEmail) return n" {} "n")]
     (println (str "AskToConfirmEmail: " messages-waiting))
     (dorun (map process-send-confirmation-email  messages-waiting)))
-
-  (let [messages-waiting (neo4j "match (n:EmailConfirmed) return n" {} "n")]
-    (println (str "EmailConfirmed: " messages-waiting))
-    (dorun (map email-confirmed  messages-waiting)))
 
 
   {:value "Return this to the client"}
