@@ -33,38 +33,37 @@
       [
        confirm-sender-code    (uuid-str)
        ]
+      (do
 
-      (send-email
-       :message      (str "ConnectToUs.co - "
-                          "Please confirm that you have asked to connect to "
-                          (:to_email send-endorsement-neo4j-node)
-                          " by clicking on the following link: "
-                          "\r\n\r\n"
-                          "http://" *web-server* "/*" confirm-sender-code)
+        (neo4j "match n where id(n)={id}
+               remove n:AskToConnect
+               set n:AskToConnectConfirmSender,
+               n.confirm_sender_code = {confirm_sender_code}
+               return n"
+               {
+                :id                   (:neo-id send-endorsement-neo4j-node)
+                :confirm_sender_code  confirm-sender-code
+                } "n")
 
-       :subject      (str "ConnectToUs.co - "
-                          "Please confirm you wish to connect to "
-                           (:to_email send-endorsement-neo4j-node))
+        (send-email
+         :message      (str "ConnectToUs.co - "
+                            "Please confirm that you have asked to connect to "
+                            (:to_email send-endorsement-neo4j-node)
+                            " by clicking on the following link: "
+                            "\r\n\r\n"
+                            "http://" *web-server* "/*" confirm-sender-code)
+
+         :subject      (str "ConnectToUs.co - "
+                            "Please confirm you wish to connect to "
+                            (:to_email send-endorsement-neo4j-node))
 
 
-       :from-email   "contact@connecttous.co"
-       :from-name    "ConnectToUs.co"
-       :to-email     (:from_email send-endorsement-neo4j-node)
-       :to-name      (:from_email  send-endorsement-neo4j-node)
-       )
+         :from-email   "contact@connecttous.co"
+         :from-name    "ConnectToUs.co"
+         :to-email     (:from_email send-endorsement-neo4j-node)
+         :to-name      (:from_email  send-endorsement-neo4j-node))
 
-      (neo4j "match n where id(n)={id}
-             remove n:AskToConnect
-             set n:AskToConnectConfirmSender,
-             n.confirm_sender_code = {confirm_sender_code}
-             return n"
-             {
-              :id                   (:neo-id send-endorsement-neo4j-node)
-              :confirm_sender_code  confirm-sender-code
-              } "n")
-      )
-
-    ))
+        ))))
 
 
 

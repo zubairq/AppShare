@@ -24,8 +24,8 @@
 
 (defn parse-params [params]
   (do
-  (println (str "Action:" (:action params) (:systemaction params)
-                "  ,Count params:" (count (keys (load-string (:params params))))))
+  ;(println (str "Action:" (:action params) (:systemaction params)
+  ;              "  ,Count params:" (count (keys (load-string (:params params))))))
   (let
     [
      code (str
