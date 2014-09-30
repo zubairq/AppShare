@@ -112,7 +112,7 @@
 
 
 
-(defn endorse2 [& {:keys [from-email]}]
+(defn create-person-from-email [& {:keys [from-email]}]
   (let
     [
      from-company      (get-company-url-from-email from-email)
@@ -122,4 +122,4 @@
                          :web-address     from-company))))
 
 
-;(endorse2 :from-email "zubairq@gmail")
+;(create-person-from-email :from-email "zubairq@gmail")

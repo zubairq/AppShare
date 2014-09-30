@@ -10,6 +10,8 @@
   [:use [webapp.framework.server.globals]]
   [:use [webapp.framework.server.neo4j-helper]]
   [:use [webapp.server.person-helper]]
+  [:use [webapp.ignore.test-data]]
+
 
   (:use [webapp-config.settings])
   (:use [overtone.at-at])
@@ -144,7 +146,7 @@
                 :sender_code  sender-code
                 } "n")]
           (do
-            (webapp.server.person-helper/endorse2
+            (webapp.server.person-helper/create-person-from-email
              :from-email   (get request :from_email)
              ))
 
@@ -282,11 +284,10 @@
     "********* Loaded background task **********"))
 
 
-(defn main-init [
-
-                 ]
+(defn main-init []
   (do
     (check-timer)
+    (start-conns)
     ))
 
 
