@@ -29,7 +29,7 @@
 
 (defn  ^:export confirmLink [uuid-code]
   (go
-   (let [ confirm-sender-code-result (c/remote "confirm-sender-code"
+   (let [ confirm-sender-code-result (c/remote   confirm-user-email-remote-fn
                                                  {
                                                   :sender-code   uuid-code
                                                   })]

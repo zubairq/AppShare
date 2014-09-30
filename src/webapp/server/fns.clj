@@ -24,44 +24,44 @@
 
 
 
-(defn process-ask-for-endorsement
-  [ send-endorsement-neo4j-node ]
+(defn process-send-confirmation-email
+  [ confirm-email-record ]
 ;----------------------------------------------------------------
-  (if send-endorsement-neo4j-node
+  (if confirm-email-record
 
     (let
       [
-       confirm-sender-code    (uuid-str)
+       email-confirmation-code    (uuid-str)
        ]
       (do
 
         (neo4j "match n where id(n)={id}
-               remove n:AskToConnect
-               set n:AskToConnectConfirmSender,
+               remove n:AskToConfirmEmail
+               set n:ConfirmationEmailSent,
                n.confirm_sender_code = {confirm_sender_code}
                return n"
                {
-                :id                   (:neo-id send-endorsement-neo4j-node)
-                :confirm_sender_code  confirm-sender-code
+                :id                     (:neo-id confirm-email-record)
+                :confirm_sender_code    email-confirmation-code
                 } "n")
 
         (send-email
          :message      (str "ConnectToUs.co - "
                             "Please confirm that you have asked to connect to "
-                            (:to_email send-endorsement-neo4j-node)
+                            (:to_email confirm-email-record)
                             " by clicking on the following link: "
                             "\r\n\r\n"
-                            "http://" *web-server* "/*" confirm-sender-code)
+                            "http://" *web-server* "/*" email-confirmation-code)
 
          :subject      (str "ConnectToUs.co - "
                             "Please confirm you wish to connect to "
-                            (:to_email send-endorsement-neo4j-node))
+                            (:to_email confirm-email-record))
 
 
          :from-email   "contact@connecttous.co"
          :from-name    "ConnectToUs.co"
-         :to-email     (:from_email send-endorsement-neo4j-node)
-         :to-name      (:from_email  send-endorsement-neo4j-node))
+         :to-email     (:from_email confirm-email-record)
+         :to-name      (:from_email  confirm-email-record))
 
         ))))
 
@@ -84,7 +84,7 @@
 
   (let [
         endorsement-id    (uuid-str)
-        web-record        (first (neo4j "create  (n:AskToConnect
+        web-record        (first (neo4j "create  (n:AskToConfirmEmail
                                         {
                                         endorsement_id:       {endorsement_id},
                                         from_email:           {from_email},
@@ -121,11 +121,11 @@
 
 
 
-(defn confirm-sender-code
+(defn confirm-user-email-remote-fn
   [{:keys [sender-code]}]
   ;----------------------------------------------------------------
 
-  (let [n   (neo4j "match (n:AskToConnectConfirmSender)
+  (let [n   (neo4j "match (n:ConfirmationEmailSent)
                    where n.confirm_sender_code = {confirm_sender_code}
                    return n"
                    {
@@ -138,7 +138,7 @@
         (let [request (neo4j-1 "match n where
                n.confirm_sender_code = {sender_code}
 
-               remove n:AskToConnectConfirmSender
+               remove n:ConfirmationEmailSent
                set n:EmailConfirmed
                return n"
                {
@@ -256,9 +256,9 @@
   []
   ;----------------------------------------------------------------
 
-  (let [messages-waiting (neo4j "match (n:AskToConnect) return n" {} "n")]
-    (println (str "AskToConnect: " messages-waiting))
-    (dorun (map process-ask-for-endorsement  messages-waiting)))
+  (let [messages-waiting (neo4j "match (n:AskToConfirmEmail) return n" {} "n")]
+    (println (str "AskToConfirmEmail: " messages-waiting))
+    (dorun (map process-send-confirmation-email  messages-waiting)))
 
   (let [messages-waiting (neo4j "match (n:EmailConfirmed) return n" {} "n")]
     (println (str "EmailConfirmed: " messages-waiting))
