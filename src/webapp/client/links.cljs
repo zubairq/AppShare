@@ -35,19 +35,8 @@
                                                   })]
      (cond
       (:error confirm-sender-code-result)
-      (let [ confirm-receiver-code-result (c/remote "confirm-receiver-code"
-                           {
-                            :receiver-code   uuid-code
-                            })]
-        (cond
-         (:error confirm-receiver-code-result)
-         (.write js/document (:error confirm-receiver-code-result))
-
-         :else
-         (.write js/document (str "Your email address has been confirmed with connectToUs. "
-                                  "See your company listed at at <a href='http://connecttous.co'>connectToUs.co</a>"))
-         )
-        )
+      (.write js/document (str "ConnectToUs had a problem. Have you already confirmed your email? Make your company more visible using "
+                               "<a href='http://connecttous.co'>connectToUs.co</a>"))
 
       :else
       (.write js/document (str "Your email address has been confirmed. Make your company more visible using "

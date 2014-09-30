@@ -52,13 +52,6 @@
                                          :private        true
                                          }
 
-                  :to-email             {:label          "Their email"
-                                         :placeholder    "pete@ibm.com"
-                                         :value          ""
-                                         :mode           "empty"
-                                         :private        true
-                                         }
-
                   :show-connection-confirmation  false
                   :details-valid                 false
 

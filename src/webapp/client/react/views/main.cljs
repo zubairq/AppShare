@@ -83,15 +83,6 @@
 
 
 
-;------------------------------------------------------------
-(c/defn-ui-component    letter-a  [data]
-  {}
-  ;------------------------------------------------------------
-    (c/div nil "----------------------------------------"))
-
-
-
-
 
 
 
@@ -123,9 +114,6 @@
 
               (c/a {:href "https://github.com/zubairq/coils"}
                  "Follow us on GitHub")
-
-              (c/component   letter-a   splash-screen-data [])
-
 
 
               (c/div {:style {:padding "5px" :padding-bottom "20px"  :font-size "20"}}
@@ -161,9 +149,6 @@
                 }}
 
        (c/h2 nil "ConnectToUs.co")
-
-         (c/component letter-a  app [:ui])
-
 
            (c/ul
             {:className  "nav nav-tabs"}
