@@ -47,14 +47,13 @@
 
         (send-email
          :message      (str "ConnectToUs.co - "
-                            "Please confirm that you have asked to connect to "
-                            (:to_email confirm-email-record)
-                            " by clicking on the following link: "
+                            "Please confirm that you wish to join ConnectToUs "
+                            "by clicking on the following link: "
                             "\r\n\r\n"
                             "http://" *web-server* "/*" email-confirmation-code)
 
          :subject      (str "ConnectToUs.co - "
-                            "Please confirm you wish to connect to "
+                            "Please confirm you wish to join ConnectToUs "
                             (:to_email confirm-email-record))
 
 

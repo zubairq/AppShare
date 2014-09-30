@@ -45,7 +45,7 @@
 
          :else
          (.write js/document (str "Your email address has been confirmed with connectToUs. "
-                                  "See your connections at <a href='http://connecttous.co'>connectToUs.co</a>"))
+                                  "See your company listed at at <a href='http://connecttous.co'>connectToUs.co</a>"))
          )
         )
 
