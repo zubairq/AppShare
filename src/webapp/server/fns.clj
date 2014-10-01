@@ -83,24 +83,29 @@
   [{:keys [from-email]}]
   ;----------------------------------------------------------------
 
-  (let [
-        endorsement-id    (uuid-str)
-        web-record        (first (neo4j "create  (n:AskToConfirmEmail
-                                        {
-                                        endorsement_id:       {endorsement_id},
-                                        from_email:           {from_email},
-                                        timestamp:            {timestamp}
-                                        }) return n"
-                                        {
-                                         :endorsement_id  endorsement-id
-                                         :from_email      from-email
-                                         :timestamp       "timestamp"
-                                         }
-                                        "n"))
-        ]
-    (do
-      (println (str "submit-email called: " web-record))
-      {:value web-record}  )))
+  (if *show-code*
+    {:value nil}
+    (let [
+          endorsement-id    (uuid-str)
+          web-record        (first (neo4j "create  (n:AskToConfirmEmail
+                                          {
+                                          endorsement_id:       {endorsement_id},
+                                          from_email:           {from_email},
+                                          timestamp:            {timestamp}
+                                          }) return n"
+                                          {
+                                           :endorsement_id  endorsement-id
+                                           :from_email      from-email
+                                           :timestamp       "timestamp"
+                                           }
+                                          "n"))
+          ]
+      (do
+        (println (str "submit-email called: " web-record))
+        {:value web-record}  ))
+
+
+    ))
 
 
 (defn main-init []
