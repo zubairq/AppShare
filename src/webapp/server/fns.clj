@@ -198,7 +198,7 @@
          n.web_address as company,
          count(w) as inbound
          order by inbound desc
-         limit 10"
+         limit 100"
          {}
          ["company" "inbound"]))
 
@@ -220,7 +220,7 @@
          order by
            r.accepted_timestamp desc
          limit
-           10"
+           100"
          {}
          ["from" "to" "when"]))
 ;(get-latest-endorsements {})
