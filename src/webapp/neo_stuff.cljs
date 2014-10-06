@@ -24,5 +24,5 @@
 
 
 ;(go (log (neo4j "match n return count(n)")))
-;(go (log (sql "select count(*) from ojobs_users" {})))
+;(go (log (sql "select count(*) from yazz_login_details" {})))
 
