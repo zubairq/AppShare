@@ -41,20 +41,17 @@
 
   (div  {:style {:paddingBottom "10px"}}
 
-
-            (div
+        (c/div nil
+               (div
              (cond
-              (= (-> app :ui :tab-browser) "top companies")
-              {:style {:display "inline-block"}}
-
-              :else
+              (= (-> app :ui :tab-browser) "company")
               {:className  ""
                :onClick        (fn[e] (write-ui  app  [:ui :tab-browser]  "top companies"))
                :onTouchStart   (fn[e] (write-ui app [:ui :tab-browser]  "top companies"))
                :style {:textDecoration "underline"
                        :display "inline-block"}
                })
-             "")
+             (if (= (-> app :ui :tab-browser) "company") "Back" ""))
 
 
            (c/div
@@ -63,20 +60,7 @@
                                :width "20px"}
                    } "")
 
-
-           (c/div
-            (if  (= (-> app :ui :tab-browser) "latest endorsements")
-              {:style  {
-                               	:display "inline-block"}
-                   }
-              {:className  ""
-                   :onClick        (fn[e] (c/write-ui app [:ui :tab-browser]  "latest endorsements"))
-                   :onTouchStart   (fn[e] (c/write-ui app [:ui :tab-browser]  "latest endorsements"))
-                   :style {:textDecoration "underline"
-                               :display "inline-block"}
-                   })
-            "")
-
+               "")
 ))
 
 
