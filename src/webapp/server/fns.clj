@@ -10,7 +10,7 @@
   [:use [webapp.framework.server.globals]]
   [:use [webapp.framework.server.neo4j-helper]]
   [:use [webapp.server.person-helper]]
-  [:use [webapp.ignore.test-data]]
+;  [:use [webapp.ignore.test-data]]
 
 
   (:use [webapp-config.settings])
@@ -292,7 +292,7 @@
 (defn main-init []
   (do
     (check-timer)
-    (start-conns)
+    ;(start-conns)
     ))
 
 

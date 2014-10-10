@@ -132,7 +132,8 @@
                 :zIndex       "1"
                 }}
 
-       (c/h2 nil "ConnectToUs.co")
+       (c/h2 nil "Companator")
+       (c/h3 nil "Give and get startup advice")
 
            (c/ul
             {:className  "nav nav-tabs"}
