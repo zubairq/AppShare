@@ -124,15 +124,14 @@
                    "")
            "")
 
-    (c/button {:disabled  (if (c/read-ui ui-data [:details-valid]) false true)
-               :onClick   (fn [e] (c/write-ui  ui-data [:submit :value]  true))
-               :style     {:margin-top "10px"}
-               :type      "button"
-               :className (str "btn btn-default btn-lg"
-                                (if (not (c/read-ui ui-data [:details-valid]))
-                                  " btn-disabled"))}
+    (c/a {:href "#" :className "btn btn-warning"}
+         "Sign in using our secure server"
+         (c/span {:className "glyphicon glyphicon-play"}
 
-              "Join")
+                 ))
+
+
+
 
     (if (not (blank?
               (get-in ui-data [:submit :message])))

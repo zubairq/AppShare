@@ -204,6 +204,8 @@
   `(om.dom/th  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 (defmacro form [attributes & more]
   `(om.dom/form  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro span [attributes & more]
+  `(om.dom/span  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 ;--------------------------------------------------------------------
 
 
