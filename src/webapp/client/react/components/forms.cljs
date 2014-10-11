@@ -22,6 +22,7 @@
                                                input
                                                component
                                                h1 h2 h3 h4 h5 h6
+                                               span
                                                ]]
 ))
 
@@ -59,13 +60,16 @@
 ;------------------------------------------------------------
 (defn-ui-component    password-field  [ui-data]
   ;------------------------------------------------------------
-  (div nil
+  (div {
+     :style       {:width "100%" }}
 
    (input
     {:type        "text"
-     :className   "form-control"
      :value       ""
-     :style       {:width "100px" :display "inline-block"}
+     :style       {:width "100%"
+                   :display "inline-block"
+                   :marginLeft "5px"
+                   :font-size "15px"}
      } )
    ))
 
@@ -111,33 +115,42 @@
 
 
 
-   (c/div
+   (div
     {:style {:border "1px solid" :padding "15px" :marginTop "10px"}}
 
-    (c/div {:style {:color "rgb(228, 121, 17);"}} (str "Sign in"))
-    (c/h5 {:style {:color "rgb(228, 121, 17);"}} (str "What is your e-mail address?"))
+    (div {:style {:color "rgb(228, 121, 17);"}} (str "Sign in"))
+    (h5 {:style {:color "rgb(228, 121, 17);"}} (str "What is your e-mail address?"))
 
-    (c/component   from-email-field   ui-data [:from-email] )
-
-
-
-    (c/h5 nil (str "Do you have a Companator password?"))
-
-    (c/input {:type "radio" :name "member" :value "new_member"} "No, I am a new member")
+    (component   from-email-field   ui-data [:from-email] )
 
 
 
-    (c/div {:style {:display "block"}}
-           (c/input {:type "radio" :name "member" :value "current_member"
-                     :style {:display "inline-block"}} "Yes, I have a password:")
-           (c/div  {:style       #js {:width "100px" :display "inline-block"}}
+    (h5 {:style {:color "rgb(228, 121, 17);"}} (str "Do you have a Companator password?"))
+
+    (div {:style {:display "block" :font-size "15px" }}
+    (input {:type "radio" :name "member" :value "new_member"
+            :style {
+                    :font-size "15px"
+                    :marginLeft "20px"
+                    }
+            } "No, I am a new member"))
+
+
+    (div {:style {:display "block" :font-size "15px" }}
+         (input {:type "radio" :name "member" :value "current_member"
+                 :style {:display "inline-block"
+                         :font-size "15px"
+                         :marginLeft "20px"
+                         }} "Yes, I have a password:")
+           (div  {:style       #js {:width "100px" :display "inline-block"}}
                    (c/component   password-field   ui-data [:from-email] )
                    "")
            "")
 
-    (c/a {:href "#" :className "btn btn-warning"}
+    (a {:href "#" :className "btn btn-warning"
+        :style {:marginTop "5px"}}
          "Sign in using our secure server"
-         (c/span {:className "glyphicon glyphicon-play"}
+         (span {:className "glyphicon glyphicon-play"}
 
                  ))
 
