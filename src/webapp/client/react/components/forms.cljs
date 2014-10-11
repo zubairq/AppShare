@@ -6,55 +6,50 @@
   (:use
    [webapp.client.ui-helpers                :only  [validate-email]]
    [webapp.framework.client.ui-helpers      :only  [basic-input-box]]
-   [clojure.string                          :only  [blank?]]))
+   [clojure.string                          :only  [blank?]])
 
-(c/ns-coils 'webapp.client.react.components.forms)
+  (:use-macros
+   [webapp.framework.client.coreclient  :only [ns-coils
+                                               sql
+                                               log
+                                               neo4j
+                                               defn-ui-component
+                                               a
+                                               div
+                                               write-ui  ==ui  -->ui  watch-ui <--ui
+                                               <--data -->data
+                                               remote
+                                               input
+                                               component
+                                               h1 h2 h3 h4 h5 h6
+                                               ]]
+))
+
+
+(ns-coils 'webapp.client.react.components.forms)
 
 
 
-
-
-
-
-
-;------------------------------------------------------------
-(c/defn-ui-component    from-email-field  [ui-data]
-    {:absolute-path [:ui :request]}
-  ;------------------------------------------------------------
-  (c/div
-   nil
-   (basic-input-box :path        path
-                    :parent-id   parent-id
-                    :field       ui-data
-                    :text        "My e-mail address is:"
-                    :placeholder "john@microsoft.com"
-                    :error       "Email validation error"
-                    )
-
-   (if (get-in ui-data [:confirmed])
-              (c/div  {:className "alert  alert-success"}
-                        (c/a  {:href "#"
-                                     :className "alert-link"}
-                                "Your email confirmed. Your company is now listed in connectToUs.co"
-                                )))))
 
 
 
 
 
 ;------------------------------------------------------------
-(c/defn-ui-component    password-field  [ui-data]
-    {:absolute-path [:ui :request]}
+(defn-ui-component    from-email-field  [ui-data]
   ;------------------------------------------------------------
-  (c/div
+  (div
    nil
-   (c/input
-             #js {:type        "text"
-                  :className   "form-control"
-                  :value       ""
-                  :style       #js {:width "100px" :display "inline-block"}
-                  } "")
-   ""
+   (div  {:style {:font-size "15px"
+                  :display "inline-block"
+                  :marginLeft "20px"}}
+         "My e-mail address is:")
+
+   (input {:value "john@microsoft.com"
+           :style {:font-size "15px"
+                   :display "inline-block"
+                   :marginLeft "5px"}} "")
+
    ))
 
 
@@ -62,11 +57,27 @@
 
 
 ;------------------------------------------------------------
-(c/defn-ui-component    show-connection-confirmation-dialog-box  [dialog-data]
-  {}
+(defn-ui-component    password-field  [ui-data]
+  ;------------------------------------------------------------
+  (div nil
+
+   (input
+    {:type        "text"
+     :className   "form-control"
+     :value       ""
+     :style       {:width "100px" :display "inline-block"}
+     } )
+   ))
+
+
+
+
+
+;------------------------------------------------------------
+(defn-ui-component    show-connection-confirmation-dialog-box  [dialog-data]
   ;------------------------------------------------------------
   (if (get-in dialog-data [:show-connection-confirmation])
-    (c/div {:style {:position          "absolute"           :left    "5%"  :top "5%"
+    (div {:style {:position          "absolute"           :left    "5%"  :top "5%"
                   :width   "90%"
                   :height  "90%"
                   :border            "solid 1px black;"   :zIndex  "2000"
@@ -77,10 +88,10 @@
           :onClick      #(c/write-ui  dialog-data [:show-connection-confirmation] false)
           }
 
-         (c/div {:style { :vertical-align "center" }}
-              (c/div {:style {:padding "5px" :padding-bottom "30px"}} "You have now joined connectToUs!")
+         (div {:style { :vertical-align "center" }}
+              (div {:style {:padding "5px" :padding-bottom "30px"}} "You have now joined connectToUs!")
 
-              (c/div {:style {:padding "5px"}} (str " "
+              (div {:style {:padding "5px"}} (str " "
                                                   (get-in dialog-data [:from-email :value] )
                                                   ))))))
 
@@ -89,22 +100,22 @@
 
 
 ;------------------------------------------------------------
-(c/defn-ui-component   request-form   [ui-data]
+(defn-ui-component   request-form   [ui-data]
   ;------------------------------------------------------------
 
-  (c/div
+  (div
    nil
 
    (if [get-in ui-data [:show-connection-confirmation]]
-     (c/component  show-connection-confirmation-dialog-box  ui-data []))
+     (component  show-connection-confirmation-dialog-box  ui-data []))
 
 
 
    (c/div
     {:style {:border "1px solid" :padding "15px" :marginTop "10px"}}
 
-    (c/div nil (str "Sign in"))
-    (c/h5 nil (str "What is your e-mail address?"))
+    (c/div {:style {:color "rgb(228, 121, 17);"}} (str "Sign in"))
+    (c/h5 {:style {:color "rgb(228, 121, 17);"}} (str "What is your e-mail address?"))
 
     (c/component   from-email-field   ui-data [:from-email] )
 
