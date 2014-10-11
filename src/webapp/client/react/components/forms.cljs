@@ -128,10 +128,11 @@
     (h5 {:style {:color "rgb(228, 121, 17);"}} (str "Do you have a Companator password?"))
 
     (div {:style {:display "block" :font-size "15px" }}
-    (input {:type "radio" :name "member" :value "new_member"
+    (input {:type "radio" :name "member" :value "new_member" :checked "true"
             :style {
                     :font-size "15px"
                     :marginLeft "20px"
+
                     }
             } "No, I am a new member"))
 
