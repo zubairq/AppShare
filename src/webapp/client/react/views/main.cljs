@@ -151,7 +151,7 @@
                                 :onTouchStart   (fn[e] (c/write-ui app [:ui :tab]  "request"))
 
 
-                                } "Join"))
+                                } "Sign in"))
 
 
 

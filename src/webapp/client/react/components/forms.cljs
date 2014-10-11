@@ -26,14 +26,12 @@
    (basic-input-box :path        path
                     :parent-id   parent-id
                     :field       ui-data
-                    :text        "Your company email"
+                    :text        "My e-mail address is:"
                     :placeholder "john@microsoft.com"
                     :error       "Email validation error"
                     )
 
-
-
-            (if (get-in ui-data [:confirmed])
+   (if (get-in ui-data [:confirmed])
               (c/div  {:className "alert  alert-success"}
                         (c/a  {:href "#"
                                      :className "alert-link"}
@@ -43,6 +41,21 @@
 
 
 
+
+;------------------------------------------------------------
+(c/defn-ui-component    password-field  [ui-data]
+    {:absolute-path [:ui :request]}
+  ;------------------------------------------------------------
+  (c/div
+   nil
+   (c/input
+             #js {:type        "text"
+                  :className   "form-control"
+                  :value       ""
+                  :style       #js {:width "100px" :display "inline-block"}
+                  } "")
+   ""
+   ))
 
 
 
@@ -88,9 +101,28 @@
 
 
    (c/div
-    nil
+    {:style {:border "1px solid" :padding "15px" :marginTop "10px"}}
+
+    (c/div nil (str "Sign in"))
+    (c/h5 nil (str "What is your e-mail address?"))
+
     (c/component   from-email-field   ui-data [:from-email] )
 
+
+
+    (c/h5 nil (str "Do you have a Companator password?"))
+
+    (c/input {:type "radio" :name "member" :value "new_member"} "No, I am a new member")
+
+
+
+    (c/div {:style {:display "block"}}
+           (c/input {:type "radio" :name "member" :value "current_member"
+                     :style {:display "inline-block"}} "Yes, I have a password:")
+           (c/div  {:style       #js {:width "100px" :display "inline-block"}}
+                   (c/component   password-field   ui-data [:from-email] )
+                   "")
+           "")
 
     (c/button {:disabled  (if (c/read-ui ui-data [:details-valid]) false true)
                :onClick   (fn [e] (c/write-ui  ui-data [:submit :value]  true))
