@@ -77,9 +77,8 @@
        (input
         {:type        "text"
          :value       (read-ui  ui-data [:password])
-         :onChange    #(if (not (read-ui  ui-data [:new-member]))
-                         (update-field-value-password
-                          ui-data %1 path parent-id))
+         :onChange    #(update-field-value-password
+                          ui-data %1 path parent-id)
          :disabled    (if (read-ui  ui-data [:new-member]) "true" "")
          :style       {:width "100%"
                        :display "inline-block"

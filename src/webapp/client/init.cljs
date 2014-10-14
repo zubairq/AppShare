@@ -55,7 +55,7 @@
                   :show-connection-confirmation  false
                   :details-valid                 false
                   :new-member                    true
-                  :password                      "3"
+                  :password                      ""
 
                   :submit               {:value false}
                   }
