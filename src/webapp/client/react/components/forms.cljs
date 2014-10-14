@@ -73,6 +73,7 @@
    (input
     {:type        "text"
      :value       ""
+     :disabled    (if (read-ui ui-data [:new-member]) "true" "")
      :style       {:width "100%"
                    :display "inline-block"
                    :marginLeft "5px"
@@ -135,23 +136,27 @@
     (h5 {:style {:color "rgb(228, 121, 17);"}} (str "Do you have a Companator password?"))
 
     (div {:style {:display "block" :font-size "15px" }}
-    (input {:type "radio" :name "member" :value "new_member" :checked "true"
-            :style {
-                    :font-size "15px"
-                    :marginLeft "20px"
+         (input {:type "radio" :name "member" :value "new_member"
+                 :checked (if (read-ui ui-data [:new-member]) "true" "")
+                 :onClick #(write-ui  ui-data [:new-member] true)
+                 :style {
+                         :font-size "15px"
+                         :marginLeft "20px"
 
-                    }
-            } "No, I am a new member"))
+                         }
+                 } "No, I am a new member"))
 
 
     (div {:style {:display "block" :font-size "15px" }}
          (input {:type "radio" :name "member" :value "current_member"
+                 :checked (if (read-ui ui-data [:new-member]) "" "true")
+                 :onClick #(write-ui  ui-data [:new-member] false)
                  :style {:display "inline-block"
                          :font-size "15px"
                          :marginLeft "20px"
                          }} "Yes, I have a password:")
-           (div  {:style       #js {:width "100px" :display "inline-block"}}
-                   (c/component   password-field   ui-data [:from-email] )
+         (div  {:style       #js {:width "100px" :display "inline-block"}}
+               (c/component   password-field   ui-data [:from-email] )
                    "")
            "")
 

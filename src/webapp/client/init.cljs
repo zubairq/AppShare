@@ -54,6 +54,7 @@
 
                   :show-connection-confirmation  false
                   :details-valid                 false
+                  :new-member                    true
 
                   :submit               {:value false}
                   }
