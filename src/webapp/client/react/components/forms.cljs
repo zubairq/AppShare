@@ -39,6 +39,10 @@
   (write-ui  field  [:value]  (.. e -target -value))
   )
 
+(defn update-field-value-password [field e path parent-id]
+  (write-ui  field  [:password]  (.. e -target -value))
+  )
+
 
 
 ;------------------------------------------------------------
@@ -68,18 +72,21 @@
 (defn-ui-component    password-field  [ui-data]
   ;------------------------------------------------------------
   (div {
-     :style       {:width "100%" }}
+        :style       {:width "100%" }}
 
-   (input
-    {:type        "text"
-     :value       ""
-     :disabled    (if (read-ui ui-data [:new-member]) "true" "")
-     :style       {:width "100%"
-                   :display "inline-block"
-                   :marginLeft "5px"
-                   :font-size "15px"}
-     } )
-   ))
+       (input
+        {:type        "text"
+         :value       (read-ui  ui-data [:password])
+         :onChange    #(if (not (read-ui  ui-data [:new-member]))
+                         (update-field-value-password
+                          ui-data %1 path parent-id))
+         :disabled    (if (read-ui  ui-data [:new-member]) "true" "")
+         :style       {:width "100%"
+                       :display "inline-block"
+                       :marginLeft "5px"
+                       :font-size "15px"}
+         } )
+       ))
 
 
 
@@ -156,7 +163,7 @@
                          :marginLeft "20px"
                          }} "Yes, I have a password:")
          (div  {:style       #js {:width "100px" :display "inline-block"}}
-               (c/component   password-field   ui-data [:from-email] )
+               (c/component   password-field   ui-data [] )
                    "")
            "")
 
