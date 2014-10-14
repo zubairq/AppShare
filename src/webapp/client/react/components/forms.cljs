@@ -16,7 +16,9 @@
                                                defn-ui-component
                                                a
                                                div
-                                               write-ui  ==ui  -->ui  watch-ui <--ui
+                                               write-ui
+                                               read-ui
+                                               ==ui  -->ui  watch-ui <--ui
                                                <--data -->data
                                                remote
                                                input
@@ -33,6 +35,9 @@
 
 
 
+(defn update-field-value [field e path parent-id]
+  (write-ui  field  [:value]  (.. e -target -value))
+  )
 
 
 
@@ -46,7 +51,9 @@
                   :marginLeft "20px"}}
          "My e-mail address is:")
 
-   (input {:value "john@microsoft.com"
+   (input {:value (read-ui ui-data [:value])
+           :onChange    #(update-field-value
+                          ui-data %1 path parent-id)
            :style {:font-size "15px"
                    :display "inline-block"
                    :marginLeft "5px"}} "")
