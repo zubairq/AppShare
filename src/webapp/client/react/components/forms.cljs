@@ -189,26 +189,28 @@
 (==ui [:ui :request :clicked] true
       (do
         (-->ui [:ui :request :clicked] false)
-        (if (<--ui [:ui :request :new-member])
-          (go
-           (let [ resp (remote  new-member {:from-email
-                                            (str "")})]
-             (do
-               (js/alert (pr-str (<--ui [:ui :request :from-email :value]))))))
-          (go
-           (let [ resp (remote  new-member
-                                {:from-email
-                                 (<--ui [:ui :request :from-email :value])})]
-             (do
-               (js/alert (pr-str (<--ui [:ui :request :from-email :value])))
+        (cond
 
-               (cond
-                (resp :error)
-                (-->data [:submit :response]  (pr-str resp))
 
-                :else
-                (-->data [:session :user]  (-> resp :value))
-                )))))))
+         (= (<--ui [:ui :request :new-member]) true)
+         (do
+           (-->data [:remote :new-member :from-email :value]
+                    (<--ui [:ui :request :from-email :value]))
+
+           (-->data [:remote :new-member :submit] true))
+
+
+
+         (= (<--ui [:ui :request :new-member]) false)
+         (do
+           (-->data [:remote :sign-in :from-email :value]
+                    (<--ui [:ui :request :from-email :value]))
+
+           (-->data [:remote :sign-in :password :value]
+                    (<--ui [:ui :request :password]))
+
+           (-->data [:remote :sign-in :submit] true)
+         ))))
 
 
 
