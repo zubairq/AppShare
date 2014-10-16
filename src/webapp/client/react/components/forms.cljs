@@ -35,16 +35,6 @@
 
 
 
-(defn update-field-value [field e path parent-id]
-  (write-ui  field  [:value]  (.. e -target -value))
-  )
-
-(defn update-field-value-password [field e path parent-id]
-  (write-ui  field  [:password]  (.. e -target -value))
-  )
-
-
-
 ;------------------------------------------------------------
 (defn-ui-component    from-email-field  [ui-data]
   ;------------------------------------------------------------
@@ -56,8 +46,7 @@
          "My e-mail address is:")
 
    (input {:value (read-ui ui-data [:value])
-           :onChange    #(update-field-value
-                          ui-data %1 path parent-id)
+           :onChange    #(write-ui  ui-data  [:value]  (.. %1 -target -value))
            :style {:font-size "15px"
                    :display "inline-block"
                    :marginLeft "5px"}} "")
@@ -77,9 +66,9 @@
        (input
         {:type        "text"
          :value       (read-ui  ui-data [:password])
-         :onChange    #(update-field-value-password
-                          ui-data %1 path parent-id)
+         :onChange    #(write-ui  ui-data  [:password]  (.. %1 -target -value))
          :disabled    (if (read-ui  ui-data [:new-member]) "true" "")
+         :onFocus     #(js/alert "f")
          :style       {:width "100%"
                        :display "inline-block"
                        :marginLeft "5px"
