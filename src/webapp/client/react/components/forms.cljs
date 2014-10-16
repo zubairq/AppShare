@@ -23,6 +23,7 @@
                                                div
                                                write-ui
                                                read-ui
+                                               ==data
                                                ==ui  -->ui  watch-ui <--ui
                                                <--data -->data
                                                remote
@@ -213,4 +214,24 @@
          ))))
 
 
+
+
+(==data [:remote :new-member :submit] true
+        (go
+         (-->data [:remote :new-member :submit] false)
+
+         (let [ resp (remote
+                      submit-email
+                      {
+                       :from-email (<--data [:remote :new-member :from-email])
+                       })]
+
+           (cond
+            (resp :error)
+            (-->data [:remote :new-member :error]  (pr-str resp))
+
+            :else
+            (-->data [:session :user]  (-> resp ))
+            )))
+        )
 

@@ -80,7 +80,7 @@
      (-->data [:submit :status]               "Submitted")
 
      (go
-      (let [ resp (remote    submit-email
+      (let [ resp (remote    new-member
              {
               :from-email     (<--data [:submit :request :from-email])
               })]

@@ -299,7 +299,7 @@
 
 
 (defn new-member [{:keys [from-email]}]
-  {:value "hello ducks"}
+  {:value (str "hello " from-email)}
   )
 
 
