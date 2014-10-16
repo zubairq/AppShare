@@ -8,6 +8,8 @@
    [clojure.string                       :as string]
    [ankha.core                           :as ankha]
    [webapp.client.timers]
+   [cljs.core.async                      :refer   [put! chan <! pub timeout]]
+   [om-sync.core                         :as async]
    )
   (:use
    [webapp.client.ui-helpers                :only  [validate-email]])
@@ -156,21 +158,21 @@
 
 (watch-ui [:ui :request :from-email :value]
 
-                       (if (= (<--ui [:ui :request :from-email :mode]) "validate")
+          (if (= (<--ui [:ui :request :from-email :mode]) "validate")
 
-                         (if (validate-email  (<--ui [:ui :request :from-email :value]))
+            (if (validate-email  (<--ui [:ui :request :from-email :value]))
 
-                           (-->ui [:ui :request :from-email :error] "")
-                           (-->ui [:ui :request :from-email :error] "Invalid email")
-                           )))
+              (-->ui [:ui :request :from-email :error] "")
+              (-->ui [:ui :request :from-email :error] "Invalid email")
+              )))
 
 
 
 (watch-ui [:ui :request :from-email :value]
 
-                         (if
-                            (validate-email  (<--ui [:ui :request :from-email :value]))
+          (if
+            (validate-email  (<--ui [:ui :request :from-email :value]))
 
-                           (-->ui [:ui :request :details-valid] true)
-                           ))
+            (-->ui [:ui :request :details-valid] true)
+            ))
 

@@ -1,12 +1,17 @@
 (ns webapp.client.react.components.forms
   (:require
    [webapp.framework.client.coreclient   :as c   :include-macros true]
+   [cljs.core.async                      :refer   [put! chan <! pub timeout]]
+   [om-sync.core                         :as      async]
    )
 
   (:use
    [webapp.client.ui-helpers                :only  [validate-email]]
    [webapp.framework.client.ui-helpers      :only  [basic-input-box]]
    [clojure.string                          :only  [blank?]])
+
+  (:require-macros
+   [cljs.core.async.macros :refer [go]])
 
   (:use-macros
    [webapp.framework.client.coreclient  :only [ns-coils
@@ -68,7 +73,7 @@
          :value       (read-ui  ui-data [:password])
          :onChange    #(write-ui  ui-data  [:password]  (.. %1 -target -value))
          :disabled    (if (read-ui  ui-data [:new-member]) "true" "")
-         :onFocus     #(js/alert "f")
+         :onClick     #(write-ui  ui-data [:new-member] false)
          :style       {:width "100%"
                        :display "inline-block"
                        :marginLeft "5px"
@@ -156,7 +161,9 @@
            "")
 
     (a {:href "#" :className "btn btn-warning"
-        :style {:marginTop "5px"}}
+        :style {:marginTop "5px"}
+         :onClick     #(write-ui  ui-data [:clicked] true)
+        }
          "Sign in using our secure server"
          (span {:className "glyphicon glyphicon-play"}
 
@@ -173,6 +180,35 @@
                         (-> ui-data :from-email :value) " to confirm your email address")))
       ))))
 
+
+
+
+
+
+
+(==ui [:ui :request :clicked] true
+      (do
+        (-->ui [:ui :request :clicked] false)
+        (if (<--ui [:ui :request :new-member])
+          (go
+           (let [ resp (remote  new-member {:from-email
+                                            (str "")})]
+             (do
+               (js/alert (pr-str (<--ui [:ui :request :from-email :value]))))))
+          (go
+           (let [ resp (remote  new-member
+                                {:from-email
+                                 (<--ui [:ui :request :from-email :value])})]
+             (do
+               (js/alert (pr-str (<--ui [:ui :request :from-email :value])))
+
+               (cond
+                (resp :error)
+                (-->data [:submit :response]  (pr-str resp))
+
+                :else
+                (-->data [:session :user]  (-> resp :value))
+                )))))))
 
 
 
