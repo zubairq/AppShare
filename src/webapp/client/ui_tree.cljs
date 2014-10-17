@@ -71,33 +71,6 @@
 
 
 
-(==ui [:ui :request :submit :value]     true
-
-    (do
-     (-->ui [:ui :request :submit :message] "Submitted")
-
-     (-->data [:submit :request :from-email]  (<--ui [:ui :request :from-email :value]))
-     (-->data [:submit :status]               "Submitted")
-
-     (go
-      (let [ resp (remote    new-member
-             {
-              :from-email     (<--data [:submit :request :from-email])
-              })]
-
-         (cond
-          (resp :error)
-            (-->data [:submit :response]  (pr-str resp))
-
-          :else
-           (-->data [:submit :request :endorsement-id]  (-> resp :value :endorsement_id))
-       )))))
-
-
-
-
-
-
 
 
 

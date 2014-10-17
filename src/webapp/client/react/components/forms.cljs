@@ -220,19 +220,26 @@
 (==data [:remote :new-member :submit] true
         (go
          (-->data [:remote :new-member :submit] false)
+         (-->data [:remote :notifications :new-member] "waiting")
 
-         (let [ resp (remote
-                      submit-email
-                      {
-                       :from-email (<--data [:remote :new-member :from-email])
-                       })]
+         (let [resp (remote
+                     submit-email
+                     {
+                      :from-email (<--data [:remote :new-member :from-email :value])
+                      })]
 
            (cond
             (resp :error)
             (-->data [:remote :new-member :error]  (pr-str resp))
 
             :else
-            (-->data [:session :user]  (-> resp ))
+            (do
+              (-->data [:session :user]  (-> resp ))
+              (-->data [:session :endorsement-id]  (-> resp :value :endorsement_id))
+              )
             )))
         )
+
+
+
 

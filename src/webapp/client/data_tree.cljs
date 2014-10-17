@@ -39,12 +39,7 @@
 
 
 
-
-
-
-
-
-(==data    [:submit :status]     "ConfirmedSender"
+(==data    [:remote :notifications :new-member]     "EmailConfirmed"
            (do
              (-->ui [:ui :request :from-email :confirmed]  true)
              (-->ui [:ui :request :show-connection-confirmation]  true)))

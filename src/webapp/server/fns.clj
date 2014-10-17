@@ -83,8 +83,6 @@
   [{:keys [from-email]}]
   ;----------------------------------------------------------------
 
-  (if *show-code*
-    {:value nil}
     (let [
           endorsement-id    (uuid-str)
           web-record        (first (neo4j "create  (n:AskToConfirmEmail
@@ -102,26 +100,19 @@
           ]
       (do
         (println (str "submit-email called: " web-record))
-        {:value web-record}  ))
+        {:value web-record}  )))
 
 
-    ))
+
+
+;(submit-email  {:from-email "dsdsd@fddffd"})
+
+
 
 
 (defn main-init []
   {:value "do nothing"}
   )
-
-
-
-
-
-(comment println (submit-email
-                  {
-                   :from-email        "1"
-                   }))
-
-
 
 
 
@@ -294,16 +285,6 @@
     (check-timer)
     ;(start-conns)
     ))
-
-
-
-
-(defn new-member [{:keys [from-email]}]
-  {:value (str "hello " from-email)}
-  )
-
-
-
 
 
 

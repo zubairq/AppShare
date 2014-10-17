@@ -68,15 +68,15 @@
 (defn my-timer []
     (swap! tt inc)
     (c/log (str "Called timer: " @tt))
-    (cond
+    (if
 
 
 
 
 
-     (and
-      (= (get-in @data-state [:submit :status])  "Submitted")
-      (get-in @data-state [:submit :request :endorsement-id]))
+
+     (= (get-in @data-state [:remote :notifications :new-member]) "waiting")
+
 
      (go
        (let [res
@@ -84,20 +84,19 @@
               (c/remote    email-confirmed
                {
                 :endorsement-id
-                (get-in @data-state [:submit :request :endorsement-id])})
+                (get-in @data-state [:session  :endorsement-id])})
              ]
          (c/log (str "Checking sender " @tt " " res))
          (if (res :value)
            (do
-             (update-data [:submit :status]  "ConfirmedSender")))))
+             (update-data [:remote :notifications :new-member]  "EmailConfirmed"))))))
 
 
 
 
 
 
-
-
+(if
      (and
       (= (get-in @app-state [:ui :tab])  "browser")
       (= (-> @app-state :ui :tab-browser) "top companies")
