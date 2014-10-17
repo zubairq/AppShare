@@ -164,6 +164,7 @@
     (a {:href "#" :className "btn btn-warning"
         :style {:marginTop "5px"}
          :onClick     #(write-ui  ui-data [:clicked] true)
+         :disabled (if (read-ui  ui-data [:details-valid]) "" "false")
         }
          "Sign in using our secure server"
          (span {:className "glyphicon glyphicon-play"}
