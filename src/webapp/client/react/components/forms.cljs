@@ -102,7 +102,7 @@
           }
 
          (div {:style { :vertical-align "center" }}
-              (div {:style {:padding "5px" :padding-bottom "30px"}} "You have now joined connectToUs!")
+              (div {:style {:padding "5px" :padding-bottom "30px"}} "You have now joined the Companator network!")
 
               (div {:style {:padding "5px"}} (str " "
                                                   (get-in dialog-data [:from-email :value] )

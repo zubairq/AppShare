@@ -35,12 +35,12 @@
                                                   })]
      (cond
       (:error confirm-sender-code-result)
-      (.write js/document (str "ConnectToUs had a problem. Have you already confirmed your email? Make your company more visible using "
-                               "<a href='http://connecttous.co'>connectToUs.co</a>"))
+      (.write js/document (str "Companator had a problem. Have you already confirmed your email? Make your company more visible using "
+                               "<a href='http://companator.com'>Companator.com</a>"))
 
       :else
       (.write js/document (str "Your email address has been confirmed. Make your company more visible using "
-                               "<a href='http://connecttous.co'>connectToUs.co</a>"))
+                               "<a href='http://companator.com'>Companator.com</a>"))
       )
      )
    )

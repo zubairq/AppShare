@@ -101,7 +101,7 @@
 
 
               (c/div {:style {:padding "5px" :padding-bottom "20px"  :font-size "20"}}
-                   (str "This is a basic demo app called ConnectToUs to show the basic capabilities of Coils"))
+                   (str "This is a basic demo app called Companator to show the basic capabilities of Coils"))
 
 
 

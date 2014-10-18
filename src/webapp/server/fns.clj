@@ -48,19 +48,19 @@
                 } "n")
 
         (send-email
-         :message      (str "ConnectToUs.co - "
-                            "Please confirm that you wish to join ConnectToUs "
+         :message      (str "Companator.com - "
+                            "Please confirm that you wish to join Companator "
                             "by clicking on the following link: "
                             "\r\n\r\n"
                             "http://" *web-server* "/*" email-confirmation-code)
 
-         :subject      (str "ConnectToUs.co - "
-                            "Please confirm you wish to join ConnectToUs "
+         :subject      (str "Companator.com - "
+                            "Please confirm you wish to join Companator"
                             (:to_email confirm-email-record))
 
 
-         :from-email   "contact@connecttous.co"
-         :from-name    "ConnectToUs.co"
+         :from-email   "contact@companator.com"
+         :from-name    "Companator.com"
          :to-email     (:from_email confirm-email-record)
          :to-name      (:from_email  confirm-email-record))
 
