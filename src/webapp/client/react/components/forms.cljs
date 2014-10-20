@@ -70,7 +70,7 @@
         :style       {:width "100%" }}
 
        (input
-        {:type        "text"
+        {:type        "password"
          :value       (read-ui  ui-data [:password])
          :onChange    #(write-ui  ui-data  [:password]  (.. %1 -target -value))
          :disabled    (if (read-ui  ui-data [:new-member]) "true" "")
