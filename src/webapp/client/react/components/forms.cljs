@@ -86,6 +86,34 @@
 
 
 
+
+
+;------------------------------------------------------------
+(defn-ui-component    show-dialog-box  [dialog-data]
+  ;------------------------------------------------------------
+  (if (read-ui dialog-data [:message])
+    (div {:style {:position          "absolute"           :left    "5%"  :top "5%"
+                  :width   "90%"
+                  :height  "90%"
+                  :border            "solid 1px black;"   :zIndex  "2000"
+                  :background-color  "white"              :opacity "1.0"
+                  :text-align        "center"
+                  }
+          :onTouchStart #(c/write-ui  dialog-data [:message] nil)
+          :onClick      #(c/write-ui  dialog-data [:message] nil)
+          }
+
+         (div {:style { :vertical-align "center" }}
+              (div {:style {:padding "5px" :padding-bottom "30px"}} (read-ui dialog-data [:message]) )
+))))
+
+
+
+
+
+
+
+
 ;------------------------------------------------------------
 (defn-ui-component    show-connection-confirmation-dialog-box  [dialog-data]
   ;------------------------------------------------------------
@@ -123,6 +151,8 @@
      (component  show-connection-confirmation-dialog-box  ui-data []))
 
 
+   (if (read-ui ui-data [:message])
+       (component  show-dialog-box  ui-data []))
 
    (div
     {:style {:border "1px solid" :padding "15px" :marginTop "10px"}}
@@ -215,7 +245,9 @@
          ))))
 
 
-
+(==data [:remote :sign-in :submit] true
+        (-->ui [:ui :request :message] "Login not implemented yet")
+        )
 
 (==data [:remote :new-member :submit] true
         (go
@@ -239,7 +271,4 @@
               )
             )))
         )
-
-
-
 
