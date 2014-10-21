@@ -8,9 +8,6 @@
   (:require-macros
     [cljs.core.async.macros :refer [go alt!]])
 
-  (:use
-        [webapp.framework.client.coreclient  :only [remote-fn neo4j-fn sql-fn]]
-    )
     (:use-macros
         [webapp.framework.client.coreclient  :only [ns-coils sql log neo4j neo4j-1 sql-1 log]]
      )
@@ -25,4 +22,10 @@
 
 ;(go (log (neo4j "match n return count(n)")))
 ;(go (log (sql "select count(*) from yazz_login_details" {})))
+
+(go (log  (sql-1 "select count(*) from yazz_login_details
+                 where groups = 'LEARNO_USER'" {})))
+
+(go (log  (sql-1 "select count(*) from learno_tests " {})))
+
 
