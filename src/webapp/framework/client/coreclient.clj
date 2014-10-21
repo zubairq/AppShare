@@ -174,6 +174,12 @@
   `(om.dom/h2  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 (defmacro h3 [attributes & more]
   `(om.dom/h3  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro h4 [attributes & more]
+  `(om.dom/h4  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro h5 [attributes & more]
+  `(om.dom/h5  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro h6 [attributes & more]
+  `(om.dom/h6  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 (defmacro ul [attributes & more]
   `(om.dom/ul  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 (defmacro li [attributes & more]
@@ -198,6 +204,8 @@
   `(om.dom/th  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 (defmacro form [attributes & more]
   `(om.dom/form  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro span [attributes & more]
+  `(om.dom/span  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 ;--------------------------------------------------------------------
 
 
