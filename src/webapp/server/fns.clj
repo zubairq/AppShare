@@ -24,47 +24,46 @@
 
 
 
-
-
 (defn process-send-confirmation-email
   [ confirm-email-record ]
-;----------------------------------------------------------------
+  ;----------------------------------------------------------------
   (if confirm-email-record
 
     (let
       [
        email-confirmation-code    (uuid-str)
        ]
-      (do
+      (let [conf
 
-        (neo4j "match n where id(n)={id}
-               remove n:AskToConfirmEmail
-               set n:ConfirmationEmailSent,
-               n.confirm_sender_code = {confirm_sender_code}
-               return n"
-               {
-                :id                     (:neo-id confirm-email-record)
-                :confirm_sender_code    email-confirmation-code
-                } "n")
+            (neo4j-1 "match (n:AskToConfirmEmail) where id(n)={id}
+                     remove n:AskToConfirmEmail
+                     set n:ConfirmationEmailSent,
+                     n.confirm_sender_code = {confirm_sender_code}
+                     return n"
+                     {
+                      :id                     (:neo-id confirm-email-record)
+                      :confirm_sender_code    email-confirmation-code
+                      } "n")]
 
-        (send-email
-         :message      (str "Companator.com - "
-                            "Please confirm that you wish to join Companator "
-                            "by clicking on the following link: "
-                            "\r\n\r\n"
-                            "http://" *web-server* "/*" email-confirmation-code)
+        (if conf
+          (send-email
+           :message      (str "Companator.com - "
+                              "Please confirm that you wish to join Companator "
+                              "by clicking on the following link: "
+                              "\r\n\r\n"
+                              "http://" *web-server* "/*" email-confirmation-code)
 
-         :subject      (str "Companator.com - "
-                            "Please confirm you wish to join Companator"
-                            (:to_email confirm-email-record))
+           :subject      (str "Companator.com - "
+                              "Please confirm you wish to join Companator"
+                              (:to_email confirm-email-record))
 
 
-         :from-email   "contact@companator.com"
-         :from-name    "Companator.com"
-         :to-email     (:from_email confirm-email-record)
-         :to-name      (:from_email  confirm-email-record))
+           :from-email   "contact@companator.com"
+           :from-name    "Companator.com"
+           :to-email     (:from_email confirm-email-record)
+           :to-name      (:from_email  confirm-email-record))
 
-        ))))
+          )))))
 
 
 
@@ -82,6 +81,7 @@
 (defn submit-email
   [{:keys [from-email]}]
   ;----------------------------------------------------------------
+
 
     (let [
           endorsement-id    (uuid-str)
