@@ -63,4 +63,4 @@
 
 
 
-(go (log  (sql-1 "select count(*) from learno_tests " {})))
+;(go (log  (sql-1 "select count(*) from learno_tests " {})))

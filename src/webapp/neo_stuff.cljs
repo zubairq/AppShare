@@ -23,9 +23,9 @@
 ;(go (log (neo4j "match n return count(n)")))
 ;(go (log (sql "select count(*) from yazz_login_details" {})))
 
-(go (log  (sql-1 "select count(*) from yazz_login_details
-                 where groups = 'LEARNO_USER'" {})))
+;(go (log  (sql-1 "select count(*) from yazz_login_details
+;                 where groups = 'LEARNO_USER'" {})))
 
-(go (log  (sql-1 "select count(*) from learno_tests " {})))
+;(go (log  (sql-1 "select count(*) from learno_tests " {})))
 
 
