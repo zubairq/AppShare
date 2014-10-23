@@ -7,6 +7,7 @@
    [cljs.core.async                      :refer [put! chan <! pub timeout]]
    [om-sync.core                         :as async]
    [clojure.data                         :as data]
+   [webapp.client.timers]
    [clojure.string                       :as string]
    [ankha.core                           :as ankha]
    )
@@ -14,7 +15,7 @@
   (:use
    [webapp.framework.client.components.main                    :only   [main-view]]
    [webapp.framework.client.system-globals                     :only   [app-state  data-state  set-ab-tests]]
-   [webapp.client.views.learno                                 :only   [main-learno-view]]
+   [webapp.client.react.views.learno                           :only   [main-learno-view]]
    )
 
   (:require-macros

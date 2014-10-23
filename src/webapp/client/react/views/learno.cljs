@@ -1,9 +1,8 @@
-
-(ns webapp.client.views.learno
+(ns webapp.client.react.views.learno
   (:require
    [webapp.framework.client.coreclient   :as c :include-macros true]))
 
-(c/ns-coils 'webapp.client.views.learno)
+(c/ns-coils 'webapp.client.react.views.learno)
 
 
 
