@@ -14,6 +14,7 @@
   (:use
    [webapp.framework.client.components.main                    :only   [main-view]]
    [webapp.framework.client.system-globals                     :only   [app-state  data-state  set-ab-tests]]
+   [webapp.client.views.learno                                 :only   [main-learno-view]]
    )
 
   (:require-macros
@@ -32,7 +33,7 @@
 (def  ^:export setup
   {
    :start-component
-   main-view
+   main-learno-view
 
    :setup-fn
    (fn[]
@@ -61,4 +62,4 @@
 
 
 
-(go (log  (sql-1 "select count(*) from learno_questions " {})))
+(go (log  (sql-1 "select count(*) from learno_tests " {})))

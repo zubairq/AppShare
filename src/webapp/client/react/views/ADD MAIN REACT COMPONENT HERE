@@ -1,1 +1,17 @@
 
+(ns webapp.client.views.main
+  (:require
+   [webapp.framework.client.coreclient   :as c :include-macros true]))
+
+(c/ns-coils 'webapp.client.views.main)
+
+
+
+
+
+(c/defn-ui-component     main-view   [app]
+  {}
+
+  (c/div nil
+       (c/h2 nil "Coils")
+       "Build webapps with Neo4j"))
