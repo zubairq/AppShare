@@ -459,16 +459,26 @@
 
 
 ;--------------------------------------------------------------------
-(defmacro sql [sql-str params]
+(defmacro sql
+  ([sql-str]
+  `(~'<! (webapp.framework.client.coreclient/sql-fn
+       ~(encrypt sql-str)
+       {})))
+  ([sql-str params]
   `(~'<! (webapp.framework.client.coreclient/sql-fn
        ~(encrypt sql-str)
        ~params)))
+  )
 
 ;( macroexpand '(sql "SELECT * FROM test_table where name = ?" ["shopping"] ))
 ;--------------------------------------------------------------------
 
-(defmacro sql-1 [sql-str params]
-  `(~'first (~'sql  ~sql-str ~params)))
+(defmacro sql-1
+  ([sql-str]
+   `(~'first (~'sql  ~sql-str {}))
+  ([sql-str params]
+   `(~'first (~'sql  ~sql-str ~params))
+   )
 
 
 

@@ -1,4 +1,4 @@
-(ns webapp.client.init
+(ns webapp.client.update-ui-from-data
   (:require
    [goog.net.cookies                     :as cookie]
    [om.core                              :as om    :include-macros true]
@@ -10,7 +10,6 @@
    [webapp.client.timers]
    [clojure.string                       :as string]
    [ankha.core                           :as ankha]
-   [webapp.client.update-ui-from-data]
    )
 
   (:use
@@ -23,45 +22,16 @@
    [cljs.core.async.macros :refer [go]])
 
   (:use-macros
-   [webapp.framework.client.coreclient  :only [ns-coils sql log neo4j neo4j-1 sql-1 log]]
+   [webapp.framework.client.coreclient  :only [ns-coils sql log neo4j neo4j-1 sql-1 log
+                                               watch-data
+                                               -->ui
+                                               <--data]]
    )
   )
-(c/ns-coils 'webapp.client.init)
+(c/ns-coils 'webapp.client.update-ui-from-data)
 
+(watch-data [:tables :top-tests]
+            (do
+              (-->ui [:ui :tests :values] (<--data [:tables :top-tests]))
+             ))
 
-
-
-
-(def  ^:export setup
-  {
-   :start-component
-   main-learno-view
-
-   :setup-fn
-   (fn[]
-     (do
-     (reset!
-      app-state
-
-      (assoc-in
-       @app-state [:ui]
-       {
-
-
-        }))
-
-
-     (reset! data-state {
-                         :submit {}
-                         })
-
-
-     (set-ab-tests {
-                    })
-  ))})
-
-
-
-
-
-;(go (log  (sql-1 "select count(*) from learno_tests " {})))

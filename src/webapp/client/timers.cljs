@@ -22,7 +22,12 @@
    [clojure.string :only [blank?]]
    )
    (:require-macros
-    [cljs.core.async.macros :refer [go]]))
+    [cljs.core.async.macros :refer [go]])
+  (:use-macros
+   [webapp.framework.client.coreclient  :only [ns-coils sql log neo4j neo4j-1 sql-1 log]]
+   )
+
+  )
 
 
 
@@ -121,4 +126,20 @@
 (add-init-state-fn "timer function" #(js/setInterval my-timer 15000))
 
 
+(defn get-top-tests []
+  (go
+   (update-data [:tables :top-tests]
+    (sql
+     "select
+         name,
+         questions_answered_count
+     from
+     learno_tests
+     where
+     questions_answered_count is not null
+     order by
+     questions_answered_count desc
+     limit 10" ) ))
+  )
 
+(add-init-state-fn "get top tests" get-top-tests)
