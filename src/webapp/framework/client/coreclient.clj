@@ -475,10 +475,11 @@
 
 (defmacro sql-1
   ([sql-str]
-   `(~'first (~'sql  ~sql-str {}))
+   `(~'first (~'sql  ~sql-str {})))
+
   ([sql-str params]
    `(~'first (~'sql  ~sql-str ~params))
-   )
+   ))
 
 
 
