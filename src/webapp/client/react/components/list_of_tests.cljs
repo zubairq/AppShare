@@ -11,12 +11,10 @@
 (c/defn-ui-component     component-list-of-tests   [tests]
   {}
 
-  (c/div nil
-         (c/add-many
-           (map
-                    #(c/div nil
-                           (str (get %1 :name) ", "
-                                (get %1 :questions_answered_count)))
-                    (get tests :values))
-                )
-         ""))
+  (c/map-many
+
+   #(c/div {}
+            (str (get %1 :name) ", "
+                 (get %1 :questions_answered_count)))
+
+    (get tests :values)))
