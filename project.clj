@@ -4,7 +4,7 @@
                  [org.clojure/google-closure-library-third-party "0.0-2029"]
                  [org.clojure/tools.reader "0.8.9"]
                  [org.clojure/clojurescript "0.0-2322"]
-                 [om "0.7.3"]
+                 [om "0.8.0-alpha1"]
                  [om-sync "0.1.1"]
                  [org.clojure/core.async "0.1.346.0-17112a-alpha" :scope "provided"]
                  [com.facebook/react "0.11.1"]
