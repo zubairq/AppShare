@@ -13,8 +13,8 @@
 
   (c/map-many
 
-   #(c/div {}
-            (str (get %1 :name) ", "
-                 (get %1 :questions_answered_count)))
+   #(c/container
+     (c/inline "150px" (c/text (:name %1) ))
+     (c/inline ""      (c/text (:questions_answered_count %1))))
 
-    (get tests :values)))
+   (get tests :values)))

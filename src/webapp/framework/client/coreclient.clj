@@ -213,6 +213,17 @@
   `(om.dom/form  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 (defmacro span [attributes & more]
   `(om.dom/span  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+
+(defmacro container [& more]
+  `(om.dom/div  {} ~@more))
+(defmacro text [& str-items]
+  `(om.dom/div  {} (str ~@str-items)))
+(defmacro inline [width & more]
+  `(om.dom/div  (webapp.framework.client.coreclient/attrs
+                 {:style {:display "inline-block;"
+                          :width   ~width
+                          }}) ~@more))
+
 ;--------------------------------------------------------------------
 
 
