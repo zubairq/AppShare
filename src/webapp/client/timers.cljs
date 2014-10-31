@@ -18,6 +18,7 @@
                                                     data-state
                                                     add-init-state-fn
                                                     update-data
+                                                    touch
                                                     ]]
    [clojure.string :only [blank?]]
    )
@@ -141,5 +142,11 @@
      questions_answered_count desc
      limit 10" ) ))
   )
+
+;(get-top-tests)
+
+(defn process-events []
+  (touch [:ui]))
+(add-init-state-fn "process events" #(js/setInterval process-events 100))
 
 (add-init-state-fn "get top tests" get-top-tests)

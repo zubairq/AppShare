@@ -5,7 +5,9 @@
 (c/ns-coils 'webapp.client.react.components.list-of-tests)
 
 
-
+(defn data [tests]
+      (get tests :values)
+      )
 
 
 (c/defn-ui-component     component-list-of-tests   [tests]
@@ -15,6 +17,7 @@
 
    #(c/container
      (c/inline "150px" (c/text (:name %1) ))
-     (c/inline ""      (c/text (:questions_answered_count %1))))
+     (c/inline ""      (c/text (:questions_answered_count %1)))
+     )
 
-   (get tests :values)))
+   (data  tests)))
