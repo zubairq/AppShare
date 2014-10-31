@@ -30,8 +30,5 @@
   )
 (c/ns-coils 'webapp.client.update-ui-from-data)
 
-(watch-data [:tables :top-tests]
-            (do
-              (-->ui [:ui :tests :values] (<--data [:tables :top-tests]))
-             ))
+
 

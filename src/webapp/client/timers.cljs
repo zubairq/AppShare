@@ -127,26 +127,12 @@
 (add-init-state-fn "timer function" #(js/setInterval my-timer 15000))
 
 
-(defn get-top-tests []
-  (go
-   (update-data [:tables :top-tests]
-    (sql
-     "select
-         name,
-         questions_answered_count
-     from
-     learno_tests
-     where
-     questions_answered_count is not null
-     order by
-     questions_answered_count desc
-     limit 10" ) ))
-  )
+
 
 ;(get-top-tests)
 
 (defn process-events []
   (touch [:ui]))
-(add-init-state-fn "process events" #(js/setInterval process-events 100))
+(add-init-state-fn "process events" #(js/setInterval process-events 200))
 
-(add-init-state-fn "get top tests" get-top-tests)
+;(add-init-state-fn "get top tests" get-top-tests)
