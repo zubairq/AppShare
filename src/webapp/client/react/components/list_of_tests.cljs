@@ -12,6 +12,7 @@
                                                watch-data
                                                -->ui
                                                <--data
+                                               remote
                                                ]])
   (:use
    [webapp.framework.client.system-globals  :only  [app-state
@@ -34,37 +35,40 @@
 
 
 
-(defn get-top-tests []
-  (go
-   (update-data [:tables :top-tests]
-    (sql
-     "select
-         name,
-         questions_answered_count
-     from
-     learno_tests
-     where
-     questions_answered_count is not null
-     order by
-     questions_answered_count desc
-     limit 10" ) ))
-  )
-
 
 
 (def data-sources (atom  {}))
+@data-sources
 
 
 
-(defn add-data-source [data-source-name]
-  (reset! data-sources
-          (assoc @data-sources data-source-name {})))
 
 
-(watch-data [:tables :top-tests]
-            (do
-              (-->ui [:ui :tests :values] (<--data [:tables :top-tests]))
-             ))
+
+
+
+(defn add-data-source [data-source-name
+                       {
+                        fields               :fields
+                        }
+                       ]
+  (if (not (get @data-sources data-source-name))
+    (do
+      (reset! data-sources
+              (assoc @data-sources data-source-name {}))
+
+      (go
+       (update-data [:tables :top-tests]
+                    (remote !make-sql
+                            {:fields "name, questions_answered_count"}) ))
+
+      (watch-data [:tables :top-tests]
+                  (do
+                    (-->ui [:ui :tests :values] (<--data [:tables :top-tests]))
+                    ))
+      ) ))
+
+
 
 
 
@@ -73,15 +77,19 @@
                                path                 :path
                                ui-state             :ui-state
                                interval-in-millis   :interval-in-millis
+                               fields               :fields
                                }]
-  (add-data-source  name-of-reader)
+  (add-data-source  name-of-reader
+                    {
+                       :fields    fields
+                     })
   (get ui-state :values)
   )
 
 
 
 ;(get-top-tests)
-(add-init-state-fn  "timer function"    get-top-tests  )
+
 
 
 
@@ -97,5 +105,6 @@
    (data  "read all tests for list"
           {
            :path       []
+           :fields     "name, questions_answered_count"
            :ui-state   tests
            })))
