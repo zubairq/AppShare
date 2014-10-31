@@ -52,6 +52,14 @@
 
 
 
+(def data-sources (atom  {}))
+
+
+
+(defn add-data-source [data-source-name]
+  (reset! data-sources
+          (assoc @data-sources data-source-name {})))
+
 
 (watch-data [:tables :top-tests]
             (do
@@ -59,15 +67,23 @@
              ))
 
 
+
+
 (defn data [name-of-reader    {
-                               path    :path
-                               tests   :ui-state
+                               path                 :path
+                               ui-state             :ui-state
+                               interval-in-millis   :interval-in-millis
                                }]
-  (get tests :values)
+  (add-data-source  name-of-reader)
+  (get ui-state :values)
   )
 
+
+
 ;(get-top-tests)
-(add-init-state-fn  "timer function"  #(js/setInterval  get-top-tests  1000))
+(add-init-state-fn  "timer function"    get-top-tests  )
+
+
 
 (c/defn-ui-component     component-list-of-tests   [tests]
 
