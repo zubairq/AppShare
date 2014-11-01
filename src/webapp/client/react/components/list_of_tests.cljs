@@ -13,6 +13,12 @@
                                                -->ui
                                                <--data
                                                remote
+                                               defn-ui-component
+                                               container
+                                               map-many
+                                               inline
+                                               text
+                                               div
                                                ]])
   (:use
    [webapp.framework.client.system-globals  :only  [app-state
@@ -104,39 +110,33 @@
 
 
 
-(c/defn-ui-component     component-list-of-tests   [tests]
+(defn-ui-component     component-list-of-tests   [ui]
 
-  (c/container
-
-
+  (container
 
 
-   (c/map-many
-    #(c/container
-      (c/inline "100%" (c/text "- " (:question  %1  ) )))
-    (data  "read all questions for list"
-           {
-            :path       [:questions]
-            :db-table   "learno_questions"
-            :fields     "question"
-            ;:where      "name is not null"
-            ;           :fields     "name, questions_answered_count"
-            :ui-state   tests}))
 
-   (c/div {:style {:padding "20px"}})
 
-   (c/map-many
-    #(c/container
-      (c/inline "250px" (c/text "*" (:name %1) ))
-      (c/inline ""      (c/text (:questions_answered_count %1))))
-    (data  "read all tests for list"
-           {
-            :path       [:tests]
-            :db-table   "learno_tests"
-            :fields     "name"
-            ;:where      "name is not null"
-            ;           :fields     "name, questions_answered_count"
-            :ui-state   tests}))
+   (map-many
+    #(container
+      (inline "100%" (c/text "- " (:question  %1  ) )))
+    (data  "read all questions for list" {
+                                          :path       [:questions]
+                                          :db-table   "learno_questions"
+                                          :fields     "question"
+                                          :ui-state   ui}))
+
+   (div {:style {:padding "20px"}})
+
+   (map-many
+    #(container
+      (inline "250px" (text "*" (:name %1) ))
+      (inline ""      (text (:questions_answered_count %1))))
+    (data  "read all tests for list" {
+                                      :path       [:tests]
+                                      :db-table   "learno_tests"
+                                      :fields     "name"
+                                      :ui-state   ui}))
 
 
 
