@@ -293,14 +293,16 @@
   [{:keys [fields]}]
 
   (sql
-   "select name, questions_answered_count
-   from
-   learno_tests
-   where
-   questions_answered_count is not null
-   order by
-   questions_answered_count desc
-   limit 10" {}))
+   (str
+    "select "
+         fields " "
+    "from
+    learno_tests
+    where
+    questions_answered_count is not null
+    order by
+    questions_answered_count desc
+    limit 10") {}))
 
 
 

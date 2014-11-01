@@ -60,7 +60,7 @@
       (go
        (update-data [:tables :top-tests]
                     (remote !make-sql
-                            {:fields "name, questions_answered_count"}) ))
+                            {:fields fields}) ))
 
       (watch-data [:tables :top-tests]
                   (do
