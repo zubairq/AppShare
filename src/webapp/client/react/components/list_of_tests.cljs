@@ -50,6 +50,9 @@
 (defn add-data-source [data-source-name
                        {
                         fields               :fields
+                        db-table             :db-table
+                        where                :where
+                        path                 :path
                         }
                        ]
   (if (not (get @data-sources data-source-name))
@@ -58,15 +61,19 @@
               (assoc @data-sources data-source-name {}))
 
       (go
-       (update-data [:tables :top-tests]
+       (update-data [:tables db-table]
                     (remote !make-sql
-                            {:fields fields}) ))
+                            {
+                             :fields        fields
+                             :db-table      db-table
+                             :where         where
+                             }) ))
 
-      (watch-data [:tables :top-tests]
+      (watch-data [:tables db-table]
                   (do
-                    (-->ui [:ui :tests :values] (<--data [:tables :top-tests]))
-                    ))
-      ) ))
+                    (-->ui (into [] (flatten (conj  [:ui] path [:values])))
+                           (<--data [:tables db-table]))
+                    )))))
 
 
 
@@ -77,34 +84,63 @@
                                path                 :path
                                ui-state             :ui-state
                                interval-in-millis   :interval-in-millis
+                               db-table             :db-table
                                fields               :fields
+                               where                :where
                                }]
   (add-data-source  name-of-reader
                     {
-                       :fields    fields
+                       :fields        fields
+                       :db-table      db-table
+                       :where         where
+                       :path          path
                      })
-  (get ui-state :values)
+  (get (get-in ui-state path) :values)
   )
 
 
 
-;(get-top-tests)
 
 
 
 
 (c/defn-ui-component     component-list-of-tests   [tests]
 
-  (c/map-many
+  (c/container
 
-   #(c/container
-     (c/inline "150px" (c/text (:name %1) ))
-     (c/inline ""      (c/text (:questions_answered_count %1)))
-     )
 
-   (data  "read all tests for list"
-          {
-           :path       []
-           :fields     "name, questions_answered_count"
-           :ui-state   tests
-           })))
+
+
+   (c/map-many
+    #(c/container
+      (c/inline "100%" (c/text "- " (:question  %1  ) )))
+    (data  "read all questions for list"
+           {
+            :path       [:questions]
+            :db-table   "learno_questions"
+            :fields     "question"
+            ;:where      "name is not null"
+            ;           :fields     "name, questions_answered_count"
+            :ui-state   tests}))
+
+   (c/div {:style {:padding "20px"}})
+
+   (c/map-many
+    #(c/container
+      (c/inline "250px" (c/text "*" (:name %1) ))
+      (c/inline ""      (c/text (:questions_answered_count %1))))
+    (data  "read all tests for list"
+           {
+            :path       [:tests]
+            :db-table   "learno_tests"
+            :fields     "name"
+            ;:where      "name is not null"
+            ;           :fields     "name, questions_answered_count"
+            :ui-state   tests}))
+
+
+
+
+
+
+   ))

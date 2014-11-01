@@ -290,19 +290,25 @@
 
 
 (defn !make-sql
-  [{:keys [fields]}]
+  [{:keys [
+           fields
+           db-table
+           where
+           ]}]
 
   (sql
    (str
     "select "
          fields " "
-    "from
-    learno_tests
-    where
-    questions_answered_count is not null
-    order by
-    questions_answered_count desc
-    limit 10") {}))
+    "from "
+         db-table " "
+    (if where (str "where " where ))
+    ;questions_answered_count is not null
+    ;order by
+    ;questions_answered_count desc"
+    "limit 3") {}))
+
+;(sql "select count(*) from learno_tests limit 1" {})
 
 
 

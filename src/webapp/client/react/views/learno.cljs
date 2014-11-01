@@ -22,5 +22,5 @@
          (c/div {:style {:padding-bottom "20px"}}
                 (c/h2 nil "Learno")
                 "Learn online")
-         (c/component  component-list-of-tests  app [:ui :tests])
+         (c/component  component-list-of-tests  app [:ui])
          ))
