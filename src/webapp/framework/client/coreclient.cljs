@@ -52,6 +52,7 @@
                                                inline
                                                text
                                                div
+                                               add-data-source
                                                ]])
 
 
@@ -1094,3 +1095,30 @@
                     (-->ui (into [] (flatten (conj  [:ui] path [:values])))
                            (<--data [:tables db-table]))
                     )))))
+
+
+
+
+
+
+
+
+(defn data-fn [name-of-reader    {
+                               path                 :path
+                               ui-state             :ui-state
+                               interval-in-millis   :interval-in-millis
+                               db-table             :db-table
+                               fields               :fields
+                               where                :where
+                               }]
+  (add-data-source  name-of-reader
+                    {
+                       :fields        fields
+                       :db-table      db-table
+                       :where         where
+                       :path          path
+                     })
+  (get (get-in ui-state path) :values)
+  )
+
+

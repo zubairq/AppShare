@@ -20,21 +20,8 @@
                                                text
                                                div
                                                add-data-source
-                                               ]])
-  (:use
-   [webapp.framework.client.system-globals  :only  [app-state
-                                                    reset-app-state
-                                                    ui-watchers
-                                                    data-watchers
-                                                    data-state
-                                                    add-init-state-fn
-                                                    update-data
-                                                    touch
-                                                    data-sources
-                                                    ]]
-   )
-  (:require-macros
-    [cljs.core.async.macros :refer [go]]))
+                                               data
+                                               ]]))
 
 (c/ns-coils 'webapp.client.react.components.list-of-tests)
 
@@ -56,28 +43,6 @@
 
 
 
-
-
-
-
-
-(defn data [name-of-reader    {
-                               path                 :path
-                               ui-state             :ui-state
-                               interval-in-millis   :interval-in-millis
-                               db-table             :db-table
-                               fields               :fields
-                               where                :where
-                               }]
-  (c/add-data-source  name-of-reader
-                    {
-                       :fields        fields
-                       :db-table      db-table
-                       :where         where
-                       :path          path
-                     })
-  (get (get-in ui-state path) :values)
-  )
 
 
 
