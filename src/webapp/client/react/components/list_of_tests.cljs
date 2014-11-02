@@ -5,48 +5,15 @@
    [om-sync.core     :as async]
    [clojure.data     :as data]
    [clojure.string   :as string]
-   [ankha.core       :as ankha]
-   )
+   [ankha.core       :as ankha])
   (:use-macros
    [webapp.framework.client.coreclient  :only [ns-coils sql log neo4j neo4j-1 sql-1 log
-                                               watch-data
-                                               -->ui
-                                               <--data
-                                               remote
-                                               defn-ui-component
-                                               container
-                                               map-many
-                                               inline
-                                               text
-                                               div
-                                               add-data-source
-                                               data
+                                               watch-data  -->ui  <--data
+                                               remote  defn-ui-component
+                                               container  map-many  inline  text
+                                               div  add-data-source  data
                                                ]]))
-
 (c/ns-coils 'webapp.client.react.components.list-of-tests)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -78,9 +45,15 @@
                                       :fields     "name"
                                       :ui-state   ui}))
 
+   (div {:style {:padding "20px"}})
 
-
-
-
+   (map-many
+    #(container
+      (inline "450px" (text "*" (:keyword %1) )))
+    (data  "read all keywords" {
+                                      :path       [:keywords]
+                                      :db-table   "learno_keywords"
+                                      :fields     "keyword"
+                                      :ui-state   ui}))
 
    ))
