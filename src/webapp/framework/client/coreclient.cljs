@@ -37,8 +37,26 @@
                                                     app-watch-on?
                                                     data-accesses
                                                     paths-for-refresh
-                                                    ]]))
+                                                    data-sources
+                                                    ]])
+  (:use-macros
+   [webapp.framework.client.coreclient  :only [ns-coils
+                                               sql log neo4j neo4j-1 sql-1 log
+                                               watch-data
+                                               -->ui
+                                               <--data
+                                               remote
+                                               defn-ui-component
+                                               container
+                                               map-many
+                                               inline
+                                               text
+                                               div
+                                               ]])
 
+
+  )
+(ns-coils 'webapp.framework.client.coreclient)
 
 
 (reader/register-tag-parser! "webapp.framework.server.records.NeoNode" map->NeoNode)
@@ -1046,3 +1064,33 @@
                                               }))))
 
 
+
+
+
+(defn add-data-source-fn [data-source-name
+                       {
+                        fields               :fields
+                        db-table             :db-table
+                        where                :where
+                        path                 :path
+                        }
+                       ]
+  (if (not (get @data-sources data-source-name))
+    (do
+      (reset! data-sources
+              (assoc @data-sources data-source-name {}))
+
+      (go
+       (update-data [:tables db-table]
+                    (remote !make-sql
+                            {
+                             :fields        fields
+                             :db-table      db-table
+                             :where         where
+                             }) ))
+
+      (watch-data [:tables db-table]
+                  (do
+                    (-->ui (into [] (flatten (conj  [:ui] path [:values])))
+                           (<--data [:tables db-table]))
+                    )))))

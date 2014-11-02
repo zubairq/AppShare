@@ -502,3 +502,6 @@
 
 
 
+
+(defmacro add-data-source [p1 p2]
+  `(webapp.framework.client.coreclient/add-data-source-fn ~p1 ~p2))

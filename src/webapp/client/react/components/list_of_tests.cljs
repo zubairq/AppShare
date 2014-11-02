@@ -19,6 +19,7 @@
                                                inline
                                                text
                                                div
+                                               add-data-source
                                                ]])
   (:use
    [webapp.framework.client.system-globals  :only  [app-state
@@ -29,6 +30,7 @@
                                                     add-init-state-fn
                                                     update-data
                                                     touch
+                                                    data-sources
                                                     ]]
    )
   (:require-macros
@@ -43,8 +45,6 @@
 
 
 
-(def data-sources (atom  {}))
-@data-sources
 
 
 
@@ -53,33 +53,8 @@
 
 
 
-(defn add-data-source [data-source-name
-                       {
-                        fields               :fields
-                        db-table             :db-table
-                        where                :where
-                        path                 :path
-                        }
-                       ]
-  (if (not (get @data-sources data-source-name))
-    (do
-      (reset! data-sources
-              (assoc @data-sources data-source-name {}))
 
-      (go
-       (update-data [:tables db-table]
-                    (remote !make-sql
-                            {
-                             :fields        fields
-                             :db-table      db-table
-                             :where         where
-                             }) ))
 
-      (watch-data [:tables db-table]
-                  (do
-                    (-->ui (into [] (flatten (conj  [:ui] path [:values])))
-                           (<--data [:tables db-table]))
-                    )))))
 
 
 
@@ -94,7 +69,7 @@
                                fields               :fields
                                where                :where
                                }]
-  (add-data-source  name-of-reader
+  (c/add-data-source  name-of-reader
                     {
                        :fields        fields
                        :db-table      db-table
