@@ -12,26 +12,29 @@
                                                remote  defn-ui-component
                                                container  map-many  inline  text
                                                div  add-data-source  data
+                                               component
                                                ]]))
-(c/ns-coils 'webapp.client.react.components.list-of-tests)
-
-
-
-(defn-ui-component     component-list-of-tests   [ui]
-
-  (container
+(ns-coils 'webapp.client.react.components.list-of-tests)
 
 
 
 
+(defn-ui-component  list-questions  [ui]
    (map-many
     #(container
       (inline "100%" (c/text "- " (:question  %1  ) )))
     (data  "read all questions for list" {
-                                          :path       [:questions]
+                                          :path       []
                                           :db-table   "learno_questions"
                                           :fields     "question"
-                                          :ui-state   ui}))
+                                          :ui-state   ui})))
+
+
+
+
+(defn-ui-component      component-loads-of-stuff   [ui]
+  (container
+   (component  list-questions  ui  [:questions])
 
    (div {:style {:padding "20px"}})
 

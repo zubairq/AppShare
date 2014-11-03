@@ -503,10 +503,12 @@
 
 
 
-(defmacro add-data-source [p1 p2]
-  `(webapp.framework.client.coreclient/add-data-source-fn ~p1 ~p2))
+(defmacro add-data-source [name-of  opts  sub-path]
+  `(webapp.framework.client.coreclient/add-data-source-fn ~name-of
+                                                          ~opts
+                                                          ~sub-path))
 
 
 
-(defmacro data [p1 p2]
-  `(webapp.framework.client.coreclient/data-fn ~p1 ~p2))
+(defmacro data [name-of  opts]
+  `(webapp.framework.client.coreclient/data-fn ~name-of ~opts  ~'path))

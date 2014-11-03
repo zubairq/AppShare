@@ -2,7 +2,7 @@
   (:require
    [webapp.framework.client.coreclient   :as c :include-macros true])
   (:use
-   [webapp.client.react.components.list-of-tests     :only   [component-list-of-tests]]
+   [webapp.client.react.components.list-of-tests     :only   [component-loads-of-stuff]]
    )
 
   )
@@ -22,5 +22,5 @@
          (c/div {:style {:padding-bottom "20px"}}
                 (c/h2 nil "Learno")
                 "Learn online")
-         (c/component  component-list-of-tests  app [:ui])
+         (c/component  component-loads-of-stuff  app [:ui])
          ))

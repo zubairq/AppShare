@@ -1075,9 +1075,11 @@
                         where                :where
                         path                 :path
                         }
+                          sub-path
                        ]
   (if (not (get @data-sources data-source-name))
     (do
+      ;(js/alert (pr-str sub-path))
       (reset! data-sources
               (assoc @data-sources data-source-name {}))
 
@@ -1092,7 +1094,7 @@
 
       (watch-data [:tables db-table]
                   (do
-                    (-->ui (into [] (flatten (conj  [:ui] path [:values])))
+                    (-->ui (into [] (flatten (conj  sub-path  path  [:values])))
                            (<--data [:tables db-table]))
                     )))))
 
@@ -1110,14 +1112,15 @@
                                db-table             :db-table
                                fields               :fields
                                where                :where
-                               }]
+                               }
+               sub-path]
   (add-data-source  name-of-reader
                     {
                        :fields        fields
                        :db-table      db-table
                        :where         where
                        :path          path
-                     })
+                     } sub-path)
   (get (get-in ui-state path) :values)
   )
 
