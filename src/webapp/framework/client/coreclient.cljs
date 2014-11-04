@@ -1068,56 +1068,57 @@
 
 
 
-(defn add-data-source-fn [data-source-name
-                       {
-                        fields               :fields
-                        db-table             :db-table
-                        where                :where
-                        path                 :path
-                        }
+(defn add-data-source-fn [db-table
+                          {
+                           fields               :fields
+                           where                :where
+                           path                 :path
+                           }
                           sub-path
-                       ]
-  (if (not (get @data-sources data-source-name))
-    (do
-      ;(js/alert (pr-str sub-path))
-      (reset! data-sources
-              (assoc @data-sources data-source-name {}))
+                          ]
+  (let
+    [
+     data-source-name       db-table
+     ]
+    (if (not (get @data-sources data-source-name))
+      (do
+        ;(js/alert (pr-str sub-path))
+        (reset! data-sources
+                (assoc @data-sources  data-source-name {}))
 
-      (go
-       (update-data [:tables db-table]
-                    (remote !make-sql
-                            {
-                             :fields        fields
-                             :db-table      db-table
-                             :where         where
-                             }) ))
+        (go
+         (update-data [:tables db-table]
+                      (remote !make-sql
+                              {
+                               :fields        fields
+                               :db-table      db-table
+                               :where         where
+                               }) ))
 
-      (watch-data [:tables db-table]
-                  (do
-                    (-->ui (into [] (flatten (conj  sub-path  path  [:values])))
-                           (<--data [:tables db-table]))
-                    )))))
-
-
-
-
-
-
+        (watch-data [:tables db-table]
+                    (do
+                      (-->ui (into [] (flatten (conj  sub-path  path  [:values])))
+                             (<--data [:tables db-table]))
+                      ))))))
 
 
-(defn data-fn [name-of-reader    {
-                               path                 :path
-                               ui-state             :ui-state
-                               interval-in-millis   :interval-in-millis
-                               db-table             :db-table
-                               fields               :fields
-                               where                :where
-                               }
+
+
+
+
+
+
+(defn data-fn [db-table    {
+                            path                 :path
+                            ui-state             :ui-state
+                            interval-in-millis   :interval-in-millis
+                            fields               :fields
+                            where                :where
+                            }
                sub-path]
-  (add-data-source  name-of-reader
+  (add-data-source  db-table
                     {
                        :fields        fields
-                       :db-table      db-table
                        :where         where
                        :path          path
                      } sub-path)

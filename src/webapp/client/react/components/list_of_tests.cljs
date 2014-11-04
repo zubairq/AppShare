@@ -23,11 +23,13 @@
    (map-many
     #(container
       (inline "100%" (c/text "- " (:question  %1  ) )))
-    (data  "read all questions for list" {
-                                          :path       []
-                                          :db-table   "learno_questions"
-                                          :fields     "question"
-                                          :ui-state   ui})))
+    (data  "learno_questions" { :path       []
+                                :fields     "question"
+                                :ui-state   ui})))
+
+
+
+
 
 
 
@@ -40,23 +42,19 @@
 
    (map-many
     #(container
-      (inline "250px" (text "*" (:name %1) ))
+      (inline "300px" (text "*" (:name %1) ))
       (inline ""      (text (:questions_answered_count %1))))
-    (data  "read all tests for list" {
-                                      :path       [:tests]
-                                      :db-table   "learno_tests"
-                                      :fields     "name"
-                                      :ui-state   ui}))
+    (data  "learno_tests" {:path       [:tests]
+                           :fields     "name"
+                           :ui-state   ui}))
 
    (div {:style {:padding "20px"}})
 
    (map-many
     #(container
       (inline "450px" (text "*" (:keyword %1) )))
-    (data  "read all keywords" {
-                                      :path       [:keywords]
-                                      :db-table   "learno_keywords"
-                                      :fields     "keyword"
-                                      :ui-state   ui}))
+    (data  "learno_keywords" {:path       [:keywords]
+                              :fields     "keyword"
+                              :ui-state   ui}))
 
    ))
