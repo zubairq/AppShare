@@ -1074,11 +1074,18 @@
                            where                :where
                            path                 :path
                            }
+                          ui-component-name
                           sub-path
                           ]
   (let
     [
-     data-source-name       db-table
+     data-source-name       {
+                             :ui-component-name    ui-component-name
+                             :db-table    db-table
+                             :fields      fields
+                             :where       where
+                             :path        sub-path
+                             }
      ]
     (if (not (get @data-sources data-source-name))
       (do
@@ -1115,13 +1122,16 @@
                             fields               :fields
                             where                :where
                             }
+               ui-component-name
                sub-path]
   (add-data-source  db-table
                     {
                        :fields        fields
                        :where         where
                        :path          path
-                     } sub-path)
+                     }
+                    ui-component-name
+                    sub-path)
   (get (get-in ui-state path) :values)
   )
 

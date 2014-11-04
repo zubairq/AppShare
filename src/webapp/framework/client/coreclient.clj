@@ -113,6 +113,7 @@
                                          )
 
 
+                       ~'ui-component-name    ~(str `~fn-name)
                        ~'path       ~'(om.core/get-state owner :parent-path)
 
                        ~'parent-id  ~'debug-id
@@ -503,12 +504,17 @@
 
 
 
-(defmacro add-data-source [name-of-table  opts  sub-path]
+(defmacro add-data-source [name-of-table  opts  ui-component-name  sub-path]
   `(webapp.framework.client.coreclient/add-data-source-fn ~name-of-table
                                                           ~opts
+                                                          ~ui-component-name
                                                           ~sub-path))
 
 
 
 (defmacro data [name-of-table  opts]
-  `(webapp.framework.client.coreclient/data-fn ~name-of-table ~opts  ~'path))
+  `(webapp.framework.client.coreclient/data-fn
+    ~name-of-table
+    ~opts
+    ~'ui-component-name
+    ~'path))
