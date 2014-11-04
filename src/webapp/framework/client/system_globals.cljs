@@ -807,5 +807,6 @@
 (def paths-for-refresh (atom {}))
 
 (def data-sources (atom  {}))
+(count @data-sources)
 @data-sources
 

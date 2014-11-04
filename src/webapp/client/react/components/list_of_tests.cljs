@@ -42,7 +42,7 @@
 
    (map-many
     #(container
-      (inline "300px" (text "*" (:name %1) ))
+      (inline "330px" (text "*" (:name %1) ))
       (inline ""      (text (:questions_answered_count %1))))
     (data  "learno_tests" {:path       [:tests]
                            :fields     "name"

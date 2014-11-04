@@ -513,8 +513,16 @@
 
 
 (defmacro data [name-of-table  opts]
-  `(webapp.framework.client.coreclient/data-fn
-    ~name-of-table
-    ~opts
-    ~'ui-component-name
-    ~'path))
+  `(do
+     ~(reset! webapp.framework.client.system-globals/data-sources
+             (into {}  (filter #(if (not (= ~name-of-table
+                               (get (first %1) :ui-component-name)))
+                     true)
+                  @webapp.framework.client.system-globals/data-sources)))
+
+
+     (webapp.framework.client.coreclient/data-fn
+      ~name-of-table
+      ~opts
+      ~'ui-component-name
+      ~'path)))
