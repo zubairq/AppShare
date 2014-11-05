@@ -810,3 +810,12 @@
 (count @data-sources)
 @data-sources
 
+
+(comment reset! webapp.framework.client.coreclient/data-sources-proxy
+               (into {}
+                     (filter #(if (not (=   "list-questions"
+                                            (get (first %1) :ui-component-name)))
+                                true)
+                             (deref webapp.framework.client.coreclient/data-sources-proxy))))
+
+

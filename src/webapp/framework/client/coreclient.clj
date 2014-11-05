@@ -91,6 +91,16 @@
 
     `(do
 
+
+       (reset! webapp.framework.client.coreclient/data-sources-proxy
+               (into {}
+                     (filter (fn [~'x] (if (not (=   ~(str `~fn-name)
+                                            (get (first  ~'x) :ui-component-name)))
+                                true))
+                             (deref webapp.framework.client.coreclient/data-sources-proxy))))
+
+
+
        (defn ~fn-name [~(first data-paramater-name)  ~'owner]
          (~'reify
 
@@ -514,15 +524,15 @@
 
 (defmacro data [name-of-table  opts]
   `(do
-     ~(reset! webapp.framework.client.system-globals/data-sources
-             (into {}  (filter #(if (not (= ~name-of-table
-                               (get (first %1) :ui-component-name)))
-                     true)
-                  @webapp.framework.client.system-globals/data-sources)))
-
-
      (webapp.framework.client.coreclient/data-fn
       ~name-of-table
       ~opts
       ~'ui-component-name
       ~'path)))
+
+
+(macroexpand '(data "learno_tests" {}))
+
+
+
+

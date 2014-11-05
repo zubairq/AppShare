@@ -53,10 +53,7 @@
                                                text
                                                div
                                                add-data-source
-                                               ]])
-
-
-  )
+                                               ]]))
 (ns-coils 'webapp.framework.client.coreclient)
 
 
@@ -66,8 +63,7 @@
 
 (def debug-mode (atom false))
 
-
-
+(def data-sources-proxy  data-sources)
 
 
 
