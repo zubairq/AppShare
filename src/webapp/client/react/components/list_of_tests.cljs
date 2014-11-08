@@ -23,8 +23,10 @@
    (map-many
     #(container
       (inline "100%" (c/text "- " (:question  %1  ) )))
-    (data  "learno_questions" { :path       []
-                                :fields     "question"
+    (data  "the questions" {
+                               :db-table "learno_questions"
+                               :path       []
+                                :fields     "id,question"
                                 :ui-state   ui})))
 
 
@@ -44,17 +46,23 @@
     #(container
       (inline "330px" (text "*" (:name %1) ))
       (inline ""      (text (:questions_answered_count %1))))
-    (data  "learno_tests" {:path       [:tests]
-                           :fields     "name"
+    (data  "the tests" {
+                        :db-table "learno_tests"
+                        :path       [:tests]
+                           :fields     "id,name"
                            :ui-state   ui}))
 
    (div {:style {:padding "20px"}})
 
+
    (map-many
     #(container
       (inline "450px" (text "*" (:keyword %1) )))
-    (data  "learno_keywords" {:path       [:keywords]
-                              :fields     "keyword"
-                              :ui-state   ui}))
+
+    (data  "the keywords" {
+                           :db-table   "learno_keywords"
+                           :path       [:keywords]
+                           :fields     "id,keyword"
+                           :ui-state   ui}))
 
    ))

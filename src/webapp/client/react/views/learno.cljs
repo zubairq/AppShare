@@ -20,7 +20,6 @@
 
   (c/div nil
          (c/div {:style {:padding-bottom "20px"}}
-                (c/h2 nil "Learno")
-                "Learn online")
+                (c/h2 nil "Learno"))
          (c/component  component-loads-of-stuff  app [:ui])
          ))

@@ -53,6 +53,34 @@
 
 
 
+(def record-ui
+  "
+ This determines whether the mouse pointer events are
+ recorded for the local Coils debugger. For an example
+ of mouse pointer events looks at the playback of a Coils
+ app where you can see where the website user moved the
+ mouse. In the React/Om UI tree this is stored in:
+
+  {
+     :pointer
+     {
+         :mouse-x 0
+         :mouse-y 0
+     }
+  }
+
+
+ To enable or disable this you must be specify
+ it as a global setting in system_globals.clj as
+
+ (defonce ^:dynamic *record-pointer-locally* false)
+  "
+  (atom nil))
+
+record-ui
+
+
+
 
 
 
@@ -484,6 +512,20 @@
 
 
 
+(defn touch-data
+  "
+  "
+  [path]
+  (reset! data-state (assoc-in @data-state
+                               (conj path
+                                     :touch-id)
+                               (swap! touch-id inc)
+                               )))
+
+
+
+
+
 
 
 
@@ -819,3 +861,6 @@
                              (deref webapp.framework.client.coreclient/data-sources-proxy))))
 
 
+
+;(get-in @app-state [:ui :cvs :values 0])
+@data-watchers

@@ -154,6 +154,11 @@
 
 
 
+(defn !get-record-ui []
+  {:value *record-ui*})
+
+
+
 
 (defn !get-environment []
   {:value *environment*})
@@ -302,7 +307,7 @@
          fields " "
     "from "
          db-table " "
-    (if where (str "where " where ))
+    (if where (str "where " where " "))
     ;questions_answered_count is not null
     ;order by
     ;questions_answered_count desc"
