@@ -14,8 +14,11 @@
    [webapp.framework.client.components.main                    :only   [main-view]]
    [webapp.framework.client.system-globals                     :only   [app-state  data-state  set-ab-tests]]
    )
-   (:require-macros
-    [cljs.core.async.macros :refer [go]]))
+  (:require-macros
+   [cljs.core.async.macros :refer [go]])
+  (:use-macros
+   [webapp-config.settings  :only [setup-fn]])
+  )
 
 (c/ns-coils 'webapp.framework.client.init)
 
@@ -23,7 +26,9 @@
 
 
 
-(def  ^:export setup
+
+
+(defn setup-properties []
   {
    :start-component
    main-view
@@ -52,3 +57,7 @@
   ))})
 
 
+
+(def  ^:export setup
+  ((setup-fn))
+  )
