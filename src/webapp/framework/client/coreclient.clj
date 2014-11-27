@@ -225,6 +225,8 @@
   `(om.dom/form  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 (defmacro span [attributes & more]
   `(om.dom/span  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
+(defmacro img [attributes & more]
+  `(om.dom/img  (webapp.framework.client.coreclient/attrs ~attributes) ~@more))
 
 (defmacro container [& more]
   `(om.dom/div  {} ~@more))
@@ -234,6 +236,7 @@
   `(om.dom/div  (webapp.framework.client.coreclient/attrs
                  {:style {:display "inline-block;"
                           :width   ~width
+                          :vertical-align "top"
                           }}) ~@more))
 
 ;--------------------------------------------------------------------
@@ -243,7 +246,7 @@
 
 ;--------------------------------------------------------------------
 (defmacro watch-ui
-  [path & code]
+  [path watcher-name & code]
 
   `(do
 
@@ -267,7 +270,7 @@
 ;--------------------------------------------------------------------
 (defmacro ==ui
   "Checks the UI tree for a value"
-  [path value & code]
+  [path value test-name & code]
 
   `(do
      (webapp.framework.client.coreclient/record-path=
@@ -287,7 +290,7 @@
 
 ;--------------------------------------------------------------------
 (defmacro watch-data
-  [watcher-name path & code]
+  [path watcher-name & code]
 
   `(do
      (if (pos? (count ~watcher-name))
@@ -316,7 +319,7 @@
 
 ;--------------------------------------------------------------------
 (defmacro ==data
-  [path value & code]
+  [path value test-name & code]
 
   `(do
      (webapp.framework.client.coreclient/record-path=
@@ -514,25 +517,27 @@
 
 
 
-(defmacro add-data-source [name-of-table  opts  ui-component-name  sub-path]
-  `(webapp.framework.client.coreclient/add-data-source-fn ~name-of-table
+(defmacro add-data-view [name-of-table  opts  ui-component-name  sub-path]
+  `(webapp.framework.client.coreclient/add-data-view-fn ~name-of-table
                                                           ~opts
                                                           ~ui-component-name
                                                           ~sub-path))
 
 
 
-(defmacro data [name-of-data  opts]
+(defmacro data-view [name-of-data-view  opts]
   `(do
-     (webapp.framework.client.coreclient/data-fn
-      ~name-of-data
+     (webapp.framework.client.coreclient/data-view-fn
+      ~name-of-data-view
       ~opts
       ~'ui-component-name
       ~'path)))
 
 
-(macroexpand '(data "learno_tests" {}))
+(macroexpand '(data-view "learno_tests" {}))
 
 
+(defmacro admin []
+  `(webapp.framework.client.coreclient/admin-fn))
 
 

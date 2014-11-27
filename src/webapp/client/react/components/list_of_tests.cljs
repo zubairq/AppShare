@@ -11,7 +11,7 @@
                                                watch-data  -->ui  <--data
                                                remote  defn-ui-component
                                                container  map-many  inline  text
-                                               div  add-data-source  data
+                                               div  data-view
                                                component
                                                ]]))
 (ns-coils 'webapp.client.react.components.list-of-tests)
@@ -22,11 +22,11 @@
 (defn-ui-component  list-questions  [ui]
    (map-many
     #(container
-      (inline "100%" (c/text "- " (:question  %1  ) )))
-    (data  "the questions" {
-                               :db-table "learno_questions"
+      (inline "100%" (c/text "- " (-> %1 :value :question  ) )))
+    (data-view  "the questions" {
+                               :data-source  :questions
                                :path       []
-                                :fields     "id,question"
+                                :fields     [:id :question]
                                 :ui-state   ui})))
 
 
@@ -44,12 +44,12 @@
 
    (map-many
     #(container
-      (inline "330px" (text "*" (:name %1) ))
+      (inline "330px" (text "*" (-> %1 :value :name) ))
       (inline ""      (text (:questions_answered_count %1))))
-    (data  "the tests" {
-                        :db-table "learno_tests"
+    (data-view  "the tests" {
+                        :data-source  :tests
                         :path       [:tests]
-                           :fields     "id,name"
+                           :fields     [:id :name]
                            :ui-state   ui}))
 
    (div {:style {:padding "20px"}})
@@ -57,12 +57,12 @@
 
    (map-many
     #(container
-      (inline "450px" (text "*" (:keyword %1) )))
+      (inline "450px" (text "*" (-> %1 :value :keyword) )))
 
-    (data  "the keywords" {
-                           :db-table   "learno_keywords"
+    (data-view  "the keywords" {
+                           :data-source  :keywords
                            :path       [:keywords]
-                           :fields     "id,keyword"
+                           :fields     [:id :keyword]
                            :ui-state   ui}))
 
    ))

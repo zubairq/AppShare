@@ -12,7 +12,7 @@
   (:use
    [webapp.framework.client.coreclient      :only  [log remote-fn write-ui-fn read-ui-fn]]
    [webapp.framework.client.system-globals  :only  [app-state
-                                                    reset-app-state ui-watchers
+                                                    reset-app-state
                                                     playbackmode
                                                     data-watchers
                                                     data-state

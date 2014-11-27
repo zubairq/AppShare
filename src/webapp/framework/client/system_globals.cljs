@@ -5,6 +5,7 @@
    [om.dom           :as dom :include-macros true]
    [clojure.data     :as data]
    [clojure.string   :as string]
+   [cljs.core.async  :as async :refer [chan close!]]
    )
 )
 
@@ -862,5 +863,4 @@ record-ui
 
 
 
-;(get-in @app-state [:ui :cvs :values 0])
-@data-watchers
+(def get-data-channel (chan))

@@ -31,21 +31,32 @@
     )))
 
 
-(defn sql [sql params]
+
+(defn sql
+  ([sql-in]
+   (sql sql-in {}))
+
+  ([sql-in params]
   (do
     (let [
-          lower           (.toLowerCase sql)
+          lower           (.toLowerCase sql-in)
           ]
-      (println "SQL from client: " sql)
+      (println "SQL from client: " sql-in)
       (cond
-       (.startsWith lower "select")  (do (println "SELECT") (exec-raw [sql params] :results))
-       :else                         (do (println "INSERT") (exec-raw [sql params]) [])
+       (.startsWith lower "select")  (do (println "SELECT") (exec-raw [sql-in params] :results))
+       :else                         (do (println "INSERT") (exec-raw [sql-in params]) [])
    ; []
-    ))
+    )))
   )
 )
 
+(defn sql-1
+  ([sql-in]
+   (first (sql  sql-in)))
 
+  ([sql-in params]
+   (first (sql  sql-in params)))
+)
 
 (defn uuid []
  (java.util.UUID/randomUUID))

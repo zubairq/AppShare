@@ -14,6 +14,7 @@
    [webapp.framework.client.coreclient           :only  [log remote-fn debug-mode component-fn
                                                          remove-debug-event
                                                          ]]
+   [webapp.framework.client.components.admin     :only  [admin-view]]
    [webapp.framework.client.system-globals       :only  [app-state
                                                          playbackmode
                                                          ui-watchers
@@ -27,13 +28,16 @@
                                                          ]]
    )
   (:use-macros
-   [webapp.framework.client.coreclient :only  [defn-ui-component ns-coils div component remote]]
+   [webapp.framework.client.coreclient :only  [defn-ui-component ns-coils div component remote
+											   admin watch-data <--data -->ui
+											   ns-coils
+											   ]]
    )
   (:require-macros
    [cljs.core.async.macros :refer [go]])
 
   )
-
+(ns-coils 'webapp.framework.client.components.system-container)
 
 
 (defn subtree-different? [orig-val new-val path]
@@ -92,7 +96,7 @@
                   (for [watch @watchers]
                     (if (subtree-different? old-val new-val (:path watch))
                       (do
-                        (log (str "Subtree changed: " (:path watch)))
+                        ;(log (str "Subtree changed: " (:path watch)))
                         (cond
 
                          (= (:type watch) "path equals")
@@ -181,9 +185,9 @@
 
 (defn pop-q [a]
   (try
-  (remove-first-and-return   a)
-  (catch :default e
-    nil)))
+    (remove-first-and-return   a)
+    (catch :default e
+      nil)))
 
 
 (def a (atom [123 2]))
@@ -275,19 +279,26 @@
 
      (do
 
-       (loop [called-ui (pop-q  ui-events)]
-         (if (nil? called-ui)
-           nil
-           (do
-             (apply (:fn (:watch called-ui)) (conj [app] (:extra called-ui)))
-             (recur (pop-q  ui-events)))))
+       (let [uiii @ui-events]
+         (reset! ui-events [])
+         (dorun (map
+                 (fn [called-ui]
+                   (if called-ui
+                     (apply (:fn (:watch called-ui)) (conj [app] (:extra called-ui)))
+                     ))
+                 uiii
+                 )))
 
-         (loop [called-data (pop-q  data-events)]
-         (if (nil? called-data)
-           nil
-           (do
-             (apply (:fn (:watch called-data)) (conj [app] (:extra called-data)))
-             (recur (pop-q  data-events)))))
+
+       (let [diii @data-events]
+         (reset! data-events [])
+         (dorun (map
+                 (fn [called-data]
+                   (if called-data
+                     (apply (:fn (:watch called-data)) (conj [app] (:extra called-data)))
+                     ))
+                 diii
+                 )))
 
 
 
@@ -317,7 +328,13 @@
 
                            (do
                              (let [path []]
-                               (component    @start-component app  [])
+                               (cond
+                                (get app :admin)
+                                 (component    admin-view       app  [])
+
+                                (not (get app :admin))
+                                 (component    @start-component app  [])
+                                 )
                                )
                              )
 
@@ -325,10 +342,10 @@
                              (dom/div #js {
                                            :style
                                            #js {
-                                                :position "absolute"
-                                                :left (str (-> app :pointer :mouse-x) "px")
-                                                :top (str (-> app :pointer :mouse-y) "px")
-                                                :z-index 100
+                                                :position  "absolute"
+                                                :left      (str (-> app :pointer :mouse-x) "px")
+                                                :top       (str (-> app :pointer :mouse-y) "px")
+                                                :z-index   100
                                                 }} "X"))
 
                            (if @debug-mode
@@ -340,12 +357,15 @@
                                       (dom/button #js {:onClick (fn [e]
                                                                   (om/root ankha/inspector app-state
                                                                            {:target (js/document.getElementById "playback_state")})
-                                                                  nil )} "Show UI state")
+                                                                  nil )} "UI state")
 
                                       (dom/button #js {:onClick (fn [e]
                                                                   (om/root ankha/inspector data-state
                                                                            {:target (js/document.getElementById "data_state")})
-                                                                  nil )} "Show Data state")
+                                                                  nil )} "Data state")
+                                      (dom/button #js {:onClick (fn [e]
+                                                                  (admin)
+                                                                  nil )} "Admin")
                                       ))
 
                            ))))
@@ -353,3 +373,10 @@
 
 ))
 
+
+(watch-data  [:data-sources]
+			 "When the system data sources change add this to the admin console"
+			 (do
+			   (-->ui [:system :ui :data-sources :values] (<--data [:data-sources]))
+			   )
+			 )

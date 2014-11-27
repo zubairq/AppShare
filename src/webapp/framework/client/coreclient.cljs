@@ -40,6 +40,7 @@
                                                     data-sources
                                                     record-ui
                                                     touch-data
+													get-data-channel
                                                     ]])
   (:use-macros
    [webapp.framework.client.coreclient  :only [ns-coils
@@ -54,7 +55,7 @@
                                                inline
                                                text
                                                div
-                                               add-data-source
+                                               add-data-view
                                                ]]))
 (ns-coils 'webapp.framework.client.coreclient)
 
@@ -880,7 +881,7 @@ record-ui
                             (conj
                              (if (get @gui-calls entry-name) (get @gui-calls  entry-name) [])   (pr-str state))
                             (get @gui-calls  entry-name))))
-      (log (str "DEBUG ID: "debug-id))
+      ;(log (str "DEBUG ID: "debug-id))
       debug-id
       )))
 
@@ -960,7 +961,7 @@ record-ui
         current-value      (get @ data-accesses  data-access-key)
         debug-id           (last @ call-stack)
         ]
-    (log (str "*read-ui-fn: " full-path "    parent id: " debug-id))
+    ;(log (str "*read-ui-fn: " full-path "    parent id: " debug-id))
     (reset!  data-accesses (assoc @data-accesses
                              data-access-key
                              (if current-value
@@ -1090,15 +1091,52 @@ record-ui
           (map
            (fn [y] [(first (keys y)) (first (vals y))])
            (map
-            (fn [z] {(:id z) z})
+            (fn [z] {(:id z)
+                     {:value  z}
+                     })
             x)))))
 
 (def mm  [{:id 1 :a 1} {:id 2 :a 2}])
 (order-by-id mm)
 
-(defn add-data-source-fn [name-of-data
+
+(defn fields-to-sql-str [fields]
+  (apply str (interpose ", " (map #(-> % name) fields))))
+
+;(fields-to-sql-str [:a :e :w])
+
+(defn get-default-fields-for-data-source [data-source-id]
+  (into [] (-> @data-state :data-sources data-source-id :def :fields keys)))
+
+(get-default-fields-for-data-source  :cvs)
+
+
+
+
+
+(defn filter-items-by-id-list [items  id-list]
+  (into {} (filter
+
+			(fn [item-and-data]
+
+			  (some
+
+			   (fn [item-id] (= (first item-and-data) item-id))
+
+			   id-list))
+
+			items)))
+
+
+
+(filter-items-by-id-list {1 nil 2 nil 3 nil} [1] )
+
+
+;@data-sources
+
+(defn add-data-view-fn [name-of-data-view
                           {
-                           db-table             :db-table
+                           data-source          :data-source
                            fields               :fields
                            where                :where
                            path                 :path
@@ -1111,52 +1149,144 @@ record-ui
     [
      data-source-name       {
                              :ui-component-name    ui-component-name
-                             :db-table             db-table
+                             :data-source          data-source
                              :fields               fields
                              :where                where
                              :path                 sub-path
                              }
      ]
-    (if (not (get @data-sources data-source-name))
+    (if (not (get   @data-sources   data-source-name  ))
       (do
-        ;(js/alert (pr-str sub-path))
 
-        (watch-data (str ui-component-name " " full-path " " name-of-data)
-                    [:tables db-table]
+
+        (watch-data
+		 [:data-sources  data-source  :data  :values]
+
+		 (str ui-component-name " " full-path " " name-of-data-view)
+
+
                     (do
-                      (-->ui full-path
-                             (<--data [:tables db-table :values]))
-                      ))
-        (go
-        (reset! data-sources
-                (assoc @data-sources  data-source-name
-                  (order-by-id (remote !make-sql
-                                           {
-                                            :fields        fields
-                                            :db-table      db-table
-                                            :where         where
-                               }) )))
-         (update-data [:tables db-table :values]
-                      (get @data-sources  data-source-name )
-                       ))
+					  ;(js/alert (pr-str (get   @data-sources   data-source-name  )  ))
+					  (-->ui  full-path
 
-        )
+							  (filter-items-by-id-list
 
-      ; else the data exists and we just have to get it
-      (update-data [:tables db-table :values]
-                      (get @data-sources  data-source-name )
-                       )
+							   (<--data [:data-sources  data-source  :data  :values])
 
-      )))
+										(get   @data-sources   data-source-name  ))
+
+										)))
 
 
 
 
+		(go
+
+		 (>! get-data-channel
+			 {
+			  :query-type    "get ids"
+			  :data-source   data-source
+			  :ui-component-name   ui-component-name
+			  :sub-path      sub-path
+			  :fields        fields
+			  :db-table      (-> @data-state
+								 :data-sources
+								 data-source
+								 :def
+								 :table)
+
+			  :where         where
+			  }
+		 )
+
+		))
+
+	  ; else the data exists and we just have to get it
+	  (comment update-data [:data-sources data-source :data :values]
+				   (get @data-sources  data-source-name )
+				   )
+
+	  )))
 
 
 
-(defn data-fn [ name-of-data   {
-                                db-table             :db-table
+
+(comment filter-items-by-id-list
+
+ (get-in @data-state [:data-sources  :cvs  :data  :values])
+
+ (get   @data-sources   (first 	(keys @data-sources))  ))
+
+(keys @data-sources)
+
+
+(go
+ (loop []
+   (let [
+		   get-data-item                 (<! get-data-channel)
+
+
+
+		   {
+			  data-source          :data-source
+			  fields               :fields
+			  where                :where
+			  path                 :path
+			  full-path            :full-path
+			  ui-component-name    :ui-component-name
+		 	  sub-path             :sub-path
+		   }
+		                                 get-data-item
+
+
+
+		   data-source-name              {
+										   :ui-component-name    ui-component-name
+										   :data-source          data-source
+										   :fields               fields
+										   :where                where
+										   :path                 sub-path
+							             }
+		 ]
+
+
+	 (let [ values-returned    (remote  !make-sql
+										(merge  get-data-item
+												{:fields (fields-to-sql-str
+														  (get-default-fields-for-data-source
+														   data-source))})
+											   ) ]
+
+	   (reset!  data-sources
+
+				(assoc-in  @data-sources
+
+						   [ data-source-name ]
+
+						   (into [] (keys (order-by-id  values-returned )))))
+
+
+
+	   (update-data
+
+		[ :data-sources  data-source  :data  :values ]
+
+					(merge
+
+					 (order-by-id  values-returned )
+
+					 (get-in @data-state [ :data-sources  data-source  :data  :values ])
+
+					 )))
+
+	 (recur))))
+
+
+
+
+
+(defn data-view-fn [ name-of-data-view   {
+                                data-source          :data-source
                                 path                 :path
                                 ui-state             :ui-state
                                 interval-in-millis   :interval-in-millis
@@ -1166,9 +1296,9 @@ record-ui
                 ui-component-name
                 sub-path]
 
-  (add-data-source  name-of-data
+  (add-data-view  name-of-data-view
                     {
-                     :db-table      db-table
+                     :data-source   data-source
                      :fields        fields
                      :where         where
                      :path          path
@@ -1181,3 +1311,18 @@ record-ui
   )
 
 
+
+
+
+
+
+
+(defn admin-fn []
+  (swap!  app-state  assoc     :admin (not (get @app-state :admin)))
+
+  (if (nil? (get-in  app-state  [:system :ui :tab :value]))
+	(swap!  app-state  assoc-in  [:system :ui :tab :value]  "data sources"))
+
+  (swap!  app-state  assoc-in  [:system :ui :data-sources :values]  (:data-sources @data-state))
+  (swap!  app-state  assoc-in  [:system :ui :views :values]  @data-sources)
+  )

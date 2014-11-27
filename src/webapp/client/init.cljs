@@ -50,10 +50,89 @@
 
         }))
 
+(reset! data-state
+			   {
+				:submit
+				{
+				 }
 
-     (reset! data-state {
-                         :submit {}
-                         })
+
+
+				:data-sources
+				{
+				 :questions {
+					   :def {
+							 :type "dbtable"
+							 :table "learno_questions"
+							 :primary-key
+							 {
+							  :field :id
+							  :type "UUID"
+							  }
+
+
+
+							 :fields
+							 {
+							  :id nil
+							  :question nil
+							 ; :jobs
+							 ; {
+							 ;  :type "foreign one to many"
+							 ;  :source :jobs
+							 ;  :foreign-field-id :fk-cv-id
+							 ;  }
+							 ; :count-jobs
+							 ; {
+							 ;  :type "count"
+							 ;  :source :THIS
+							 ;  :field :jobs
+							 ;  }
+
+							  }
+
+
+
+
+							 :allow-inserts false
+							 :allow-updates true
+							 }}
+
+
+
+				 :tests {
+						 :def {
+							   :type   "dbtable"
+							   :table "learno_tests"
+							   :primary-key
+							   {
+								:field :id
+								:type "UUID"
+								}
+							   :fields {
+										:id nil
+										:name nil
+										}
+							   }
+						 }
+
+				 :keywords {
+						 :def {
+							   :type   "dbtable"
+							   :table "learno_keywords"
+							   :primary-key
+							   {
+								:field :id
+								:type "UUID"
+								}
+							   :fields {
+										:id nil
+										:keyword nil
+										}
+							   }
+						 }
+				 }})
+
 
 
      (set-ab-tests {
