@@ -37,7 +37,7 @@
                                                     app-watch-on?
                                                     data-accesses
                                                     paths-for-refresh
-                                                    data-sources
+                                                    data-views
                                                     record-ui
                                                     touch-data
 													get-data-channel
@@ -66,7 +66,7 @@
 
 (def debug-mode (atom false))
 
-(def data-sources-proxy  data-sources)
+(def data-views-proxy  data-views)
 
 
 
@@ -1132,7 +1132,7 @@ record-ui
 (filter-items-by-id-list {1 nil 2 nil 3 nil} [1] )
 
 
-;@data-sources
+;@data-views
 
 (defn add-data-view-fn [name-of-data-view
                           {
@@ -1155,8 +1155,13 @@ record-ui
                              :path                 sub-path
                              }
      ]
-    (if (not (get   @data-sources   data-source-name  ))
+    (if (not (get   @data-views   data-source-name  ))
       (do
+		;(js/alert (pr-str data-source-name  )  )
+		(reset!  data-views
+				(assoc-in  @data-views
+						   [ data-source-name ] []))
+
 
 
         (watch-data
@@ -1166,14 +1171,13 @@ record-ui
 
 
                     (do
-					  ;(js/alert (pr-str (get   @data-sources   data-source-name  )  ))
 					  (-->ui  full-path
 
 							  (filter-items-by-id-list
 
 							   (<--data [:data-sources  data-source  :data  :values])
 
-										(get   @data-sources   data-source-name  ))
+										(get   @data-views   data-source-name  ))
 
 										)))
 
@@ -1202,9 +1206,7 @@ record-ui
 		))
 
 	  ; else the data exists and we just have to get it
-	  (comment update-data [:data-sources data-source :data :values]
-				   (get @data-sources  data-source-name )
-				   )
+	  (touch-data [:data-sources  data-source  :data  :values])
 
 	  )))
 
@@ -1215,9 +1217,9 @@ record-ui
 
  (get-in @data-state [:data-sources  :cvs  :data  :values])
 
- (get   @data-sources   (first 	(keys @data-sources))  ))
+ (get   @data-views   (first 	(keys @data-views))  ))
 
-(keys @data-sources)
+(keys @data-views)
 
 
 (go
@@ -1257,9 +1259,9 @@ record-ui
 														   data-source))})
 											   ) ]
 
-	   (reset!  data-sources
+	   (reset!  data-views
 
-				(assoc-in  @data-sources
+				(assoc-in  @data-views
 
 						   [ data-source-name ]
 
@@ -1324,5 +1326,5 @@ record-ui
 	(swap!  app-state  assoc-in  [:system :ui :tab :value]  "data sources"))
 
   (swap!  app-state  assoc-in  [:system :ui :data-sources :values]  (:data-sources @data-state))
-  (swap!  app-state  assoc-in  [:system :ui :views :values]  @data-sources)
+  (swap!  app-state  assoc-in  [:system :ui :views :values]  @data-views)
   )

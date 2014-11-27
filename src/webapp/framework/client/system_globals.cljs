@@ -849,17 +849,21 @@ record-ui
 
 (def paths-for-refresh (atom {}))
 
-(def data-sources (atom  {}))
-(count @data-sources)
-@data-sources
+(def data-views (atom  {}))
 
 
-(comment reset! webapp.framework.client.coreclient/data-sources-proxy
+(count @data-views)
+@data-views
+
+
+
+
+(comment reset! webapp.framework.client.coreclient/data-views-proxy
                (into {}
                      (filter #(if (not (=   "list-questions"
                                             (get (first %1) :ui-component-name)))
                                 true)
-                             (deref webapp.framework.client.coreclient/data-sources-proxy))))
+                             (deref webapp.framework.client.coreclient/data-views-proxy))))
 
 
 

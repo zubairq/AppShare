@@ -93,12 +93,12 @@
     `(do
 
 
-       (reset! webapp.framework.client.coreclient/data-sources-proxy
+       (reset! webapp.framework.client.coreclient/data-views-proxy
                (into {}
                      (filter (fn [~'x] (if (not (=   ~(str `~fn-name)
                                             (get (first  ~'x) :ui-component-name)))
                                 true))
-                             (deref webapp.framework.client.coreclient/data-sources-proxy))))
+                             (deref webapp.framework.client.coreclient/data-views-proxy))))
 
 
 

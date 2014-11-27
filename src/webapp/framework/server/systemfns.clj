@@ -311,7 +311,7 @@
     ;questions_answered_count is not null
     ;order by
     ;questions_answered_count desc"
-    "limit 3") {}))
+    "limit 100") {}))
 
 ;(sql "select count(*) from learno_tests limit 1" {})
 
